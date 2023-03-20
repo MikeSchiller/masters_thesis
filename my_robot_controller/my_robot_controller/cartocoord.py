@@ -20,7 +20,7 @@ steering_angle = 0
 radius_earth = 6371000 #6371km
 calclat = 0
 calclong = 0
-calcHeading = 10
+calcHeading = 10.0
 radstand = 0.315 #(Radstand des Fahrzeugs in Meter)
 part_distance_driven = 0
 distance_driven_old = 0
@@ -41,7 +41,7 @@ class CarToCoords(Node):
         self.car_long = self.create_publisher(String, 'car_long', 10)
         self.car_lat = self.create_publisher(String, 'car_lat', 10)
         self.pub_Zone1 = self.create_publisher(String, '/Zone1', 10)
-        self.pub_heading = self.create_publisher(String,'headingFromCtC', 10)
+        self.pub_heading = self.create_publisher(String,'headingFromCtC', 1)
         self.pub_target_long = self.create_publisher(String, '/target_long', 10)
         self.pub_target_lat = self.create_publisher(String, 'target_lat', 10)
         self.pub_start = self.create_publisher(String, 'start', 10)
@@ -120,10 +120,10 @@ class CarToCoords(Node):
                     startvar = input()
                     
                     match startvar:
-                        case 1:
+                        case '1':
                             startLong = 9.9384605 # T Bau Gang Norden
                             startLat= 48.4185308
-                        case 2:
+                        case "2":
                             startLong = 9.93847061 # Kreuzung T/Q Bau (indoor)
                             startLat= 48.41821953
 
@@ -137,7 +137,8 @@ class CarToCoords(Node):
                 target_longitude.data = '9.93847061' # Kreuzung T/Q Bau (indoor)
                 target_latitude.data = '48.41821953'
                 calcHeading = 340
-            
+            print(startLat)
+            print(startLong)
 
 
             print("Please define a target (T) or choose from the list (L):")
@@ -158,42 +159,46 @@ class CarToCoords(Node):
                 print(" (6) Bad Blau")
                 print(" (7) Kreuzng T/Q Bau (indoor)")
                 print(" (8) Kreuzng s/Q Bau (indoor)")
+                print(" (9) ulmer Münster")
 
                 tarstate = input()
 
                 match tarstate:
-                    case 1:
+                    case "1":
                         target_longitude.data = '9.939772' # Kreuzung E-Radstellplatz
                         target_latitude.data = '48.418074' # Kreuzung E-Radstellplatz
                     
-                    case 2:
+                    case "2":
                         target_longitude.data = '9.937939' # Kreuzung V-Bau
                         target_latitude.data = '48.418091' # Kreuzung V-Bau 
 
-                    case 3:
+                    case "3":
                         target_longitude.data = '9.937964' # Ecke gemähte Wiese Osten
                         target_latitude.data = '48.417796' # Ecke gemähte Wiese Osten  
 
-                    case 4: 
+                    case "4": 
                         target_longitude.data = '9.940302' # Kreuzung Zufahrt THU Höhenweg osten
                         target_latitude.data = '48.417305' # Kreuzung Zufahrt THU Höhenweg osten 
 
-                    case 5:                                      
+                    case "5":                                      
                         target_longitude.data = '9.937879' # Kreuzung Zufahrt THU Höhenweg westen
                         target_latitude.data = '48.417411' # Kreuzung Zufahrt THU Höhenweg westen
 
-                    case 6:
+                    case "6":
                         target_longitude.data = '9.917946' # bad blau
                         target_latitude.data = '48.417771' # bad blau
 
-                    case 7:
+                    case "7":
                         target_longitude.data = '9.93847061' # Kreuzung T/Q Bau (indoor)
                         target_latitude.data = '48.41821953'
                     
-                    case 8: 
+                    case "8": 
                         target_longitude.data = '9.93894926' # Kreuzung S/Q Bau (indoor)
                         target_latitude.data = '48.41823366'
-
+                    
+                    case "9":
+                        target_longitude.data = '9.991781128225083' # Ulmer Münster
+                        target_latitude.data = '48.39854269226725' # 
 
 
         print("Do you want to enable NO GO Zones? (Y/N/help): ")
@@ -219,10 +224,12 @@ class CarToCoords(Node):
         calclat = startLat
         startmsg.data = "go"
         #self.car_long()
-        self.pub_target_lat.publish(target_latitude)
-        self.pub_target_long.publish(target_longitude)
-        time.sleep(1)
-        self.pub_start.publish(startmsg)
+        for i in range(10):
+            self.pub_target_lat.publish(target_latitude)
+            self.pub_target_long.publish(target_longitude)
+            time.sleep(0.1)
+            self.pub_start.publish(startmsg)
+            i+=1
 
 
 
@@ -287,14 +294,18 @@ class CarToCoords(Node):
         global calcHeading
         global radstand
 
-        current_heading = calcHeading
+        current_heading = float(calcHeading)
         
         #Wenn Heading genau 0, Fehler weil div durch 0, daher bei 0 minimale Abweichung zugerechnet
         if  steering_angle != 0 and current_heading != 0:
 
             beta = part_distance_driven/ (math.pi * ((2* radstand)/ math.sin(steering_angle ))) * 360
-            
-            current_heading = current_heading + beta
+            print("beta: " + str(beta))
+            #keine Ahnung warum genau, aber beta wird selten seehr seehr groß, daher abfangen davon
+            if beta < -360:
+                pass
+            else: 
+                current_heading = current_heading + beta
              
             if current_heading >= 360:
                 current_heading = current_heading - 360 
@@ -303,7 +314,11 @@ class CarToCoords(Node):
             calcHeading = current_heading 
         elif steering_angle != 0 and current_heading == 0:
             beta = part_distance_driven/ (math.pi * (2* radstand/ math.sin(((steering_angle+0.1 )))) * 360)
-            current_heading = current_heading + beta
+            if beta < -360:
+                pass
+            else: 
+                current_heading = current_heading + beta
+
             if current_heading >= 360:
                 current_heading = current_heading - 360  
             elif current_heading < 0:

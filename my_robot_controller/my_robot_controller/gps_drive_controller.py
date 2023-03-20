@@ -37,6 +37,8 @@ Rechtslenken = 0
 state = 99
 distance_left = 10
 distance_right =20 
+#stopwatsch = 1
+#start = 0
 #Radar
 radararrayX = []
 radararrayY = []
@@ -90,7 +92,7 @@ class gps_autonomous(Node):
         self.sub_hdop = self.create_subscription(String, '/HDOP', self.HDOP_callback, 10)  
         self.sub_head = self.create_subscription(String, '/tracked_heading', self.Heading_callback, 10) # müsste von gps kommen
         #self.sub_cmps = self.create_subscription(String,'/cmps_heading',self.cmps_callback,10)       
-        self.sub_cmps = self.create_subscription(String,'headingFromCtC',self.cmps_callback,10) 
+        self.sub_cmps = self.create_subscription(String,'headingFromCtC',self.cmps_callback,1) 
         self.sub_steer = self.create_subscription(String, '/steering', self.steer_callback, 10)
         self.sub_drive = self.create_subscription(String, '/driving', self.drive_callback ,10)
         self.sub_switch = self.create_subscription(String, '/switch', self.switch_callback ,10)
@@ -106,6 +108,26 @@ class gps_autonomous(Node):
 
     def timer_callback(self):
         global Winkelstring
+        '''
+        global stopwatsch
+        global start 
+        end= 0
+        if stopwatsch == 1:
+            start = time.time()
+            stopwatsch= 2
+        elif stopwatsch == 2:
+            end = time.time()
+            print("start: " + str(start))
+            print ("end: " + str(end))
+            print ("stopwatsch: " +  str(end - start))
+            stopwatsch = 1
+        #gemessene Werte im Normbetrieb:
+        start: 1679324261.570277
+        end: 1679324262.080161
+        stopwatsch: 0.5098841190338135
+
+        '''
+        print("##################################################################")
         #DAs kann hier so nicht aufgerufen werden
         #self.calculate_heading()
         self.fahrmethode()
@@ -419,14 +441,14 @@ class gps_autonomous(Node):
         global targetdistance
         target_heading = 0 # zu beginn der Methode null setzen, damit frisch ausgerechnet wird und Wert anschließend für andere Methoden verfügbar
 
-
+        #!!!!! Hier ist Fehler drin
         #Distanz zwischen beiden Punkten berechnen. Dafür Erde = Kugel annahme, für kurze Distanzen ausreichend
         # CAVE: Code aktuell Für Nord östliche Bereiche der Welt ausgelegt.
         #https://www.sunearthtools.com/de/tools/distance.php#:~:text=Berechnung%20der%20Entfernung%20zwischen%20zwei%20geografischen%20Punkten,-Die%20Formel%20verwendet&text=Das%20Winkeln%20eingesetzt%20werden%20in,pi%20dividiert%20durch%20180%20erhalten.
-        print (target_latitude)
-        print (target_longitude)
-        print(actual_latitude)
-        print(actual_longitude)
+        print ("target_lat: " + str(target_latitude))
+        print ("target_long: " + str(target_longitude))
+        print("act_lat: " + str(actual_latitude))
+        print("act_long: " + str(actual_longitude))
         if target_latitude == "" or target_longitude == "":
             pass
         else:
@@ -435,35 +457,39 @@ class gps_autonomous(Node):
             
             if difference_lat < 0:
                 difference_lat = difference_lat * -1
-                target_heading = target_heading +90
+                target_heading = target_heading +180
+                #target_heading = target_heading +90 #alte werte
+                print(target_heading)
             else: 
                 pass
             
             
             if difference_long < 0:
                 difference_long = difference_long * -1
-                target_heading = target_heading + 180
+                target_heading = target_heading + 90
+                print(target_heading)
+                #target_heading = target_heading + 180#alte werte
             else: 
                 pass
             # Genauigkeit https://www.sunearthtools.com/dp/tools/pos_earth.php?lang=de#txtEarth_6
             # Aproxximierung der Strecke über Dreieck (Dürfte bei den Distanzen keinen Nennenswerten unterschied machen)
             if difference_long !=0:
-                distance_long = 2 * radius_earth * math.sin(difference_long / 2)
+                distance_long = 2 * radius_earth * math.sin(math.radians(difference_long) / 2)
             else:
                 distance_long =  0
 
             if difference_lat != 0:
-                distance_lat = 2 * radius_earth * math.sin(difference_lat / 2)
+                distance_lat = 2 * radius_earth * math.sin(math.radians(difference_lat) / 2) #sin
             else:
                 distance_lat = 0
-            print("dist_long: " + str(distance_long)) #sollte in m sein
-            print("dist_lat: " + str(distance_lat)) #!!!! Der Wert hier ist totaler Müll, schauen warum/// vllt doch nicht
-
-            targetdistance = math.sqrt(distance_lat * distance_lat + distance_long*distance_long)
+            print("dist_long: " + str(distance_long)) #[m]
+            print("dist_lat: " + str(distance_lat)) 
+            #distanzen sehen jetzt gut aus.
+            targetdistance = math.sqrt(distance_lat * distance_lat + distance_long * distance_long)
 
             #berechnung des Winkels
             if distance_long != 0 and distance_lat != 0:
-                target_heading = target_heading + math.tan(distance_long / distance_lat)
+                target_heading = target_heading + math.atan(math.radians(distance_long / distance_lat))
             else:
                 print("gleich mein Problem")
             if target_heading < 0:
@@ -551,18 +577,22 @@ class gps_autonomous(Node):
 
 
             #Auswertung Heading Kompass
-            max_all_dev = 5 # maximum allowed deviation from target heading
+            max_all_dev = 15 # maximum allowed deviation from target heading
             smallsteerdev = 30 #deviation for smaller steering angle to counter oversteer
+            #!!!!Das tut nicht wies soll
             print("cmps_head: " + str(cmps_heading))
-            print("target_h: " + str(target_heading))
-            if cmps_heading < target_heading + smallsteerdev or cmps_heading < target_heading - smallsteerdev :
-                lenkung = 80            
-            elif cmps_heading > target_heading + smallsteerdev or cmps_heading > target_heading - smallsteerdev:
-                lenkung = 100
-            elif cmps_heading < target_heading + max_all_dev or cmps_heading < target_heading - max_all_dev :
+            print("target_head: " + str(target_heading))
+
+
+
+            if cmps_heading < target_heading + max_all_dev or cmps_heading < target_heading - max_all_dev :
                 lenkung = 85
+            elif cmps_heading < target_heading + smallsteerdev or cmps_heading < target_heading - smallsteerdev:
+                lenkung = 80            
             elif cmps_heading > target_heading + max_all_dev or cmps_heading > target_heading - max_all_dev:
                 lenkung = 95
+            elif cmps_heading > target_heading + smallsteerdev or cmps_heading > target_heading - smallsteerdev:
+                lenkung = 100
             else:
                 lenkung = 90   
             
@@ -587,20 +617,24 @@ class gps_autonomous(Node):
             minddist_radar_y = 0.4 #[m]
             for radvar in range(0, counttargets):
                 #Schauen, ob sich ein Hindernis links/rechts von Fahrzeugmitte aus befindet und maximal 1 Meter weit weg ist
-                '''
-                if radararrayX[radvar] < minddist_radar_x and radararrayY[radvar] < 1 :
-                   
-                    #check ob links vom Fahrzeug
-                    #links
-                    if radararrayY[radvar] < 0:
-                        state = 50
-                    elif radararrayY[radvar] > 0:
-                        state = 60
-                #schauen, ob ein Hindernis direkt vor dem Sensor ist
-                # Distanz von Fahrzeug
-                elif abs(radararrayY[radvar]) < minddist_radar_y :
-                    state = 40
-                '''
+                
+
+                if radararrayX == [] or radararrayY == []:
+                    pass
+                else:
+                    if radararrayX[radvar] < minddist_radar_x and radararrayY[radvar] < 1 :
+                    
+                        #check ob links vom Fahrzeug
+                        #links
+                        if radararrayY[radvar] < 0:
+                            state = 50
+                        elif radararrayY[radvar] > 0:
+                            state = 60
+                    #schauen, ob ein Hindernis direkt vor dem Sensor ist
+                    # Distanz von Fahrzeug
+                    elif abs(radararrayY[radvar]) < minddist_radar_y :
+                        state = 40
+                
                     
 
 
