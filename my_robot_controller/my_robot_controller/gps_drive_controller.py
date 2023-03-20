@@ -85,12 +85,13 @@ class gps_autonomous(Node):
         self.distance_left_subscriber_ = self.create_subscription(String,'/distance_links', self.distance_callback_left, 10)
         self.distance_rechts_subscriber_ = self.create_subscription(String,'/distance_rechts', self.distance_callback_right, 10)
         self.sub_Zone1_ = self.create_subscription(String,'/Zone1', self.saveZone1, 10)
-        self.sub_Zone2 = self.create_subscription(String,'/Zone2', self.dsaveZone2, 10)        
+        self.sub_Zone2 = self.create_subscription(String,'/Zone2', self.saveZone2, 10)        
         
 
     def saveZone1(self, inputstr):
         global Zone1
         Zone1 = inputstr
+        self.decodeZone1(Zone1)
      
      
     def decodeZone1(self, inputstring):
@@ -99,6 +100,7 @@ class gps_autonomous(Node):
         global target_latitude
         global target_longitude
         global target_heading
+        global Zone1
         bufferdist = 1 #[Einheit noch unklar]
 
         sd = inputstring.split(",")
@@ -223,7 +225,7 @@ class gps_autonomous(Node):
                     Zoneheading = Heading112
                     directionset = 1
                 
-        elif pos_min == 1: #Line 123
+        elif pos_min == 0: #Line 123
             if mindist < bufferdist :
                 if actual_longitude < target_longitude and directionset == 0:
                     Zoneheading = Heading123 + 180
@@ -231,7 +233,7 @@ class gps_autonomous(Node):
                 else: 
                     Zoneheading = Heading123
 
-        elif pos_min == 2: #Line 134
+        elif pos_min == 0: #Line 134
             if mindist < bufferdist:
                 if actual_latitude > target_latitude and directionset == 0:
                     Zoneheading = Heading134 + 180
@@ -240,7 +242,7 @@ class gps_autonomous(Node):
                     Zoneheading = Heading134
                     directionset = 1
 
-        elif pos_min == 3: #Line 141
+        elif pos_min == 0: #Line 141
             if mindist < bufferdist :
                 if actual_longitude > target_longitude and tempset == 0:
                     Zoneheading = Heading141 + 180
@@ -255,6 +257,8 @@ class gps_autonomous(Node):
 
         if Zoneheading >= 360:
             Zoneheading = Zoneheading - 360
+
+        #!!!! Code damit Plattform aus Zone rausfährt.
         
         return Zoneheading
                 
@@ -262,7 +266,7 @@ class gps_autonomous(Node):
         
         
 
-    def decodeZone2(self, inputstring):
+    '''def saveZone2(self, inputstring):
         sd = inputstring.split(",")
         x21 = sd[0]
         y21 = sd[1]
@@ -271,10 +275,10 @@ class gps_autonomous(Node):
         x23 = sd[4]
         y23 = sd[5]
         x24 = sd[6]
-        y24 = sd[7]   
+        y24 = sd[7] '''  
         
         
-        #self.subscription  # prevent unused variable warning
+
     #get the actual gps data in degrees
     def act_long_callback(self, act_long):
         global actual_longitude

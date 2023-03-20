@@ -116,14 +116,14 @@ class CarToCoords(Node):
         calclat = calclat +x 
         
                  
-    def calculate_heading(self,steering_angle, heading):
+    def calculate_heading(self,steering_angle, heading, part_distance_driven):
        # global steering_angle
-        global distance_driven
+        #global distance_driven
         global radstand
         current_heading = heading
         
         if  steering_angle != 0:
-            beta = distance_driven/ (math.pi * (2* radstand/ math.sin(current_heading)) * 360)
+            beta = part_distance_driven/ (math.pi * (2* radstand/ math.sin(current_heading)) * 360)
             current_heading = current_heading + beta
             
             if current_heading >= 360:
@@ -138,7 +138,15 @@ class CarToCoords(Node):
         global distance_driven
         global heading
         distance_driven = car_dist
+        distance_driven_new = car_dist
         self.calculate_car_coords(distance_driven, heading)
+        if part_distance_driven > 0.05 or steering_angle = 0 and checkleft != 0 or steering_angle = 0 and checkright != 0: #Heading berechnung alle 5cm // hier jetzt noch rein, dass auch abfrage, wenn winkel auf null gesetzt wird
+            self.calculate_heading(steering_angle,heading, part_distance_driven)
+            part_distance_driven = 0
+        else:
+            part_distance_driven = distance_driven_new - distance_driven old
+        
+        distance_driven_old = distance_driven_new
         
         
 
@@ -147,7 +155,22 @@ class CarToCoords(Node):
         global heading
         global steering_angle
         steering_angle = car_steer - 90
-        self.calculate_heading(steering_angle,heading)
+        if steering angle > 0 :
+            checkleft = 1
+            checkcheck = 2
+
+        elif steering_angle < 0:
+            checkright = 1
+            checkcheck = 2
+
+        elif steeringangle = 0 and checkcheck >0 : # kurze überbrückung damit ende der lenkung abgefangen werden kann.
+            checkcheck = -1
+
+        else:
+            checkleft = 0
+            checkright = 0
+        
+
       #hier muss jetzt eine Methode rein, die aus dem Lenkwinkel das heading bestimmt  
       
     
