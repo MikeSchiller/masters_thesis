@@ -245,7 +245,7 @@ class CarToCoords(Node):
         global calclat
         global calclong
         global Usegps
-        diffgrad = 2 * math.degrees(math.asin(car_distance / (2 * radius_earth)))
+        diffgrad = 2 * math.asin(car_distance / (2 * radius_earth))#math.degrees()
         heading = float(heading)
         
         if heading >= 90.0 and heading < 180:

@@ -64,7 +64,6 @@ class csvWriter(Node):
         T[i][3] = counttargets
         radararrayX = []
         radararrayY = []
-        i = i+1
         '''
         print (T)
     
