@@ -34,6 +34,10 @@ Rechtslenken = 0
 state = 0
 distance_left = 0
 distance_right =0 
+#Radar
+radararrayX = []
+radararrayY = []
+counttargets = 0
 actual_longitude = 0.0
 actual_latitude = 0.0
 HDOP = 0.0
@@ -94,6 +98,9 @@ class gps_autonomous(Node):
         self.distance_left_subscriber_ = self.create_subscription(String,'/US_distance_links', self.distance_callback_left, 10)
         self.distance_rechts_subscriber_ = self.create_subscription(String,'/US_distance_rechts', self.distance_callback_right, 10)
         self.sub_Zone1_ = self.create_subscription(String,'/Zone1', self.saveZone1, 10)
+        self.trackcount_sub = self.create_subscription(String,'/Radar_trackcount', self.count_callback, 10)
+        self.distance_subscriber_y = self.create_subscription(String,'/Radar_distances_y', self.distance_y_callback, 10)
+        self.distance_subscriber_x = self.create_subscription(String,'/Radar_distances_x', self.distance_x_callback, 10)
         #self.sub_Zone2 = self.create_subscription(String,'/Zone2', self.saveZone2, 10)        
         
 
@@ -338,6 +345,35 @@ class gps_autonomous(Node):
         target_longitude = tlong.data
 
 
+    #Methoden der Radar subscriber
+
+    def distance_x_callback(self, distx):
+        global radararrayX
+        distances_x = distx.data
+        distances_x = distances_x.replace("[","")
+        distances_x = distances_x.replace("]","")
+        splitdistx = distances_x.split(", ")
+        radararrayX = radararrayX + splitdistx
+        
+        #self.get_logger().info('I heard for x: "%s"' % splitdistx)
+
+
+    def distance_y_callback(self, disty):
+        global radararrayY
+        distances_y = disty.data
+        distances_y = distances_y.replace("[","")
+        distances_y = distances_y.replace("]","")
+        splitdisty = distances_y.split(", ")
+        radararrayY = radararrayY + splitdisty
+        
+
+        #self.get_logger().info('I heard for y: "%s"' % splitdisty)
+        
+    def count_callback(self, count):
+        global counttargets
+        counttargets = int(count.data)
+        #self.get_logger().info('count: "%s"' % count.data)
+
     ##################################################################
     #Aufgerufen von HEading callback    
     def calculate_heading(self):
@@ -403,6 +439,10 @@ class gps_autonomous(Node):
       global cmps_heading
       global stopschub
       global Zoneheading
+      #Radar
+      global counttargets
+      global radararrayX
+      global radararrayY
       mindist = 40.0 
       debounceall = 0
       debounceleft = 0
@@ -448,6 +488,27 @@ class gps_autonomous(Node):
             SetFahrzeugSchub(self , schub)
 
             # Implementierung einer einfachen Auswertung der Radar Daten
+            minddist_radar_x = 0.5 #[m]
+            minddist_radar_y = 0.4 #[m]
+            for radvar in range(0, counttargets):
+                #Schauen, ob sich ein Hindernis links/rechts von Fahrzeugmitte aus befindet und maximal 4Meter weit weg ist
+
+                if radararrayX(radvar) < minddist_radar_x and radararrayY(radvar) < 4 :
+                    #check ob links vom Fahrzeug
+                    if radararrayY(radvar) < 0:
+                        state = 50
+                    elif radararrayY(radvar) > 0:
+                        state = 60
+                #schauen, ob ein Hindernis direkt vor dem Sensor ist
+                # Distanz von Fahrzeug
+                elif abs(radararrayY(radvar)) < minddist_radar_y :
+                    state = 40
+                    
+
+
+            #Am ende der auswertung müssen die Radar arrays geleert werden
+            radararrayX = []
+            radararrayY = []
 
             
             #check distances from US sensors and act accordingly 

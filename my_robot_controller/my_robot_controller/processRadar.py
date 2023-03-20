@@ -12,9 +12,9 @@ class radarsub(Node):
     def __init__(self):
         super().__init__('proc_radar')
         self.get_logger().info('Empfänger kriegt piep')
-        self.trackcount_sub = self.create_subscription(String,'/trackcount', self.count_callback, 10)
-        self.distance_subscriber_y = self.create_subscription(String,'/distances_y', self.distance_y_callback, 10)
-        self.distance_subscriber_x = self.create_subscription(String,'/distances_x', self.distance_x_callback, 10)
+        self.trackcount_sub = self.create_subscription(String,'/Radar_trackcount', self.count_callback, 10)
+        self.distance_subscriber_y = self.create_subscription(String,'/Radar_distances_y', self.distance_y_callback, 10)
+        self.distance_subscriber_x = self.create_subscription(String,'/Radar_distances_x', self.distance_x_callback, 10)
         
 
 

@@ -91,9 +91,9 @@ class RadarPublisher(Node):
 
     def __init__(self):
         super().__init__('Radar_test')
-        self.publisher_x = self.create_publisher(String, '/distances_x', 10)
-        self.publisher_y = self.create_publisher(String, '/distances_y', 10)
-        self.trackcount_publisher= self.create_publisher(String, '/trackcount', 10)
+        self.publisher_x = self.create_publisher(String, '/Radar_distances_x', 10)
+        self.publisher_y = self.create_publisher(String, '/Radar_distances_y', 10)
+        self.trackcount_publisher= self.create_publisher(String, '/Radar_trackcount', 10)
         self.get_logger().info("Radar macht piep")
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
