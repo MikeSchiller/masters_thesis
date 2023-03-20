@@ -44,6 +44,7 @@ target_heading = 0
 Zone1 =""
 target_longitude = 0
 target_latitude = 0
+Zoneheading = 1000 # Heading bei Fahrten an NO GO Zone, 1000 wenn nicht in Nähe
 #target_longitude = 9.939772 # Kreuzung E-Radstellplatz
 #target_latitude = 48.418074 # Kreuzung E-Radstellplatz
 #target_longitude = 9.937939 # Kreuzung V-Bau
@@ -85,12 +86,13 @@ class gps_autonomous(Node):
         self.sub_target_long = self.create_subscription(String,'target_long',self.target_long_callback, 10)
         self.sub_hdop = self.create_subscription(String, '/HDOP', self.HDOP_callback, 10)  
         self.sub_head = self.create_subscription(String, '/tracked_heading', self.Heading_callback, 10) 
-        self.sub_cmps = self.create_subscription(String,'/cmps_heading',self.cmps_callback,10)       
+        #self.sub_cmps = self.create_subscription(String,'/cmps_heading',self.cmps_callback,10)       
+        self.sub_cmps = self.create_subscription(String,'headingFromCtC',self.cmps_callback,10) 
         self.sub_steer = self.create_subscription(String, '/steering', self.steer_callback, 10)
         self.sub_drive = self.create_subscription(String, '/driving', self.drive_callback ,10)
         self.sub_switch = self.create_subscription(String, '/switch', self.switch_callback ,10)
-        self.distance_left_subscriber_ = self.create_subscription(String,'/distance_links', self.distance_callback_left, 10)
-        self.distance_rechts_subscriber_ = self.create_subscription(String,'/distance_rechts', self.distance_callback_right, 10)
+        self.distance_left_subscriber_ = self.create_subscription(String,'/US_distance_links', self.distance_callback_left, 10)
+        self.distance_rechts_subscriber_ = self.create_subscription(String,'/US_distance_rechts', self.distance_callback_right, 10)
         self.sub_Zone1_ = self.create_subscription(String,'/Zone1', self.saveZone1, 10)
         #self.sub_Zone2 = self.create_subscription(String,'/Zone2', self.saveZone2, 10)        
         
@@ -107,6 +109,7 @@ class gps_autonomous(Node):
         global target_latitude
         global target_longitude
         global target_heading
+        global Zoneheading
         global Zone1
         bufferdist = 1 #[Einheit noch unklar]
 
@@ -378,6 +381,8 @@ class gps_autonomous(Node):
         target_heading = target_heading + math.tan(distance_long / distance_lat)
         if target_heading < 0:
             target_heading = target_heading + 360
+        elif target_heading >= 360:
+            target_heading = target_heading - 360
         print ('target Heading: ' + str(target_heading))
         
 
@@ -397,6 +402,7 @@ class gps_autonomous(Node):
       global tracked_Heading
       global cmps_heading
       global stopschub
+      global Zoneheading
       mindist = 40.0 
       debounceall = 0
       debounceleft = 0
@@ -412,14 +418,22 @@ class gps_autonomous(Node):
             self.get_logger().info(str(state))
             schub = 7.8
             
+            #Abfrage, ob in Nähe von NO GO Zone und änderung des Headings, wenn ja
+            if Zoneheading != 1000:
+                self.get_logger().info("Close to NO GO Zone!")
+                target_heading = Zoneheading
+
+
             #Auswertung Heading Kompass
-            max_all_dev = 2 # maximum allowed deviation from target heading
+            max_all_dev = 3 # maximum allowed deviation from target heading
             if cmps_heading < target_heading + max_all_dev or cmps_heading < target_heading - max_all_dev :
                 lenkung = 70
             elif cmps_heading > target_heading + max_all_dev or cmps_heading > target_heading - max_all_dev:
                 lenkung = 110
             else:
                 lenkung = 90   
+                            
+
 
             ''' Auswertung Heading GPS Modul         
             if tracked_Heading < target_heading + 5 or tracked_Heading < target_heading - 5 :
@@ -432,10 +446,12 @@ class gps_autonomous(Node):
 
             SetServoLenkung(self , lenkung)
             SetFahrzeugSchub(self , schub)
+
+            # Implementierung einer einfachen Auswertung der Radar Daten
+
             
             #check distances from US sensors and act accordingly 
             # including debouncing 
-            
             if distance_left < mindist and distance_right > mindist and notlauf == 0  :
                 debounceleft += 1
                 if debounceleft >= 3:

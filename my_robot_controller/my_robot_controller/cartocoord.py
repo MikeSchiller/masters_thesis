@@ -20,12 +20,14 @@ heading = 0
 radius_earth = 6371000 #6371km
 calclat = 0
 calclong = 0
+calcHeading = 0
 radstand = 0.315 #(Radstand des Fahrzeugs in Meter)
 #
 checkcheck = 0
 checkleft = 0
 checkright = 0
 firstrun = 0
+
 
 class CarToCoords(Node):
 
@@ -35,9 +37,11 @@ class CarToCoords(Node):
         self.car_long = self.create_publisher(String, 'car_long', 10)
         self.car_lat = self.create_publisher(String, 'car_lat', 10)
         self.pub_Zone1 = self.create_publisher(String, '/Zone1', 10)
+        self.pub_heading = self.create_publisher(String,'headingFromCtC', 10)
         self.pub_target_long = self.create_publisher(String, '/target_long', 10)
         self.pub_target_lat = self.create_publisher(String, 'target_lat', 10)
-        
+
+        self.sub_cmps = self.create_subscription(String,'/cmps_heading',self.cmps_callback,10)
         self.sub_steer = self.create_subscription(String,'/car_steer', self.Steer_callback, 10)
         self.sub_schubPWM = self.create_subscription(String, '/car_setschubPWM', self.Schub_callback, 10)
         self.sub_gpslong = self.create_subscription(String, '/act_longitude', self.act_long_callback, 10)
@@ -57,10 +61,14 @@ class CarToCoords(Node):
         global calclat
         global calclong
         global Usegps
+        global calcHeading
         msgZone1 = String()
+        target_longitude = String()
+        target_latitude = String()
+
 
         
-        print("Use the Onboard GPS (g) or set it Yourself (y) ?: ")
+        print("Use the Onboard GPS for outdoor use (g) or set it Yourself (y) ?: ")
         setvar = input()
         if setvar == "g" :
             print ("Using onboard GPS, please wait...")
@@ -74,6 +82,8 @@ class CarToCoords(Node):
             print("Now the Latitude: ")
             startLat = input()
             print ("Your Startcoordinates are: " + str(startLong) + str(startLat) )
+            print("Now enter the start heading: ")
+            calcHeading = input()
         else :
             self.get_logger().warning("Input not supported!")
         
@@ -84,10 +94,8 @@ class CarToCoords(Node):
         targetvar = input()
         if targetvar == "T":
             print("Please enter your target longitude in degrees (e.g. 48.4187985): ")
-            target_longitude = String()
             target_longitude.data = input()
             print ("Now enter the target latitude: ")
-            target_latitude = String()
             target_latitude.data = input()
             self.pub_target_lat.publish(target_latitude)
             self.pub_target_long.publish(target_longitude)
@@ -180,21 +188,21 @@ class CarToCoords(Node):
         calclong = calclong + y
         calclat = calclat +x 
                  
+    # Heading wird zusammen mit Odo alle 5cm berechnet
     def calculate_heading(self,steering_angle, heading, part_distance_driven):
        # global steering_angle
         #global distance_driven
+        global calcHeading
         global radstand
         current_heading = heading
         
         if  steering_angle != 0:
             beta = part_distance_driven/ (math.pi * (2* radstand/ math.sin(current_heading)) * 360)
             current_heading = current_heading + beta
-            
             if current_heading >= 360:
-                current_heading = current_heading - 360
-                
-            
+                current_heading = current_heading - 360 
         else: 
+            calcHeading= current_heading
             return current_heading
 
     def Odo_callback(self, car_dist):
@@ -271,6 +279,19 @@ class CarToCoords(Node):
             self.car_lat.publish(gps_lat)
         else:
             self.car_lat.publish(calclat)
+
+    def cmps_callback(self,cmps_head):
+        global indoor 
+        global cmps_heading
+        global calcHeading
+        msg = String()
+        if Usegps != 1:
+            msg.data = str(calcHeading)
+            self.pub_heading.publish(msg)
+        else:
+            msg.data = str(cmps_head)
+            self.pub_heading.publish(msg)
+        print(msg.data)
 
 
 
