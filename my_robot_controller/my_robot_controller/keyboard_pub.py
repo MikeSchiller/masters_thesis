@@ -74,8 +74,8 @@ class KeyboardPublisher(Node):
             rechts = 50
             
         if input1 == '-':
-            vor = 7.6
-            zurück = 6.9
+            vor = 7.7
+            zurück = 6.8
         
         if input1 == '+':
             vor = 8
@@ -83,7 +83,7 @@ class KeyboardPublisher(Node):
 
         if input1 == 'v':
             vor = 10.5
-            zurück = 3       
+            zurück = 3.5       
         
         if input1 == 'w':
             if check == 0:

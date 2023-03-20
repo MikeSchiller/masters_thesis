@@ -98,8 +98,34 @@ def SetServoLenkung(winkel):
 
 #Methode fürs einstellen des Schubs
 def SetFahrzeugSchub(schub):
+  tempvar = 1
+  if tempvar == 1:
+     pwmold = 7.3
+     tempvar = 2
+    
   pwmS = schub
-  SchubServo.ChangeDutyCycle(pwmS)
+  stopfahr = 7.3
+  pwmS = schub
+  #Methode für langsames anfahren und verhindern von wheelie, wobei bremsung aber erhalten
+  if pwmS > pwmold and pwmS != stopfahr:
+      i=1
+      while i<= 5:
+          sendschub = float(i) * ((pwmS - pwmold) / 5) + pwmold
+          time.sleep(0.1)
+          i+=1
+     
+    # macht langsamer werden Sinn oder will ich da    
+  elif pwmS < pwmold and pwmS != stopfahr:
+      i=1
+      while i<= 5: 
+          sendschub = pwmold - ( float(i) * (pwmold - pwmS) / 5 )
+          time.sleep(0.1)
+          i+=1
+  else: 
+      sendschub = schub
+
+  SchubServo.ChangeDutyCycle(sendschub)
+  pwmold = schub
 
 
 def main(args=None):
