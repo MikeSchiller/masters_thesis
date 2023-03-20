@@ -26,12 +26,15 @@ class csvWriter(Node):
         super().__init__('csvWriter')
         self.get_logger().info('csvWriter')
 
-        #self.sub_actlong = self.create_subscription(String, '/car_long', self.act_long_callback, 10)
-        #self.sub_actlat = self.create_subscription(String, '/car_lat', self.act_lat_callback, 10)
+        self.sub_actlong = self.create_subscription(String, '/car_long', self.act_long_callback, 10)
+        self.sub_actlat = self.create_subscription(String, '/car_lat', self.act_lat_callback, 10)
+        self.sub_steer = self.create_subscription(String,'/car_steer', self.Steer_callback, 10)
+        '''
         self.trackcount_sub = self.create_subscription(String,'/Radar_trackcount', self.count_callback, 10)
         self.distance_subscriber_y = self.create_subscription(String,'/Radar_distances_y', self.distance_y_callback, 10)
         self.distance_subscriber_x = self.create_subscription(String,'/Radar_distances_x', self.distance_x_callback, 10)
-        self.sub_steer = self.create_subscription(String,'/car_steer', self.Steer_callback, 10)
+        
+        '''
         self.timer = self.create_timer(0.5, self.timer_callback)
     
     
@@ -44,7 +47,7 @@ class csvWriter(Node):
         global i
         global T
         global h
-        '''
+        
         print (actual_latitude)
         print(actual_longitude)
         T[i][0] = i
@@ -59,12 +62,15 @@ class csvWriter(Node):
         T[i][1] = radararrayX
         T[i][2] = radararrayY
         T[i][3] = counttargets
+        radararrayX = []
+        radararrayY = []
         i = i+1
+        '''
         print (T)
     
         
         
-        with open('test_radar_gang2.csv', 'w+', newline='') as file:
+        with open('simfahrt_targetHeading_40.csv', 'w+', newline='') as file:
             print ("meh")
             writer = csv.writer(file, lineterminator='\n')
             for k in range(h):
@@ -73,7 +79,7 @@ class csvWriter(Node):
                     
 
    
-        
+    ''' 
     def distance_x_callback(self, distx):
         global radararrayX
         distances_x = distx.data
@@ -108,8 +114,8 @@ class csvWriter(Node):
         global counttargets
         counttargets = int(count.data)
         #self.get_logger().info('count: "%s"' % count.data)
-
     '''
+
    
     #get the actual gps data in degrees
     def act_long_callback(self, act_long):
@@ -127,7 +133,7 @@ class csvWriter(Node):
         global T
         actual_latitude = float(act_lat.data)
 
-    '''
+   
         
     def Steer_callback(self, lenk):
         global lenkung

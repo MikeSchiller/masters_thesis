@@ -457,7 +457,7 @@ class gps_autonomous(Node):
             
             if difference_lat < 0:
                 difference_lat = difference_lat * -1
-                target_heading = target_heading +180
+                target_heading = target_heading +90
                 #target_heading = target_heading +90 #alte werte
                 print(target_heading)
             else: 
@@ -466,7 +466,7 @@ class gps_autonomous(Node):
             
             if difference_long < 0:
                 difference_long = difference_long * -1
-                target_heading = target_heading + 90
+                target_heading = target_heading + 180
                 print(target_heading)
                 #target_heading = target_heading + 180#alte werte
             else: 
@@ -489,7 +489,7 @@ class gps_autonomous(Node):
 
             #berechnung des Winkels
             if distance_long != 0 and distance_lat != 0:
-                target_heading = target_heading + math.atan(math.radians(distance_long / distance_lat))
+                target_heading = target_heading + math.degrees(math.atan(distance_long / distance_lat))
             else:
                 print("gleich mein Problem")
             if target_heading < 0:
@@ -497,6 +497,7 @@ class gps_autonomous(Node):
             elif target_heading >= 360:
                 target_heading = target_heading - 360
             #target_heading = target_heading + 180 #!!!debug, wert passt hier allggemein noch nicht
+            target_heading = 40
             print ('target Heading: ' + str(target_heading))
 
 
@@ -582,9 +583,19 @@ class gps_autonomous(Node):
             #!!!!Das tut nicht wies soll
             print("cmps_head: " + str(cmps_heading))
             print("target_head: " + str(target_heading))
+            '''
+            if cmps_heading < target_heading - smallsteerdev:
+                lenkung = 100
+            elif cmps_heading > target_heading - smallsteerdev and cmps_heading < target_heading - max_all_dev:
+                lenkung = 95
+            elif cmps_heading < target_heading + smallsteerdev and cmps_heading > target_heading + max_all_dev:
+                lenkung = 85
+            elif cmps_heading > target_heading + smallsteerdev:
+                lenkung = 80
+            else:
+                Lenkung = 90
 
-
-
+            '''
             if cmps_heading < target_heading + max_all_dev or cmps_heading < target_heading - max_all_dev :
                 lenkung = 85
             elif cmps_heading < target_heading + smallsteerdev or cmps_heading < target_heading - smallsteerdev:
@@ -596,6 +607,7 @@ class gps_autonomous(Node):
             else:
                 lenkung = 90   
             
+
             print("lenkung: " + str(lenkung))
                             
 
