@@ -14,7 +14,7 @@ elapsed_time = 0
 
 print("Sensor-Test [druecken Sie STRG+C, um den Test zu beenden]")
 
-
+#test für git
 # Diese AusgabeFunktion wird bei Signaldetektion ausgefuehrt
 def ausgabeFunktion(null):
         global i
