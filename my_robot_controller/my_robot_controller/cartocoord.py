@@ -251,9 +251,9 @@ class CarToCoords(Node):
             y = diffgrad * math.sin(heading) 
         else:
             #i guess abfangen, wenn er zu beginn den wert noch nicht kennt/ oder irgendwann mal spinnt
-            #y = 0
-           # x = 0
-           pass
+            y = 0
+            x = 0
+           #pass
         
         calclong = calclong + y
         calclat = calclat + x 
