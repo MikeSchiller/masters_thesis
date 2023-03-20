@@ -69,8 +69,9 @@ class csvWriter(Node):
     
         
         
-        with open('simfahrt_koppel_coords_degrees_cmps40.csv', 'w+', newline='') as file:
+        with open('simfahrt_koppel_coords_debug_1311.csv', 'w+', newline='') as file:
             print ("meh")
+            print (i)
             writer = csv.writer(file, lineterminator='\n')
             for k in range(h):
 

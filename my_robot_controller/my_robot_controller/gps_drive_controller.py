@@ -46,8 +46,8 @@ state = 99
 distance_left = 10
 distance_right =20 
 checkforgo = 0
-#stopwatsch = 1
-#start = 0
+stopwatsch = 1
+start = 0
 #Radar
 radararrayX = []
 radararrayY = []
@@ -117,7 +117,7 @@ class gps_autonomous(Node):
 
     def timer_callback(self):
         global Winkelstring
-        '''
+        
         global stopwatsch
         global start 
         end= 0
@@ -130,6 +130,7 @@ class gps_autonomous(Node):
             print ("end: " + str(end))
             print ("stopwatsch: " +  str(end - start))
             stopwatsch = 1
+        '''
         #gemessene Werte im Normbetrieb:
         start: 1679324261.570277
         end: 1679324262.080161
@@ -524,7 +525,7 @@ class gps_autonomous(Node):
             #target_heading = target_heading + 180 #!!!debug, wert passt hier allggemein noch nicht
             ############################################################
         
-            target_heading = 40
+           # target_heading = 40
         
             ##############################################################
             print ('target Heading: ' + str(target_heading))
@@ -638,7 +639,9 @@ class gps_autonomous(Node):
             else:
                 lenkung = 90   
             '''
-
+            #verhindern, dass nulldurchlauf passieren kann 
+            cmps_heading = cmps_heading +500
+            target_heading = target_heading +500
             #V3, looks a lot better now
             if cmps_heading < target_heading - max_all_dev :
                 #große Abweichung links
@@ -655,8 +658,10 @@ class gps_autonomous(Node):
             else: 
                 lenkung = 90
 
-            print("lenkung: " + str(lenkung))
-                            
+            
+            cmps_heading = cmps_heading -500
+            target_heading = target_heading -500  
+            print("lenkung: " + str(lenkung))                          
 
 
             ''' Auswertung Heading GPS Modul         
@@ -908,7 +913,7 @@ def SetFahrzeugSchub(self,schub):
         i= 1
         while i <= 5 :
             sendschub = float(i)* ((pwmS - pwmold) / 5) + pwmold
-            time.sleep(0.1)
+            #time.sleep(0.1)
             i += 1
      
     # macht langsamer werden Sinn oder will ich da    
@@ -916,7 +921,7 @@ def SetFahrzeugSchub(self,schub):
         i = 1
         while i<=5:  
             sendschub = pwmold - ( float(i) * (pwmold - pwmS) / 5 )
-            time.sleep(0.1)
+            #time.sleep(0.1)
             i += 1
 
     else: 
