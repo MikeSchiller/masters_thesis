@@ -96,10 +96,10 @@ class GPS_module(Node):
                 ser.write(W_buff[4])
                 RMCdata = self.extract_RMC(data)
                 RMCdatasend.data =  RMCdata 
-                RMCdatasend.data = "GNRMC,120808.000,A,2025.106315,N,02056.307472,E,0.00,109.88,271023,,,A" #CAVE, only for debug
+                #RMCdatasend.data = "GNRMC,120808.000,A,4825.106315,N,00956.307472,E,0.00,109.88,271023,,,A" #CAVE, only for debug
                 GGAdata = self.extract_GGA(data)
                 GGAdatasend.data = GGAdata 
-                GGAdatasend.data = "GGA,120808.000,2025.106315,N,02056.307472,E,1,5,2.83,602.869,M,48.000,M,," #CAVE, only for debug
+                #GGAdatasend.data = "GGA,120808.000,4825.106315,N,00956.307472,E,1,5,2.83,602.869,M,48.000,M,," #CAVE, only for debug
                 if GGAdatasend == "" or RMCdatasend == "":
                     pass
                 else:

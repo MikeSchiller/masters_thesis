@@ -86,7 +86,7 @@ class gps_data_stuff(Node):
                     #convert variables to publishable data
                     msg_latitude.data = str(dezlatitude)
                     print("lati: " + str(dezlatitude))
-                    self.pub_long.publish(msg_latitude)
+                    self.pub_lat.publish(msg_latitude)
 
                 
                 if Longitude == "":

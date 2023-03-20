@@ -575,7 +575,7 @@ class gps_autonomous(Node):
       global debounceleft 
       global debounceright  
       global checkforgo
-      mindist = 100.0 
+      mindist = 25.0 
 
     #Abfrage, ob seehr nah am Ziel
     

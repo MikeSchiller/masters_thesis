@@ -71,7 +71,7 @@ class csvWriter(Node):
     
         
         
-        with open('simfahrt_koppel_coords_debug_1311.csv', 'w+', newline='') as file:
+        with open('simfahrt_gps_1511_3.csv', 'w+', newline='') as file:
             print ("meh")
             print (i)
             writer = csv.writer(file, lineterminator='\n')
@@ -124,7 +124,10 @@ class csvWriter(Node):
         global actual_longitude
         global T
         #print ("miep")
-        actual_longitude = float(act_long.data)
+        try:
+            actual_longitude = float(act_long.data)
+        except:
+            pass
         
 
         
@@ -133,7 +136,10 @@ class csvWriter(Node):
     def act_lat_callback(self, act_lat):
         global actual_latitude
         global T
-        actual_latitude = float(act_lat.data)
+        try:
+            actual_latitude = float(act_lat.data)
+        except:
+            pass
 
    
         
