@@ -98,28 +98,29 @@ class gps_data_stuff(Node):
                 else:
                     msg_tr_head.data = str(Track_Angle)
                     
-                
-                print("MessageID: " +MessageID)
-                print("UTC-Time: " + UTC_Time[0:6])
-                print("Status: " + Status)
-                #print("Latitude: " + Latitude + NorS) 
-                print ("Latitude(degrees): " + str(dezlatitude))
-                #print("Longitude: " + Longitude + WorE) 
-                print("Longitude(degrees): "+ str(dezlongitude))
-                print("Speed [knots]: " + Speed_Over_Ground_kts)
-                print("Track Angle: " +Track_Angle)
-                print("Date: " + Date)
-                print("Magnetic Variation: " + Magnetic_Variation)
-                print("unkown: " + unknown)
-                print("Checksumpart: " + Checksumpart)
+                '''
+                    print("MessageID: " +MessageID)
+                    print("UTC-Time: " + UTC_Time[0:6])
+                    print("Status: " + Status)
+                    #print("Latitude: " + Latitude + NorS) 
+                    #print ("Latitude(degrees): " + str(dezlatitude))
+                    #print("Longitude: " + Longitude + WorE) 
+                    print("Longitude(degrees): "+ str(dezlongitude))
+                    print("Speed [knots]: " + Speed_Over_Ground_kts)
+                    print("Track Angle: " +Track_Angle)
+                    print("Date: " + Date)
+                    print("Magnetic Variation: " + Magnetic_Variation)
+                    print("unkown: " + unknown)
+                    print("Checksumpart: " + Checksumpart)
+                    self.pub_long.publish(msg_longitude)
+                    self.pub_lat.publish(msg_latitude)
+                    self.pub_heading.publish(msg_tr_head) 
+                '''
                 
             else:
                 print("RMC s zu kuuz")
             
-            self.pub_long.publish(msg_longitude)
-            self.pub_lat.publish(msg_latitude)
-
-            self.pub_heading.publish(msg_tr_head)          
+         
        
 
 
@@ -152,12 +153,13 @@ class gps_data_stuff(Node):
                 print("NUmber of Satellites: " + GGA_Number_of_Satellites)
                 print("Height over GND: " + GGA_Othometric_Height + GGA_unit_of_height)
                 print("HDOP: " + GGA_HDOP)
+                msg_hdop.data =  GGA_HDOP
+                self.pub_hdop.publish(msg_hdop)
                 
             else:
                 print("GGA s zu kuuz")
 
-            msg_hdop.data =  GGA_HDOP
-            self.pub_hdop.publish(msg_hdop)
+
         
 
 

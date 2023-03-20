@@ -518,8 +518,11 @@ class gps_autonomous(Node):
       print("targetdistance: " + str(targetdistance))
       if targetdistance <= 5 and float(target_latitude) != 0:
           state = 100
+      elif actual_latitude == 0 and actual_longitude == 0 and state != 99:
+          state = 98 
       else:
           pass
+      
 
       #self.get_logger().info(dist.data)
       match state:
@@ -761,7 +764,8 @@ class gps_autonomous(Node):
             elif abs(min(radararrayX)) >  0.4:
                 state = 0
 
-
+        case 98:
+              print("Warte aufs GPS Signal")
         case 99:
               print("Warte aufs GO!")     
 

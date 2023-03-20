@@ -259,8 +259,12 @@ class CarToCoords(Node):
         calclat = calclat + x 
         sendCalcLong = String()
         sendCalcLat = String()
+        sendgpsLong = String()
+        sendgpsLat = String()
         sendCalcLong.data = str(calclong)
         sendCalcLat.data = str(calclat)
+        sendgpsLong.data = str(gpsLong)
+        sendgpsLat.data = str(gpsLat)
 
             #wenn GPS aktiviert ist, senden von gps koordinaten, sonst verwenden von berechneten Koordinaten
         if Usegps == 1:
