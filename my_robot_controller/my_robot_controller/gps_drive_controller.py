@@ -418,52 +418,55 @@ class gps_autonomous(Node):
         #Distanz zwischen beiden Punkten berechnen. Dafür Erde = Kugel annahme, für kurze Distanzen ausreichend
         # CAVE: Code aktuell Für Nord östliche Bereiche der Welt ausgelegt.
         #https://www.sunearthtools.com/de/tools/distance.php#:~:text=Berechnung%20der%20Entfernung%20zwischen%20zwei%20geografischen%20Punkten,-Die%20Formel%20verwendet&text=Das%20Winkeln%20eingesetzt%20werden%20in,pi%20dividiert%20durch%20180%20erhalten.
-        #print (target_latitude)
-        #print (target_longitude)
-        #print(actual_latitude)
-        #print(actual_longitude)
-        difference_lat = float(target_latitude) -  float(actual_latitude )
-        difference_long = float(target_longitude) - float(actual_longitude)
-        
-        if difference_lat < 0:
-            difference_lat = difference_lat * -1
-            target_heading = target_heading +90
-        else: 
+        print (target_latitude)
+        print (target_longitude)
+        print(actual_latitude)
+        print(actual_longitude)
+        if target_latitude == "" or target_longitude == "":
             pass
-        
-        
-        if difference_long < 0:
-            difference_long = difference_long * -1
-            target_heading = target_heading + 180
-        else: 
-            pass
-        # Genauigkeit https://www.sunearthtools.com/dp/tools/pos_earth.php?lang=de#txtEarth_6
-        # Aproxximierung der Strecke über Dreieck (Dürfte bei den Distanzen keinen Nennenswerten unterschied machen)
-        if difference_long !=0:
-            distance_long = 2 * radius_earth * math.sin(difference_long / 2)
         else:
-            distance_long =  0
+            difference_lat = float(target_latitude) -  float(actual_latitude )
+            difference_long = float(target_longitude) - float(actual_longitude)
+            
+            if difference_lat < 0:
+                difference_lat = difference_lat * -1
+                target_heading = target_heading +90
+            else: 
+                pass
+            
+            
+            if difference_long < 0:
+                difference_long = difference_long * -1
+                target_heading = target_heading + 180
+            else: 
+                pass
+            # Genauigkeit https://www.sunearthtools.com/dp/tools/pos_earth.php?lang=de#txtEarth_6
+            # Aproxximierung der Strecke über Dreieck (Dürfte bei den Distanzen keinen Nennenswerten unterschied machen)
+            if difference_long !=0:
+                distance_long = 2 * radius_earth * math.sin(difference_long / 2)
+            else:
+                distance_long =  0
 
-        if difference_lat != 0:
-            distance_lat = 2 * radius_earth * math.sin(difference_lat / 2)
-        else:
-            distance_lat = 0
-        print("dist_long: " + str(distance_long)) #sollte in m sein
-        print("dist_lat: " + str(distance_lat)) #!!!! Der Wert hier ist totaler Müll, schauen warum/// vllt doch nicht
+            if difference_lat != 0:
+                distance_lat = 2 * radius_earth * math.sin(difference_lat / 2)
+            else:
+                distance_lat = 0
+            print("dist_long: " + str(distance_long)) #sollte in m sein
+            print("dist_lat: " + str(distance_lat)) #!!!! Der Wert hier ist totaler Müll, schauen warum/// vllt doch nicht
 
-        targetdistance = math.sqrt(distance_lat * distance_lat + distance_long*distance_long)
+            targetdistance = math.sqrt(distance_lat * distance_lat + distance_long*distance_long)
 
-        #berechnung des Winkels
-        if distance_long != 0 and distance_lat != 0:
-            target_heading = target_heading + math.tan(distance_long / distance_lat)
-        else:
-            print("gleich mein Problem")
-        if target_heading < 0:
-            target_heading = target_heading + 360
-        elif target_heading >= 360:
-            target_heading = target_heading - 360
-        #target_heading = target_heading + 180 #!!!debug, wert passt hier allggemein noch nicht
-        print ('target Heading: ' + str(target_heading))
+            #berechnung des Winkels
+            if distance_long != 0 and distance_lat != 0:
+                target_heading = target_heading + math.tan(distance_long / distance_lat)
+            else:
+                print("gleich mein Problem")
+            if target_heading < 0:
+                target_heading = target_heading + 360
+            elif target_heading >= 360:
+                target_heading = target_heading - 360
+            #target_heading = target_heading + 180 #!!!debug, wert passt hier allggemein noch nicht
+            print ('target Heading: ' + str(target_heading))
 
 
         

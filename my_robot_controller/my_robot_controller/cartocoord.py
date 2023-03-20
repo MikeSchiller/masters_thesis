@@ -268,11 +268,11 @@ class CarToCoords(Node):
 
             #wenn GPS aktiviert ist, senden von gps koordinaten, sonst verwenden von berechneten Koordinaten
         if Usegps == 1:
-            self.car_long.publish(gpsLong)
+            self.car_long.publish(sendgpsLong)
         else:
             self.car_long.publish(sendCalcLong)       
         if Usegps == 1:
-            self.car_lat.publish(gpsLat)
+            self.car_lat.publish(sendgpsLat)
         else:
             self.car_lat.publish(sendCalcLat)
 
