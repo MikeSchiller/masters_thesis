@@ -26,7 +26,7 @@ def ausgabeFunktion(null):
             start_time = time.perf_counter()
         elif i > 1000 and i< 7130:
             print(i)
-            #i/20 = Umdrehungen Kurbelwelle
+            #i/6 = Umdrehungen Kurbelwelle
         elif i ==  7130:
             end_time = time.perf_counter()
             elapsed_time = end_time - start_time
