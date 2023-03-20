@@ -50,7 +50,7 @@ class BarrierPublisher(Node):
 
 
             i = i+1
-            turn_kurbelwelle = i/20
+            turn_kurbelwelle = i/6
             turn_rad = turn_kurbelwelle/4.80808
             distance_travelled_odo = turn_rad* rad_umfang
             distance.data = (str(distance_travelled_odo))

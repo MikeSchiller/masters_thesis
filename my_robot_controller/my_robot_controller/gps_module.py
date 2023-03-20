@@ -93,10 +93,14 @@ class GPS_module(Node):
                 RMCdatasend.data =  RMCdata 
                 GGAdata = self.extract_GGA(data)
                 GGAdatasend.data = GGAdata 
-                self.pub_RMC.publish(RMCdatasend)
-                self.get_logger().info('Publishing: "%s"' % RMCdatasend.data)
-                self.pub_GGA.publish(GGAdatasend)
-                self.get_logger().info('Publishing: "%s"' % GGAdatasend.data)
+                if GGAdatasend == "" or RMCdatasend == "":
+                    pass
+                else:
+                    self.pub_RMC.publish(RMCdatasend)
+                    self.get_logger().info('Publishing: "%s"' % RMCdatasend.data)
+                    self.pub_GGA.publish(GGAdatasend)
+                    self.get_logger().info('Publishing: "%s"' % GGAdatasend.data)
+                    
             data = ""
 
 

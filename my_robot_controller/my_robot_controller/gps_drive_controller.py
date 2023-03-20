@@ -52,6 +52,7 @@ tracked_Heading = 0
 cmps_heading = 1000 #initialheading dam
 radius_earth = 6371000 #6371km
 target_heading = 0
+targetdistance = 1000
 Zone1 =""
 target_longitude = 0
 target_latitude = 0
@@ -87,7 +88,7 @@ class gps_autonomous(Node):
         self.sub_target_lat = self.create_subscription(String,'target_lat',self.target_lat_callback, 10)
         self.sub_target_long = self.create_subscription(String,'target_long',self.target_long_callback, 10)
         self.sub_hdop = self.create_subscription(String, '/HDOP', self.HDOP_callback, 10)  
-        self.sub_head = self.create_subscription(String, '/tracked_heading', self.Heading_callback, 10) 
+        self.sub_head = self.create_subscription(String, '/tracked_heading', self.Heading_callback, 10) # müsste von gps kommen
         #self.sub_cmps = self.create_subscription(String,'/cmps_heading',self.cmps_callback,10)       
         self.sub_cmps = self.create_subscription(String,'headingFromCtC',self.cmps_callback,10) 
         self.sub_steer = self.create_subscription(String, '/steering', self.steer_callback, 10)
@@ -313,15 +314,14 @@ class gps_autonomous(Node):
     def Heading_callback(self, head):
         global tracked_Heading
         tracked_Heading = float(head.data)
-        self.calculate_heading()
+        #self.calculate_heading()
 
     def cmps_callback(self,cmps_head):
         global cmps_heading
         cmps_heading = float(cmps_head.data)
-   
+        self.calculate_heading()
         
     def distance_callback_left(self,dist_left):
-        print("hallo")
         global distance_left
         distance_left= float(dist_left.data)
 
@@ -355,10 +355,12 @@ class gps_autonomous(Node):
     def target_lat_callback(self, tlat):
         global target_latitude
         target_latitude = tlat.data
+        #print("targetLat: " + target_latitude)
 
     def target_long_callback(self,tlong):
         global target_longitude
         target_longitude = tlong.data
+        #print ("targetLong: " + target_longitude)
 
 
     #Methoden der Radar subscriber
@@ -409,14 +411,19 @@ class gps_autonomous(Node):
         global target_heading 
         global target_longitude
         global target_latitude 
+        global targetdistance
         target_heading = 0 # zu beginn der Methode null setzen, damit frisch ausgerechnet wird und Wert anschließend für andere Methoden verfügbar
 
 
         #Distanz zwischen beiden Punkten berechnen. Dafür Erde = Kugel annahme, für kurze Distanzen ausreichend
         # CAVE: Code aktuell Für Nord östliche Bereiche der Welt ausgelegt.
         #https://www.sunearthtools.com/de/tools/distance.php#:~:text=Berechnung%20der%20Entfernung%20zwischen%20zwei%20geografischen%20Punkten,-Die%20Formel%20verwendet&text=Das%20Winkeln%20eingesetzt%20werden%20in,pi%20dividiert%20durch%20180%20erhalten.
-        difference_lat = target_latitude -  actual_latitude 
-        difference_long = target_longitude - actual_longitude
+        #print (target_latitude)
+        #print (target_longitude)
+        #print(actual_latitude)
+        #print(actual_longitude)
+        difference_lat = float(target_latitude) -  float(actual_latitude )
+        difference_long = float(target_longitude) - float(actual_longitude)
         
         if difference_lat < 0:
             difference_lat = difference_lat * -1
@@ -432,18 +439,33 @@ class gps_autonomous(Node):
             pass
         # Genauigkeit https://www.sunearthtools.com/dp/tools/pos_earth.php?lang=de#txtEarth_6
         # Aproxximierung der Strecke über Dreieck (Dürfte bei den Distanzen keinen Nennenswerten unterschied machen)
-        distance_long = 2 * radius_earth * math.sin(difference_long / 2)
-        distance_lat = 2 * radius_earth * math.sin(difference_lat / 2)
-        print(distance_long) #sollte in m sein
-        print(distance_lat)
+        if difference_long !=0:
+            distance_long = 2 * radius_earth * math.sin(difference_long / 2)
+        else:
+            distance_long =  0
+
+        if difference_lat != 0:
+            distance_lat = 2 * radius_earth * math.sin(difference_lat / 2)
+        else:
+            distance_lat = 0
+        print("dist_long: " + str(distance_long)) #sollte in m sein
+        print("dist_lat: " + str(distance_lat)) #!!!! Der Wert hier ist totaler Müll, schauen warum/// vllt doch nicht
+
+        targetdistance = math.sqrt(distance_lat * distance_lat + distance_long*distance_long)
 
         #berechnung des Winkels
-        target_heading = target_heading + math.tan(distance_long / distance_lat)
+        if distance_long != 0 and distance_lat != 0:
+            target_heading = target_heading + math.tan(distance_long / distance_lat)
+        else:
+            print("gleich mein Problem")
         if target_heading < 0:
             target_heading = target_heading + 360
         elif target_heading >= 360:
             target_heading = target_heading - 360
+        #target_heading = target_heading + 180 #!!!debug, wert passt hier allggemein noch nicht
         print ('target Heading: ' + str(target_heading))
+
+
         
 
 
@@ -469,16 +491,32 @@ class gps_autonomous(Node):
       global actual_longitude
       global target_latitude
       global target_longitude
+      global targetdistance
       #Radar
       global counttargets
       global radararrayX
       global radararrayY
-      mindist = 40.0 
       global debounceall 
       global debounceleft 
       global debounceright  
+      mindist = 40.0 
 
-      if abs(actual_latitude - float(target_latitude)) < 0.0004 and abs(actual_longitude - float(target_longitude)) < 0.0004 and float(target_latitude) != 0:
+    #Abfrage, ob seehr nah am Ziel
+    
+       #    dec.deg     Grad            Entfernung
+        #	0.1	        0°6’0"	        11.132 km
+        #	0.01    	0°0’36"	        1.113 km
+        #	0.001	    0°0’3.6"	    111.3 m
+        #	0.0001  	0°0’0.36"	    11.13 m
+        #	0.00001  	0°0’0.036"	    1.11 m
+        #	0.000001	0°0’0.0036"	    11.1 cm
+        #	0.0000001	0°0’0.00036"	1.11 cm
+      #print (target_latitude)
+      #print (target_longitude)
+      #print(actual_latitude)
+      #print(actual_longitude)
+      print("targetdistance: " + str(targetdistance))
+      if targetdistance <= 5 and float(target_latitude) != 0:
           state = 100
       else:
           pass
@@ -491,7 +529,7 @@ class gps_autonomous(Node):
             #normale vorausfahrt
             self.get_logger().info("all is good")
             self.get_logger().info(str(state))
-            schub = 7.8
+            schub = 7.6
             
             #Abfrage, ob in Nähe von NO GO Zone und änderung des Headings, wenn ja
             if Zoneheading != 1000:
@@ -500,13 +538,22 @@ class gps_autonomous(Node):
 
 
             #Auswertung Heading Kompass
-            max_all_dev = 3 # maximum allowed deviation from target heading
-            if cmps_heading < target_heading + max_all_dev or cmps_heading < target_heading - max_all_dev :
-                lenkung = 70
+            max_all_dev = 5 # maximum allowed deviation from target heading
+            smallsteerdev = 30 #deviation for smaller steering angle to counter oversteer
+            print("cmps_head: " + str(cmps_heading))
+            print("target_h: " + str(target_heading))
+            if cmps_heading < target_heading + smallsteerdev or cmps_heading < target_heading - smallsteerdev :
+                lenkung = 80            
+            elif cmps_heading > target_heading + smallsteerdev or cmps_heading > target_heading - smallsteerdev:
+                lenkung = 100
+            elif cmps_heading < target_heading + max_all_dev or cmps_heading < target_heading - max_all_dev :
+                lenkung = 85
             elif cmps_heading > target_heading + max_all_dev or cmps_heading > target_heading - max_all_dev:
-                lenkung = 110
+                lenkung = 95
             else:
                 lenkung = 90   
+            
+            print("lenkung: " + str(lenkung))
                             
 
 
@@ -562,8 +609,8 @@ class gps_autonomous(Node):
 
 
 
-            print(distance_left)
-            print(distance_right)
+            #print(distance_left)
+            #print(distance_right)
 
             if distance_left < mindist and distance_right > mindist and notlauf == 0  :
                 debounceleft = debounceleft +1
@@ -584,9 +631,9 @@ class gps_autonomous(Node):
  
 
             
-            print(debounceall)
-            print(debounceleft)
-            print(debounceright)
+           # print(debounceall)
+            #print(debounceleft)
+           # print(debounceright)
                 
 
 

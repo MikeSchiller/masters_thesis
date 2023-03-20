@@ -51,12 +51,18 @@ class CarToCoords(Node):
             self.coordsInput()
             firstrun = 1
 
+
         self.sub_cmps = self.create_subscription(String,'/cmps_heading',self.cmps_callback,10)
         self.sub_steer = self.create_subscription(String,'/car_steer', self.Steer_callback, 10)
         self.sub_schubPWM = self.create_subscription(String, '/car_setschubPWM', self.Schub_callback, 10)
+        self.sub_odo = self.create_subscription(String,'/distance_driven', self.Odo_callback, 10)
+        #Die bekommen keine Infos mehr
+        # Korrektur, ich bin dumm, das kommt von GPS_DATA_STUFF
         self.sub_gpslong = self.create_subscription(String, '/act_longitude', self.act_long_callback, 10)
         self.sub_gpslat = self.create_subscription(String, '/act_latitude', self.act_lat_callback, 10)
-        self.sub_odo = self.create_subscription(String,'/distance_driven', self.Odo_callback, 10)
+        
+        
+
 
        
     def coordsInput(self):
@@ -81,11 +87,13 @@ class CarToCoords(Node):
 
         if(setvar == "d"):
             print("debug parameters set")
-            startLong = 9.9384605 # T Bau Gang Norden
-            startLat= 48.4185308
+            #startLong = 9.9384605 # T Bau Gang Norden
+            #startLat= 48.4185308
+            startLong = 9.93847061 # Kreuzung T/Q Bau (indoor)
+            startLat= 48.41821953
             target_longitude.data = '9.93847061' # Kreuzung T/Q Bau (indoor)
             target_latitude.data = '48.41821953'
-            calcHeading = 340
+            calcHeading = 170
             #self.pub_target_lat.publish(target_latitude)
             #self.pub_target_long.publish(target_longitude)
         else:
@@ -123,6 +131,12 @@ class CarToCoords(Node):
                 calcHeading = input()
             else :
                 self.get_logger().warning("Input not supported!")
+                print("debug parameters set")
+                startLong = 9.9384605 # T Bau Gang Norden
+                startLat= 48.4185308
+                target_longitude.data = '9.93847061' # Kreuzung T/Q Bau (indoor)
+                target_latitude.data = '48.41821953'
+                calcHeading = 340
             
 
 
@@ -204,8 +218,10 @@ class CarToCoords(Node):
         calclong = startLong
         calclat = startLat
         startmsg.data = "go"
+        #self.car_long()
         self.pub_target_lat.publish(target_latitude)
         self.pub_target_long.publish(target_longitude)
+        time.sleep(1)
         self.pub_start.publish(startmsg)
 
 
@@ -213,55 +229,86 @@ class CarToCoords(Node):
     def calculate_car_coords(self, car_distance, heading):
         #this method takes the distance driven, as well as the heading (which can be given by the sensor or calculated seperatly) and calculates the position in the global coordinate space.
         global radius_earth
+        global gpsLong
+        global gpsLat
         global calclat
         global calclong
+        global Usegps
         diffgrad = 2 * math.asin(car_distance / (2 * radius_earth))
+        heading = float(heading)
         
-        if heading >= 90 and heading < 180:
+        if heading >= 90.0 and heading < 180:
             x = diffgrad * math.cos(heading)
             y = diffgrad * math.sin(heading) * (-1) 
-        elif heading >= 180 and heading < 270:
+        elif heading >= 180.0 and heading < 270:
             x = diffgrad * math.cos(heading) * (-1) 
             y = diffgrad * math.sin(heading) * (-1)        
-        elif heading >= 270 and heading < 360:
+        elif heading >= 270.0 and heading < 360:
             x = diffgrad * math.cos(heading) * (-1) 
             y = diffgrad * math.sin(heading)        
-        elif heading >= 0 and heading < 90:
+        elif heading >= 0.0 and heading < 90:
             x = diffgrad * math.cos(heading)
             y = diffgrad * math.sin(heading) 
-        #else:
-            #i guess abfangen, wenn er zu beginn den wert noch nicht kennt
+        else:
+            #i guess abfangen, wenn er zu beginn den wert noch nicht kennt/ oder irgendwann mal spinnt
             #y = 0
            # x = 0
+           pass
         
         calclong = calclong + y
         calclat = calclat + x 
-        print("long: " + str(calclong))
-        print("lat: " + str(calclat))
+        sendCalcLong = String()
+        sendCalcLat = String()
+        sendCalcLong.data = str(calclong)
+        sendCalcLat.data = str(calclat)
+
+            #wenn GPS aktiviert ist, senden von gps koordinaten, sonst verwenden von berechneten Koordinaten
+        if Usegps == 1:
+            self.car_long.publish(gpsLong)
+        else:
+            self.car_long.publish(sendCalcLong)       
+        if Usegps == 1:
+            self.car_lat.publish(gpsLat)
+        else:
+            self.car_lat.publish(sendCalcLat)
+
+        #print("long: " + str(calclong))
+        #print("lat: " + str(calclat))
                  
-    # Heading wird zusammen mit Odo alle 5cm berechnet
-    def calculate_heading(self,steering_angle, heading, part_distance_driven):
+    # Heading wird zusammen mit Odo alle 2cm berechnet
+    def calculate_heading(self,steering_angle, part_distance_driven):
+        print("Piep")
        # global steering_angle
         #global distance_driven
         global calcHeading
         global radstand
-        current_heading = heading
+
+        current_heading = calcHeading
         
         #Wenn Heading genau 0, Fehler weil div durch 0, daher bei 0 minimale Abweichung zugerechnet
         if  steering_angle != 0 and current_heading != 0:
-            beta = part_distance_driven/ (math.pi * (2* radstand/ math.sin(current_heading)) * 360)
+
+            beta = part_distance_driven/ (math.pi * ((2* radstand)/ math.sin(steering_angle ))) * 360
+            
             current_heading = current_heading + beta
+             
             if current_heading >= 360:
                 current_heading = current_heading - 360 
+            elif current_heading < 0:
+                current_heading = current_heading + 360 
+            calcHeading = current_heading 
         elif steering_angle != 0 and current_heading == 0:
-            beta = part_distance_driven/ (math.pi * (2* radstand/ math.sin((current_heading+0.1))) * 360)
+            beta = part_distance_driven/ (math.pi * (2* radstand/ math.sin(((steering_angle+0.1 )))) * 360)
             current_heading = current_heading + beta
             if current_heading >= 360:
-                current_heading = current_heading - 360             
+                current_heading = current_heading - 360  
+            elif current_heading < 0:
+                current_heading = current_heading + 360   
+            calcHeading = current_heading          
         else: 
             calcHeading= current_heading
         
-        calcHeading = current_heading 
+        
         return calcHeading
 
     def Odo_callback(self, car_dist):
@@ -272,32 +319,47 @@ class CarToCoords(Node):
         global checkcheck
         global part_distance_driven
         global distance_driven_old
+     
+        #input tut
         if car_dist.data == "":
-            distance_driven = 0
             distance_driven_new = 0
         else:
-            distance_driven = float(car_dist.data)
             distance_driven_new = float(car_dist.data) 
-        self.calculate_car_coords(distance_driven, calcHeading)
-        if part_distance_driven > 0.05 or steering_angle == 0 and checkleft != 0 or steering_angle == 0 and checkright != 0: #Heading berechnung alle 5cm // hier jetzt noch rein, dass auch abfrage, wenn winkel auf null gesetzt wird
-            self.calculate_heading(steering_angle,calcHeading, part_distance_driven)
+            #print ("new: " + str(distance_driven_new))
+            #ist hier vllt der Fehler mit falschem Faktor, weil falsche Variable übergeben?
+        self.calculate_car_coords(distance_driven_new, calcHeading)
+
+        #print("Piepsepiep " + str(part_distance_driven))
+        #partdistance 
+        part_distance_driven_this_iteration = distance_driven_new - distance_driven_old
+        part_distance_driven = part_distance_driven + part_distance_driven_this_iteration
+
+        if part_distance_driven > 0.02 or steering_angle == 0 and checkleft != 0 or steering_angle == 0 and checkright != 0: #Heading berechnung alle 5cm // hier jetzt noch rein, dass auch abfrage, wenn winkel auf null gesetzt wird
+            
+            self.calculate_heading(steering_angle,part_distance_driven)
             part_distance_driven = 0
         else:
-            part_distance_driven = distance_driven_new - distance_driven_old
-        
+            pass
+
+        #print ("old: " + str(distance_driven_old))
         distance_driven_old = distance_driven_new
+        
+
 
     def Steer_callback(self, car_steer):
         # receives steering angle in range from 40 ( full right), 90 (straight ahead) to 130 (full left)
-
+        
         global steering_angle
         global checkleft
         global checkright
         global checkcheck
         if car_steer.data == "":
             steering_angle = 0
+            
         else:
+            #hier geht er rein
             steering_angle = float(car_steer.data) - 90
+        print(steering_angle)
         if steering_angle > 0 :
             checkleft = 1
             checkcheck = 2
@@ -316,37 +378,47 @@ class CarToCoords(Node):
     def Schub_callback(self, car_schub):
         global Fahrtrichtung
         stoppschub = 7.3
-        if float(car_schub.data) > stoppschub :
-            Fahrtrichtung = 1
-        elif float(car_schub.data) < stoppschub :
-            Fahrtrichtung = -1 
-        
-        pass
-    
+        if car_schub.data != "":
+            if float(car_schub.data) > stoppschub :
+                Fahrtrichtung = 1
+            elif float(car_schub.data) < stoppschub :
+                Fahrtrichtung = -1 
+        else:
+            pass
+
+
+ 
+
+     
     def act_long_callback(self, gps_long):
         global Usegps
         global calclong
+        global gpsLong
         if onlyfirstlong == 1:
-            global gpsLong
-            gpsLong = float(gps_long.data)
+            
+            gpsLong = gps_long
             onlyfirstlong = 2
             #wenn GPS aktiviert ist, senden von gps koordinaten, sonst verwenden von berechneten Koordinaten
+            #der Part ist redundant, wenn GPS aktiv (macht das was aud????!!!)
         if Usegps == 1:
             self.car_long.publish(gps_long)
         else:
             self.car_long.publish(calclong)
-        
+
     def act_lat_callback(self, gps_lat):
         global Usegps
         global calclat
+        global gpsLat
         if onlyfirstlat == 1:
-            global gpsLat
-            gpsLat = float(gps_lat.data)
+            
+            gpsLat = gps_lat
             onlyfirstlat = 2
         if Usegps == 1:
             self.car_lat.publish(gps_lat)
         else:
             self.car_lat.publish(calclat)
+
+          
 
     def cmps_callback(self,cmps_head):
  
@@ -361,7 +433,7 @@ class CarToCoords(Node):
             msg.data = str(cmps_head.data)
             self.pub_heading.publish(msg)
         print("heading: " + msg.data)
-
+        
 
 
 def main(args=None):
