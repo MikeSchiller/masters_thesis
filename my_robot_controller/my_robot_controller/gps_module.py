@@ -38,6 +38,7 @@ class GPS_module(Node):
         self.timer = self.create_timer(timer_period, self.timer_callback) 
 
     def extract_RMC(self, big_string):
+        print(big_string)
         start = 'GNRMC'
         end = '*'
         results = ""

@@ -87,10 +87,10 @@ class CarToCoords(Node):
 
         if(setvar == "d"):
             print("debug parameters set")
-            #startLong = 9.9384605 # T Bau Gang Norden
-            #startLat= 48.4185308
-            startLong = 9.93847061 # Kreuzung T/Q Bau (indoor)
-            startLat= 48.41821953
+            startLong = 9.9384605 # T Bau Gang Norden
+            startLat= 48.4185308
+            #startLong = 9.93847061 # Kreuzung T/Q Bau (indoor)
+            #startLat= 48.41821953
             target_longitude.data = '9.93847061' # Kreuzung T/Q Bau (indoor)
             target_latitude.data = '48.41821953'
             calcHeading = 170

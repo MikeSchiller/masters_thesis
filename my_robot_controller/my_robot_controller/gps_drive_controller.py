@@ -309,7 +309,10 @@ class gps_autonomous(Node):
 
     def HDOP_callback(self, hdop):
         global HDOP
-        HDOP = float(hdop.data)
+        if hdop.data == '':
+            pass
+        else:
+            HDOP = float(hdop.data)
 
     def Heading_callback(self, head):
         global tracked_Heading
@@ -521,6 +524,7 @@ class gps_autonomous(Node):
       print("targetdistance: " + str(targetdistance))
       if targetdistance <= 5 and float(target_latitude) != 0:
           state = 100
+    # Abfrage, ob koordianten ungleich 0N, 0E
       elif actual_latitude == 0 and actual_longitude == 0 and state != 99:
           state = 98 
       else:
