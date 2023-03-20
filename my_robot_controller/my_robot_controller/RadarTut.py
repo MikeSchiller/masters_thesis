@@ -89,7 +89,7 @@ sockTCP.send(cmd_frame)
 resp_frame = recv_msg(sockTCP, msg_len, max_msg_size)
 
 # readout and plot time and frequency adc_data continuously
-for ctr in range(100):
+for ctr in range(0,100,1):
     # GET PDAT DATA ---------------------------------
     pdat_data = []
     packageData, adr = sockUDP.recvfrom(packageLength)

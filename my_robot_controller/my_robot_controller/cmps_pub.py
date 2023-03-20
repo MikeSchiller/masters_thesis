@@ -61,16 +61,19 @@ class Cmps_pub(Node):
         #declination = hmc5883l.getDeclinationString()
         heading = hmc5883l.getHeadingString()
 
+
+
+
+
+        heading = self.heading_strtofloat_converter(heading)
+
         #1 hässliges moving average
-        head1 = heading
+        head1 = float(heading)
         head2 = head1
         head3 = head2
 
-        avheading = (head1 + head2 + head3) /3
-
-
-
-        message.data = self.heading_strtofloat_converter(heading)
+        avheading = str((head1 + head2 + head3) /3)
+        message.data = avheading
 
         self.publisher_.publish(message)
         self.get_logger().info('Publishing: "%s"' % message.data)

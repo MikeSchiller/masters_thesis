@@ -103,19 +103,32 @@ class RadarPublisher(Node):
         print("timer")
         # readout and plot time and frequency adc_data continuously
         for ctr in range(100):
+            print(ctr)
+            
             # GET PDAT DATA ---------------------------------
             pdat_data = []
+            print("a1")
             packageData, adr = sockUDP.recvfrom(packageLength)
+            print("a2")
             while packageData[0:4] != b'PDAT':  # do while header isn't expected header
+                print("a3")
                 packageData, adr = sockUDP.recvfrom(packageLength)
+            print("a4")
             respLength = int.from_bytes(packageData[4:8], byteorder='little')  # get response length
+            print("a5")
             numberoftargets = round(respLength / 10)  # calculate number of detected targets
+            print("a6")
             packageData = packageData[8:len(packageData)]  # exclude header from data
+            print("a7")
             pdat_data = packageData  # store data
+            print("a8")
             packageData, adr = sockUDP.recvfrom(packageLength)  # get data
+            print("a9")
             while packageData.find(b'TDAT') == -1:
+                print("a10")
                 pdat_data += packageData  # store data
                 packageData, adr = sockUDP.recvfrom(packageLength)  # get data
+            
             print("pdat1")
 
             # GET TDAT DATA -------------------------------
