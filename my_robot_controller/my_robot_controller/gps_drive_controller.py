@@ -5,6 +5,8 @@ import RPi.GPIO as gpio
 import time
 from std_msgs.msg import String
 import math
+from rpi_hardware_pwm import HardwarePWM
+
 
 # Servo-GPIO (PWM-GPIO 18, Pin 12)
 LenkServoPin = 18
@@ -20,7 +22,13 @@ SchubServo = gpio.PWM(SchubServoPin, 50)
 LenkServo.start(7.5)
 SchubServo.start(7.3)
 time.sleep(3)
+'''
 
+pwm1 = HardwarePWM(pwm_channel=0, hz= 50)
+pwm1.start(7.5)
+pwm2 = HardwarePWM(pwm_channel=1, hz= 50)
+pwm2.start(7.5)
+'''
 
 #initailisierung der Variablen
 Winkelstring = String()
@@ -847,6 +855,7 @@ def SetServoLenkung(self, winkel):
   if winkel > 130:
     winkel = 130
   pwmL = winkel/18 + 2.5
+  #pwm1.change_duty_cycle(pwmL)
   LenkServo.ChangeDutyCycle(pwmL)
   Winkelstring.data = str(winkel)
   #self.pub_car_steer.publish(Winkelstring) #WARUM WIRST DU NICHT FARBIG ?????
@@ -882,7 +891,7 @@ def SetFahrzeugSchub(self,schub):
 
     
     pubschub.data = str(schub)   
-    
+    #pwm2.change_duty_cycle(sendschub)
     SchubServo.ChangeDutyCycle(sendschub)
     pwmold = schub
 
