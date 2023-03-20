@@ -433,10 +433,9 @@ class CarToCoords(Node):
         global Usegps
         global calclong
         global gpsLong
-        if onlyfirstlong == 1:
+        
             
-            gpsLong = gps_long
-            onlyfirstlong = 2
+        gpsLong = gps_long
             #wenn GPS aktiviert ist, senden von gps koordinaten, sonst verwenden von berechneten Koordinaten
             #der Part ist redundant, wenn GPS aktiv (macht das was aud????!!!)
         if Usegps == 1:
@@ -448,10 +447,8 @@ class CarToCoords(Node):
         global Usegps
         global calclat
         global gpsLat
-        if onlyfirstlat == 1:
-            
-            gpsLat = gps_lat
-            onlyfirstlat = 2
+
+        gpsLat = gps_lat
         if Usegps == 1:
             self.car_lat.publish(gps_lat)
             print(gps_lat.data)

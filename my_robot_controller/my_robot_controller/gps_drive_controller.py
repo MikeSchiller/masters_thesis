@@ -560,7 +560,7 @@ class gps_autonomous(Node):
       global debounceleft 
       global debounceright  
       global checkforgo
-      mindist = 40.0 
+      mindist = 60.0 
 
     #Abfrage, ob seehr nah am Ziel
     
@@ -711,17 +711,17 @@ class gps_autonomous(Node):
 
             if distance_left < mindist and distance_right > mindist and notlauf == 0  :
                 debounceleft = debounceleft +1
-                if debounceleft >= 3:
+                if debounceleft >= 2:
                     state = 10
                     debounceleft = 0
             elif distance_right < mindist and distance_left > mindist and notlauf == 0 :
                 debounceright += 1
-                if debounceright >= 3:
+                if debounceright >= 2:
                     state = 20
                     debounceright = 0
             elif distance_left < mindist and distance_right < mindist and notlauf == 0 :
                 debounceall += 1
-                if debounceall >= 3:
+                if debounceall >= 2:
                     debounceall = 0
                     state =1
 
