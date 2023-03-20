@@ -125,6 +125,12 @@ class KeyboardPublisher(Node):
             else:
                 msg3.data = "off"
                 checkswitch = 0
+        
+        if input1 == "l":
+            stoplenk = stoplenk + 1
+
+        if input1 == "r":
+            stoplenk = stoplenk - 1            
 
 
        
