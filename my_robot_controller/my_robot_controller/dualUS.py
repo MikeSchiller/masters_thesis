@@ -64,7 +64,7 @@ class USPublisher(Node):
 
         msg_left.data = str(distance1)
 
-        #time.sleep(0.1)
+        time.sleep(0.1)
         
         #Messwert zweiter US Sensor
         # set trigger to HIGH
@@ -92,9 +92,13 @@ class USPublisher(Node):
         distance2 = (timeElapsed2 * 34300) / 2
         
         msg_right.data = str(distance2)
+
+
+        #print ("links: " + msg_left.data)
+        #print("rechts: " + msg_right.data)
         
         
-        if distance1 > 2000 or distance2 > 2000:
+        if distance1 > 300 or distance2 > 300:
             self.get_logger().info('Distanz macht keinen Sinn')
         else:
             self.get_logger().info('Hier die Distanz für links: "%s"' % msg_left.data)
@@ -102,7 +106,7 @@ class USPublisher(Node):
             #print(type(msg), type(msg.data), msg.data)
             self.publisher_links.publish(msg_left)
             self.publisher_rechts.publish(msg_right)
-
+        
 
 
 

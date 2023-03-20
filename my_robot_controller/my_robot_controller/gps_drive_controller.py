@@ -25,6 +25,7 @@ time.sleep(3)
 #initailisierung der Variablen
 lenkung = 7.5
 schub= 7.3
+stopschub =7.3
 klenkung = 7.5
 kschub = 7.3
 notlauf = 0
@@ -395,6 +396,11 @@ class gps_autonomous(Node):
       global target_heading
       global tracked_Heading
       global cmps_heading
+      global stopschub
+      mindist = 40.0 
+      debounceall = 0
+      debounceleft = 0
+      debounceright = 0 
 
       #self.get_logger().info(dist.data)
       match state:
@@ -426,14 +432,24 @@ class gps_autonomous(Node):
             SetServoLenkung(self , lenkung)
             SetFahrzeugSchub(self , schub)
             
-            #check distances from US sensors and act accordingly  
-            mindist = 40.0  
+            #check distances from US sensors and act accordingly 
+            # including debouncing 
+            
             if distance_left < mindist and distance_right > mindist and notlauf == 0  :
-                state = 10
+                debounceright += 1
+                if debounceright >= 3:
+                    state = 10
+                    debounceright = 0
             elif distance_right < mindist and distance_left > mindist and notlauf == 0 :
-                state = 20
+                debounceright += 1
+                if debounceright >= 3:
+                    state = 20
+                    debounceright = 0
             elif distance_left < mindist and distance_right < mindist and notlauf == 0 :
-                state =1
+                debounceall += 1
+                if debounceall >= 3:
+                    debounceall = 0
+                    state =1
                 
 
 
@@ -441,10 +457,10 @@ class gps_autonomous(Node):
             self.get_logger().info(str(state))
             #geradeaus gegen Wand
             self.get_logger().info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-            schub = 7.3
+            schub = stopschub
             SetFahrzeugSchub(self, schub)
             notlauf = 1
-            if distance_left < 50.0 or distance_right < 50.0 and notlauf == 1:
+            if distance_left < mindist or distance_right < mindist and notlauf == 1:
                 state =2
 
         case 2:
@@ -460,7 +476,7 @@ class gps_autonomous(Node):
             SetFahrzeugSchub(self, schub)
             SetServoLenkung(self, lenkung)
             
-            if  distance_left > 50.0 and distance_right > 50.0 and notlauf == 1:
+            if  distance_left > mindist and distance_right > mindist and notlauf == 1:
                 state =3
 
         case 3:
@@ -504,7 +520,7 @@ class gps_autonomous(Node):
                 state = 1
                 Rechtslenken = 0
 
-            elif distance_right >  30.0:
+            elif distance_right >  mindist:
                 state = 0
 
         case 30:
