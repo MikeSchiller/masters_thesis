@@ -23,6 +23,9 @@ time.sleep(3)
 
 
 #initailisierung der Variablen
+Winkelstring = String()
+pubschub = String()
+timer_period = 0.1  # seconds
 lenkung = 7.5
 schub= 7.3
 stopschub =7.3
@@ -31,35 +34,29 @@ kschub = 7.3
 notlauf = 0
 rechts = 0
 Rechtslenken = 0
-state = 0
-distance_left = 0
-distance_right =0 
+state = 99
+distance_left = 10
+distance_right =20 
 #Radar
 radararrayX = []
 radararrayY = []
 counttargets = 0
+#US
+debounceall = 0
+debounceleft = 0
+debounceright = 0 
 actual_longitude = 0.0
 actual_latitude = 0.0
 HDOP = 0.0
 tracked_Heading = 0
-cmps_heading = 0
+cmps_heading = 1000 #initialheading dam
 radius_earth = 6371000 #6371km
 target_heading = 0
 Zone1 =""
 target_longitude = 0
 target_latitude = 0
 Zoneheading = 1000 # Heading bei Fahrten an NO GO Zone, 1000 wenn nicht in Nähe
-#target_longitude = 9.939772 # Kreuzung E-Radstellplatz
-#target_latitude = 48.418074 # Kreuzung E-Radstellplatz
-#target_longitude = 9.937939 # Kreuzung V-Bau
-#target_latitude = 48.418091 # Kreuzung V-Bau   
-#target_longitude = 9.937964 # Ecke gemähte Wiese Osten
-#target_latitude = 48.417796 # Ecke gemähte Wiese Osten     
-#target_longitude = 9.940302 # Kreuzung Zufahrt THU Höhenweg westen
-#target_latitude = 48.417305 # Kreuzung Zufahrt THU Höhenweg westen
-#target_longitude = 9.917946 # bad blau
-#target_latitude = 48.417771 # bad blau
-#home_adress = "(48.411954, 10.002206)"
+
 
 #########################################################################
 #Winkel 0 == 2.5 Dutycycle
@@ -82,6 +79,7 @@ class gps_autonomous(Node):
         self.get_logger().info('cmps_pub')
         self.pub_car_schub = self.create_publisher(String, '/car_setschubPWM',10) 
         self.pub_car_steer = self.create_publisher(String, '/car_steer',10) 
+        
         #self.sub_actlong = self.create_subscription(String, '/act_longitude', self.act_long_callback, 10)
         #self.sub_actlat = self.create_subscription(String, '/act_latitude', self.act_lat_callback, 10)
         self.sub_actlong = self.create_subscription(String, '/car_long', self.act_long_callback, 10)
@@ -101,10 +99,27 @@ class gps_autonomous(Node):
         self.trackcount_sub = self.create_subscription(String,'/Radar_trackcount', self.count_callback, 10)
         self.distance_subscriber_y = self.create_subscription(String,'/Radar_distances_y', self.distance_y_callback, 10)
         self.distance_subscriber_x = self.create_subscription(String,'/Radar_distances_x', self.distance_x_callback, 10)
+        self.start_sub = self.create_subscription(String,'start',self.start_callback, 10)
         #self.sub_Zone2 = self.create_subscription(String,'/Zone2', self.saveZone2, 10)        
+        self.timer = self.create_timer(timer_period, self.timer_callback)
+
+    def timer_callback(self):
+        global Winkelstring
+        self.fahrmethode()
+        self.pub_car_steer.publish(Winkelstring)
+        self.pub_car_schub.publish(pubschub) 
+
+
+    def start_callback(self,start):
+        global state
+        if start.data == "go":
+            state = 0
+        else:
+            state = 99
         
 
     def saveZone1(self, inputstr):
+        #!!! Kann das so funkltionieren, oder wird das nur einmal aufgerufen?
         global Zone1
         Zone1 = inputstr
         self.decodeZone1(Zone1)
@@ -306,16 +321,17 @@ class gps_autonomous(Node):
    
         
     def distance_callback_left(self,dist_left):
+        print("hallo")
         global distance_left
         distance_left= float(dist_left.data)
 
 
     #Hier Aufruf der Fahrmethode
     def distance_callback_right(self,dist_right):
-        global distance_left
         global distance_right
         distance_right= float(dist_right.data)
-        self.fahrmethode(distance_left,distance_right)
+        #Aufruf macht hier keinen sinn mehr
+        #self.fahrmethode(self)
         
                     
     def drive_callback(self, msg):
@@ -328,13 +344,13 @@ class gps_autonomous(Node):
 
     def switch_callback(self, msg):
         global state
-        global distance_left
-        global distance_right
+
+
         if msg.data == "on":
             state = 30
         else:
             state = 0
-        self.fahrmethode(distance_left,distance_right)
+        #self.fahrmethode(self)
 
     def target_lat_callback(self, tlat):
         global target_latitude
@@ -354,7 +370,10 @@ class gps_autonomous(Node):
         distances_x = distances_x.replace("]","")
         splitdistx = distances_x.split(", ")
         radararrayX = radararrayX + splitdistx
-        
+        if not radararrayY :
+            pass
+        else:
+            radararrayX = [float(string) for string in radararrayX]
         #self.get_logger().info('I heard for x: "%s"' % splitdistx)
 
 
@@ -365,6 +384,11 @@ class gps_autonomous(Node):
         distances_y = distances_y.replace("]","")
         splitdisty = distances_y.split(", ")
         radararrayY = radararrayY + splitdisty
+        #print(radararrayY)
+        if radararrayY == "" :
+            pass
+        else:
+            radararrayY = [float(string) for string in radararrayY]
         
 
         #self.get_logger().info('I heard for y: "%s"' % splitdisty)
@@ -424,8 +448,10 @@ class gps_autonomous(Node):
 
 
 
-    def fahrmethode(self, distance_left, distance_right):
+    def fahrmethode(self):
       #Färht geradaus  mit zwei Distanzsensor richtung hindernis, versucht Hindernis auszuweichen, wenn zu nah weicht rückwärts aus
+      global distance_left
+      global distance_right
       global schub
       global notlauf
       global rechts
@@ -439,14 +465,23 @@ class gps_autonomous(Node):
       global cmps_heading
       global stopschub
       global Zoneheading
+      global actual_latitude
+      global actual_longitude
+      global target_latitude
+      global target_longitude
       #Radar
       global counttargets
       global radararrayX
       global radararrayY
       mindist = 40.0 
-      debounceall = 0
-      debounceleft = 0
-      debounceright = 0 
+      global debounceall 
+      global debounceleft 
+      global debounceright  
+
+      if abs(actual_latitude - float(target_latitude)) < 0.0004 and abs(actual_longitude - float(target_longitude)) < 0.0004 and float(target_latitude) != 0:
+          state = 100
+      else:
+          pass
 
       #self.get_logger().info(dist.data)
       match state:
@@ -492,8 +527,9 @@ class gps_autonomous(Node):
             minddist_radar_y = 0.4 #[m]
             for radvar in range(0, counttargets):
                 #Schauen, ob sich ein Hindernis links/rechts von Fahrzeugmitte aus befindet und maximal 1 Meter weit weg ist
-
+                '''
                 if radararrayX[radvar] < minddist_radar_x and radararrayY[radvar] < 1 :
+                   
                     #check ob links vom Fahrzeug
                     #links
                     if radararrayY[radvar] < 0:
@@ -504,6 +540,7 @@ class gps_autonomous(Node):
                 # Distanz von Fahrzeug
                 elif abs(radararrayY[radvar]) < minddist_radar_y :
                     state = 40
+                '''
                     
 
 
@@ -522,9 +559,14 @@ class gps_autonomous(Node):
                     
                     
             # including debouncing 
-            '''
+
+
+
+            print(distance_left)
+            print(distance_right)
+
             if distance_left < mindist and distance_right > mindist and notlauf == 0  :
-                debounceleft += 1
+                debounceleft = debounceleft +1
                 if debounceleft >= 3:
                     state = 10
                     debounceleft = 0
@@ -538,7 +580,15 @@ class gps_autonomous(Node):
                 if debounceall >= 3:
                     debounceall = 0
                     state =1
-            '''    
+
+ 
+
+            
+            print(debounceall)
+            print(debounceleft)
+            print(debounceright)
+                
+
 
 
         case 1:
@@ -604,7 +654,7 @@ class gps_autonomous(Node):
                 state = 1
                 Rechtslenken = 1
 
-            elif distance_left >  30.0:
+            elif distance_left >  mindist:
                 state = 0
 
         case 20:
@@ -653,17 +703,26 @@ class gps_autonomous(Node):
               #Radar rechts Hindernis
             self.get_logger().info("RADAR RECHTS!")
             schub = 7.65
-            lenkung = 50
+            lenkung = 120
             SetFahrzeugSchub(self, schub)
             SetServoLenkung(self, lenkung)
 
-            if min(radararrayX) < 0.4:
+            if abs(min(radararrayX)) < 0.4:
                 state = 40
                 Rechtslenken = 1
 
-            elif min(radararrayX) >  0.4:
+            elif abs(min(radararrayX)) >  0.4:
                 state = 0
-              
+
+
+        case 99:
+              print("Warte aufs GO!")     
+
+        case 100:
+              schub = stopschub
+              SetFahrzeugSchub(self, schub)
+              print("DA SIMMA!!!")
+
 
         
 
@@ -674,7 +733,7 @@ class gps_autonomous(Node):
 
 #Methode fürs einstellen der Lenkung
 def SetServoLenkung(self, winkel):
-  Winkelstring = String()
+  global Winkelstring
   # Umrechnung Grad in Tastverhaeltnis
   if winkel < 40:
     winkel = 40
@@ -683,10 +742,11 @@ def SetServoLenkung(self, winkel):
   pwmL = winkel/18 + 2.5
   LenkServo.ChangeDutyCycle(pwmL)
   Winkelstring.data = str(winkel)
-  self.pub_car_steer.publish(Winkelstring) #WARUM WIRST DU NICHT FARBIG ?????
+  #self.pub_car_steer.publish(Winkelstring) #WARUM WIRST DU NICHT FARBIG ?????
 
 #Methode fürs einstellen des Schubs
 def SetFahrzeugSchub(self,schub):
+    global pubschub
     tempvar = 1
     if tempvar == 1:
         pwmold = 7.3
@@ -713,9 +773,9 @@ def SetFahrzeugSchub(self,schub):
     else: 
         sendschub = schub
 
-    pubschub = String()
+    
     pubschub.data = str(schub)   
-    self.pub_car_schub.publish(pubschub)
+    
     SchubServo.ChangeDutyCycle(sendschub)
     pwmold = schub
 

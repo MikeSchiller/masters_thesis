@@ -35,6 +35,7 @@ class BarrierPublisher(Node):
         self.get_logger().info("Licht tut, licht tut nicht, licht tut....")
         timer_period = 0.1  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
+        self.timer = self.create_timer(2, self.message_callback)
  
     # Diese AusgabeFunktion wird bei Signaldetektion ausgefuehrt
     def ausgabeFunktion(self):
@@ -65,9 +66,9 @@ class BarrierPublisher(Node):
     def timer_callback(self):
         global distance
         self.publisher.publish(distance)
-        self.get_logger().info(distance.data + "Meter")
 
-
+    def message_callback(self):
+         self.get_logger().info("barrier_dist: " + distance.data + "Meter")
 
         
 

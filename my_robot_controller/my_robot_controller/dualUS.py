@@ -11,7 +11,7 @@ GPIO.setmode(GPIO.BCM)
 
 # assign GPIO Pins
 GPIO_TRIGGER1 = 27
-GPIO_TRIGGER2 = 18
+GPIO_TRIGGER2 = 25
 GPIO_ECHO1 = 17
 GPIO_ECHO2 = 22
 
@@ -21,22 +21,26 @@ GPIO.setup(GPIO_TRIGGER2, GPIO.OUT)
 GPIO.setup(GPIO_ECHO1, GPIO.IN)
 GPIO.setup(GPIO_ECHO2, GPIO.IN)
 
+#set global variables
+msg_left = String()
+msg_right = String()
+
 class USPublisher(Node):
 
 
     def __init__(self):
         super().__init__('dualUS')
-        self.publisher_links = self.create_publisher(String, '/distance_links', 10)
-        self.publisher_rechts = self.create_publisher(String, '/distance_rechts', 10)
+        self.publisher_links = self.create_publisher(String, '/US_distance_links', 10)
+        self.publisher_rechts = self.create_publisher(String, '/US_distance_rechts', 10)
         self.get_logger().info("EYYYY")
         timer_period = 0.1  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
+        self.timer = self.create_timer(2, self.message_callback)
  
 
     def timer_callback(self):
-        
-        msg_left = String()
-        msg_right = String()
+        global msg_left
+        global msg_right
 
         # set trigger to HIGH
         GPIO.output(GPIO_TRIGGER1, True)
@@ -96,18 +100,22 @@ class USPublisher(Node):
 
         #print ("links: " + msg_left.data)
         #print("rechts: " + msg_right.data)
-        
-        
+
+        self.publisher_links.publish(msg_left)
+        self.publisher_rechts.publish(msg_right)
+
+        '''
         if distance1 > 300 or distance2 > 300:
             self.get_logger().info('Distanz macht keinen Sinn')
         else:
-            self.get_logger().info('Hier die Distanz für links: "%s"' % msg_left.data)
-            self.get_logger().info('Hier die Distanz für rechts: "%s"' %  msg_right.data)
             #print(type(msg), type(msg.data), msg.data)
             self.publisher_links.publish(msg_left)
             self.publisher_rechts.publish(msg_right)
-        
-
+        '''
+            
+    def message_callback(self):
+            self.get_logger().info('US_LEFT: "%s"' % msg_left.data)
+            self.get_logger().info('US_RIGHT: "%s"' %  msg_right.data)
 
 
 

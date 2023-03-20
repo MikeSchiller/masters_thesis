@@ -1,0 +1,8 @@
+<launch>
+    <node pkg="my_robot_controller"  exec ="cmps_pub" />
+    <node pkg="my_robot_controller"  exec ="dualUS" />
+    <node pkg="my_robot_controller"  exec ="Radar_simple" />
+    <node pkg="my_robot_controller"  exec ="barrier_pub" />
+    
+
+</launch>

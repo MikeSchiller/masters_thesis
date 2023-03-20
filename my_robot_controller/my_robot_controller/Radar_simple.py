@@ -22,7 +22,8 @@ packageLength = 1500
 x = list(range(128))
 
 # Create TCP_IP object with corresponding IP and port
-TCP_IP = '192.168.100.201'
+TCP_IP = '192.168.100.201' # original ip address
+#TCP_IP = '192.168.2.201'
 TCP_PORT = 6172
 sockTCP = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 try:
