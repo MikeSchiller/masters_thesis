@@ -7,7 +7,7 @@ from std_msgs.msg import String
 
 # Servo-GPIO (PWM-GPIO 18, Pin 12)
 LenkServoPin = 18
-SchubServoPin = 13
+SchubServoPin = 19
 # GPIO initialisieren
 gpio.setmode(gpio.BCM)
 gpio.setup(LenkServoPin, gpio.OUT)
@@ -48,8 +48,8 @@ class servo_autonomous(Node):
         self.sub_steer = self.create_subscription(String, '/steering', self.steer_callback, 10)
         self.sub_drive = self.create_subscription(String, '/driving', self.drive_callback ,10)
         self.sub_switch = self.create_subscription(String, '/switch', self.switch_callback ,10)
-        self.distance_left_subscriber_ = self.create_subscription(String,'/distance_links', self.distance_callback_left, 10)
-        self.distance_left_subscriber_ = self.create_subscription(String,'/distance_rechts', self.distance_callback_right, 10)
+        self.distance_left_subscriber_ = self.create_subscription(String,'/US_distance_links', self.distance_callback_left, 10)
+        self.distance_left_subscriber_ = self.create_subscription(String,'/US_distance_rechts', self.distance_callback_right, 10)
         
 
         
@@ -110,6 +110,7 @@ class servo_autonomous(Node):
             SetFahrzeugSchub(schub)
             lenkung = 90
             SetServoLenkung(lenkung)
+            #mindist= 50
             if distance_left < 25.0 and distance_right > 25.0 and notlauf == 0  :
                 state = 10
             elif distance_right < 25.0 and distance_left > 25.0 and notlauf == 0 :
@@ -134,10 +135,10 @@ class servo_autonomous(Node):
             self.get_logger().info("Notlauf")
             if Rechtslenken == 1:
                 lenkung = 40
-                schub = 6.6
+                schub = 6.9
             else :
                 lenkung = 130
-                schub = 6.6
+                schub = 6.9
 
             SetFahrzeugSchub(schub)
             SetServoLenkung(lenkung)
@@ -161,8 +162,8 @@ class servo_autonomous(Node):
             self.get_logger().info(str(state))
         # Wand von links
             self.get_logger().info("OBACHT LINKS!")
-            schub = 7.65
-            lenkung = 130
+            schub = 7.7
+            lenkung = 50
             SetFahrzeugSchub(schub)
             SetServoLenkung(lenkung)
 
@@ -177,8 +178,8 @@ class servo_autonomous(Node):
             self.get_logger().info(str(state))
         #Wand von Rechts
             self.get_logger().info("OBACHT RECHTS!")
-            schub = 7.65
-            lenkung = 40
+            schub = 7.7
+            lenkung = 120
             SetFahrzeugSchub(schub)
             SetServoLenkung(lenkung)
 
