@@ -1,0 +1,29 @@
+[3.543s] Invoking command in '/home/mike/ros2_ws/src/build/my_robot_controller': PYTHONPATH=/home/mike/ros2_ws/src/build/my_robot_controller/prefix_override:/home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --uninstall --editable --build-directory /home/mike/ros2_ws/src/build/my_robot_controller/build
+[4.973s] running develop
+[6.147s] Invoked command in '/home/mike/ros2_ws/src/build/my_robot_controller' returned '0': PYTHONPATH=/home/mike/ros2_ws/src/build/my_robot_controller/prefix_override:/home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --uninstall --editable --build-directory /home/mike/ros2_ws/src/build/my_robot_controller/build
+[6.159s] Invoking command in '/home/mike/ros2_ws/src/my_robot_controller': PYTHONPATH=/home/mike/ros2_ws/src/build/my_robot_controller/prefix_override:/home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/my_robot_controller build --build-base /home/mike/ros2_ws/src/build/my_robot_controller/build install --record /home/mike/ros2_ws/src/build/my_robot_controller/install.log --single-version-externally-managed
+[7.501s] running egg_info
+[7.505s] writing ../build/my_robot_controller/my_robot_controller.egg-info/PKG-INFO
+[7.506s] writing dependency_links to ../build/my_robot_controller/my_robot_controller.egg-info/dependency_links.txt
+[7.507s] writing entry points to ../build/my_robot_controller/my_robot_controller.egg-info/entry_points.txt
+[7.508s] writing requirements to ../build/my_robot_controller/my_robot_controller.egg-info/requires.txt
+[7.508s] writing top-level names to ../build/my_robot_controller/my_robot_controller.egg-info/top_level.txt
+[7.518s] reading manifest file '../build/my_robot_controller/my_robot_controller.egg-info/SOURCES.txt'
+[7.522s] writing manifest file '../build/my_robot_controller/my_robot_controller.egg-info/SOURCES.txt'
+[7.523s] running build
+[7.523s] running build_py
+[7.526s] running install
+[7.528s] running install_lib
+[7.534s] byte-compiling /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller/__init__.py to __init__.cpython-310.pyc
+[7.536s] byte-compiling /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller/min_pub.py to min_pub.cpython-310.pyc
+[7.539s] byte-compiling /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller/draw_circle.py to draw_circle.cpython-310.pyc
+[7.541s] running install_data
+[7.544s] running install_egg_info
+[7.551s] removing '/home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller-0.0.0-py3.10.egg-info' (and everything under it)
+[7.553s] Copying ../build/my_robot_controller/my_robot_controller.egg-info to /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller-0.0.0-py3.10.egg-info
+[7.559s] running install_scripts
+[7.640s] Installing code_mayer script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.641s] Installing draw_circle script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.642s] Installing min_pub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.644s] writing list of installed files to '/home/mike/ros2_ws/src/build/my_robot_controller/install.log'
+[7.817s] Invoked command in '/home/mike/ros2_ws/src/my_robot_controller' returned '0': PYTHONPATH=/home/mike/ros2_ws/src/build/my_robot_controller/prefix_override:/home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/my_robot_controller build --build-base /home/mike/ros2_ws/src/build/my_robot_controller/build install --record /home/mike/ros2_ws/src/build/my_robot_controller/install.log --single-version-externally-managed

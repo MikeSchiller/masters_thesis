@@ -1,0 +1,5 @@
+[console_scripts]
+code_mayer = my_robot_controller.code_mayer2:main
+draw_circle = my_robot_controller.draw_circle:main
+min_pub = my_robot_controller.min_pub2:main
+

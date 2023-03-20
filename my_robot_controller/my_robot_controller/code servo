@@ -1,0 +1,44 @@
+import RPi.GPIO as gpio
+import time
+
+# Servo-GPIO (PWM-GPIO 18, Pin 12)
+servopin = 18
+
+# GPIO initialisieren
+gpio.setmode(gpio.BCM)
+gpio.setup(servopin, gpio.OUT)
+
+# PWM-Frequenz auf 50 Hz setzen
+servo = gpio.PWM(servopin, 50)
+
+# PWM starten, Servo auf 0 Grad
+servo.start(2.5)
+
+# Umrechnung Grad in Tastverhaeltnis
+def setservo(winkel):
+  if winkel < 0:
+    winkel = 0
+  if winkel > 180:
+    winkel = 180
+  pwm = winkel/18 + 2.5
+  servo.ChangeDutyCycle(pwm)
+
+try:
+  # Endlosschleife Servoansteuerung
+  while True:
+    # 90 Grad
+    setservo(90)
+    time.sleep(1)
+    # 180 Grad
+    setservo(180)
+    time.sleep(1)
+    # 0 Grad
+    setservo(0)
+    time.sleep(1)
+
+except KeyboardInterrupt:
+  # Abbruch mit [Strg][C],
+  # Servo auf 0 Grad, PWM beenden
+  servo.ChangeDutyCycle(2.5)
+  servo.stop()
+  gpio.cleanup()

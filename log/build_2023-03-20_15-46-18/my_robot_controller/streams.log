@@ -1,0 +1,21 @@
+[3.607s] Invoking command in '/home/mike/ros2_ws/src/build/my_robot_controller': PYTHONPATH=/home/mike/ros2_ws/src/build/my_robot_controller/prefix_override:/home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --editable --build-directory /home/mike/ros2_ws/src/build/my_robot_controller/build --no-deps install_data
+[5.104s] running develop
+[6.128s] running egg_info
+[6.129s] writing my_robot_controller.egg-info/PKG-INFO
+[6.130s] writing dependency_links to my_robot_controller.egg-info/dependency_links.txt
+[6.131s] writing entry points to my_robot_controller.egg-info/entry_points.txt
+[6.132s] writing requirements to my_robot_controller.egg-info/requires.txt
+[6.133s] writing top-level names to my_robot_controller.egg-info/top_level.txt
+[6.143s] reading manifest file 'my_robot_controller.egg-info/SOURCES.txt'
+[6.147s] writing manifest file 'my_robot_controller.egg-info/SOURCES.txt'
+[6.153s] running build_ext
+[6.154s] Creating /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my-robot-controller.egg-link (link to .)
+[6.158s] Installing code_mayer script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[6.159s] Installing draw_circle script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[6.160s] Installing min_pub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[6.161s] Installing pose_subsrciber script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[6.162s] Installing test_node script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[6.163s] 
+[6.163s] Installed /home/mike/ros2_ws/src/build/my_robot_controller
+[6.164s] running install_data
+[6.342s] Invoked command in '/home/mike/ros2_ws/src/build/my_robot_controller' returned '0': PYTHONPATH=/home/mike/ros2_ws/src/build/my_robot_controller/prefix_override:/home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --editable --build-directory /home/mike/ros2_ws/src/build/my_robot_controller/build --no-deps install_data

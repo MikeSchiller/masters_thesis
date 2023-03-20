@@ -1,0 +1,55 @@
+[3.455s] Invoking command in '/home/mike/ros2_ws/src/build/my_robot_controller': PYTHONPATH=/home/mike/ros2_ws/src/build/my_robot_controller/prefix_override:/home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --uninstall --editable --build-directory /home/mike/ros2_ws/src/build/my_robot_controller/build
+[4.866s] running develop
+[5.900s] Removing /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my-robot-controller.egg-link (link to .)
+[6.148s] Invoked command in '/home/mike/ros2_ws/src/build/my_robot_controller' returned '0': PYTHONPATH=/home/mike/ros2_ws/src/build/my_robot_controller/prefix_override:/home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --uninstall --editable --build-directory /home/mike/ros2_ws/src/build/my_robot_controller/build
+[6.155s] Invoking command in '/home/mike/ros2_ws/src/my_robot_controller': PYTHONPATH=/home/mike/ros2_ws/src/build/my_robot_controller/prefix_override:/home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/my_robot_controller build --build-base /home/mike/ros2_ws/src/build/my_robot_controller/build install --record /home/mike/ros2_ws/src/build/my_robot_controller/install.log --single-version-externally-managed
+[7.503s] running egg_info
+[7.506s] writing ../build/my_robot_controller/my_robot_controller.egg-info/PKG-INFO
+[7.507s] writing dependency_links to ../build/my_robot_controller/my_robot_controller.egg-info/dependency_links.txt
+[7.508s] writing entry points to ../build/my_robot_controller/my_robot_controller.egg-info/entry_points.txt
+[7.509s] writing requirements to ../build/my_robot_controller/my_robot_controller.egg-info/requires.txt
+[7.510s] writing top-level names to ../build/my_robot_controller/my_robot_controller.egg-info/top_level.txt
+[7.519s] reading manifest file '../build/my_robot_controller/my_robot_controller.egg-info/SOURCES.txt'
+[7.523s] writing manifest file '../build/my_robot_controller/my_robot_controller.egg-info/SOURCES.txt'
+[7.524s] running build
+[7.525s] running build_py
+[7.526s] creating /home/mike/ros2_ws/src/build/my_robot_controller/build
+[7.527s] creating /home/mike/ros2_ws/src/build/my_robot_controller/build/lib
+[7.527s] creating /home/mike/ros2_ws/src/build/my_robot_controller/build/lib/my_robot_controller
+[7.527s] copying my_robot_controller/min_pub2.py -> /home/mike/ros2_ws/src/build/my_robot_controller/build/lib/my_robot_controller
+[7.528s] copying my_robot_controller/__init__.py -> /home/mike/ros2_ws/src/build/my_robot_controller/build/lib/my_robot_controller
+[7.528s] copying my_robot_controller/code_mayer2.py -> /home/mike/ros2_ws/src/build/my_robot_controller/build/lib/my_robot_controller
+[7.529s] copying my_robot_controller/pose_subscriber.py -> /home/mike/ros2_ws/src/build/my_robot_controller/build/lib/my_robot_controller
+[7.530s] copying my_robot_controller/min_pub.py -> /home/mike/ros2_ws/src/build/my_robot_controller/build/lib/my_robot_controller
+[7.530s] copying my_robot_controller/draw_circle.py -> /home/mike/ros2_ws/src/build/my_robot_controller/build/lib/my_robot_controller
+[7.531s] copying my_robot_controller/Code_Mayer.py -> /home/mike/ros2_ws/src/build/my_robot_controller/build/lib/my_robot_controller
+[7.532s] copying my_robot_controller/my_first_node.py -> /home/mike/ros2_ws/src/build/my_robot_controller/build/lib/my_robot_controller
+[7.533s] running install
+[7.535s] running install_lib
+[7.538s] creating /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller
+[7.538s] copying /home/mike/ros2_ws/src/build/my_robot_controller/build/lib/my_robot_controller/min_pub2.py -> /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller
+[7.539s] copying /home/mike/ros2_ws/src/build/my_robot_controller/build/lib/my_robot_controller/__init__.py -> /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller
+[7.540s] copying /home/mike/ros2_ws/src/build/my_robot_controller/build/lib/my_robot_controller/code_mayer2.py -> /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller
+[7.540s] copying /home/mike/ros2_ws/src/build/my_robot_controller/build/lib/my_robot_controller/pose_subscriber.py -> /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller
+[7.542s] copying /home/mike/ros2_ws/src/build/my_robot_controller/build/lib/my_robot_controller/min_pub.py -> /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller
+[7.542s] copying /home/mike/ros2_ws/src/build/my_robot_controller/build/lib/my_robot_controller/draw_circle.py -> /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller
+[7.543s] copying /home/mike/ros2_ws/src/build/my_robot_controller/build/lib/my_robot_controller/Code_Mayer.py -> /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller
+[7.544s] copying /home/mike/ros2_ws/src/build/my_robot_controller/build/lib/my_robot_controller/my_first_node.py -> /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller
+[7.547s] byte-compiling /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller/min_pub2.py to min_pub2.cpython-310.pyc
+[7.549s] byte-compiling /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller/__init__.py to __init__.cpython-310.pyc
+[7.550s] byte-compiling /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller/code_mayer2.py to code_mayer2.cpython-310.pyc
+[7.552s] byte-compiling /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller/pose_subscriber.py to pose_subscriber.cpython-310.pyc
+[7.554s] byte-compiling /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller/min_pub.py to min_pub.cpython-310.pyc
+[7.556s] byte-compiling /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller/draw_circle.py to draw_circle.cpython-310.pyc
+[7.558s] byte-compiling /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller/Code_Mayer.py to Code_Mayer.cpython-310.pyc
+[7.560s] byte-compiling /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller/my_first_node.py to my_first_node.cpython-310.pyc
+[7.562s] running install_data
+[7.565s] running install_egg_info
+[7.572s] Copying ../build/my_robot_controller/my_robot_controller.egg-info to /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller-0.0.0-py3.10.egg-info
+[7.579s] running install_scripts
+[7.658s] Installing code_mayer script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.660s] Installing draw_circle script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.660s] Installing min_pub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.661s] Installing pose_subsrciber script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.663s] writing list of installed files to '/home/mike/ros2_ws/src/build/my_robot_controller/install.log'
+[7.824s] Invoked command in '/home/mike/ros2_ws/src/my_robot_controller' returned '0': PYTHONPATH=/home/mike/ros2_ws/src/build/my_robot_controller/prefix_override:/home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/my_robot_controller build --build-base /home/mike/ros2_ws/src/build/my_robot_controller/build install --record /home/mike/ros2_ws/src/build/my_robot_controller/install.log --single-version-externally-managed
