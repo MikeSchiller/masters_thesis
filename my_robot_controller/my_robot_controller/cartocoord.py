@@ -46,7 +46,10 @@ class CarToCoords(Node):
         self.pub_target_long = self.create_publisher(String, '/target_long', 10)
         self.pub_target_lat = self.create_publisher(String, 'target_lat', 10)
         self.pub_start = self.create_publisher(String, 'start', 10)
-        
+        # das kommt von GPS_DATA_STUFF
+        self.sub_gpslong = self.create_subscription(String, '/act_longitude', self.act_long_callback, 10)
+        self.sub_gpslat = self.create_subscription(String, '/act_latitude', self.act_lat_callback, 10)
+                
         #einmalige Abfrage der Aufgabenparameter
         if firstrun == 0:
             self.coordsInput()
@@ -57,11 +60,7 @@ class CarToCoords(Node):
         self.sub_steer = self.create_subscription(String,'/car_steer', self.Steer_callback, 10)
         self.sub_schubPWM = self.create_subscription(String, '/car_setschubPWM', self.Schub_callback, 10)
         self.sub_odo = self.create_subscription(String,'/distance_driven', self.Odo_callback, 10)
-        #Die bekommen keine Infos mehr
-        # Korrektur, ich bin dumm, das kommt von GPS_DATA_STUFF
-        self.sub_gpslong = self.create_subscription(String, '/act_longitude', self.act_long_callback, 10)
-        self.sub_gpslat = self.create_subscription(String, '/act_latitude', self.act_lat_callback, 10)
-        
+
         
 
 
@@ -284,14 +283,14 @@ class CarToCoords(Node):
         print("Usegps in coords: " + str(Usegps))
         if Usegps == 1:
             self.car_long.publish(sendgpsLong)
-            print(sendgpsLat.data)
+            print(sendgpsLong.data)
         else:
             self.car_long.publish(sendCalcLong)       
         if Usegps == 1:
             self.car_lat.publish(sendgpsLat)
-            print(gpsLat)
         else:
             self.car_lat.publish(sendCalcLat)
+            print(sendCalcLat.data)
 
         #print("long: " + str(calclong))
         #print("lat: " + str(calclat))
@@ -364,23 +363,17 @@ class CarToCoords(Node):
         #partdistance 
         part_distance_driven_this_iteration = distance_driven_new - distance_driven_old
         part_distance_driven = part_distance_driven + part_distance_driven_this_iteration
-        part_distance_driven_for_coord = part_distance_driven_for_coord + part_distance_driven_this_iteration
+       # part_distance_driven_for_coord = part_distance_driven_for_coord + part_distance_driven_this_iteration
 
 
-        if part_distance_driven > 0.02 or steering_angle == 0 and checkleft != 0 or steering_angle == 0 and checkright != 0: #Heading berechnung alle 2cm // hier jetzt noch rein, dass auch abfrage, wenn winkel auf null gesetzt wird
+        if part_distance_driven > 0.04 or steering_angle == 0 and checkleft != 0 or steering_angle == 0 and checkright != 0: #Heading berechnung alle 2cm // hier jetzt noch rein, dass auch abfrage, wenn winkel auf null gesetzt wird
             
             self.calculate_heading(steering_angle,part_distance_driven)
-            #self.calculate_car_coords(part_distance_driven, calcHeading) # das hat sachen put gemacht
+            self.calculate_car_coords(part_distance_driven, calcHeading) # das hat sachen put gemacht
             part_distance_driven = 0
         else:
             pass
-        #berechnung der Koordinaten jeden gefahrenen Meter (dadurch Koordinaten zwar ungenauer, aber hoffentlich weniger numerische Effekte)
-        if part_distance_driven_for_coord > 0.02 or steering_angle == 0 and checkleft != 0 or steering_angle == 0 and checkright != 0: 
-            self.calculate_car_coords(part_distance_driven_for_coord, calcHeading) # das hat sachen put gemacht
-            part_distance_driven = 0
-            part_distance_driven_for_coord = 0
-        else:
-            pass
+
         
         
         #print ("old: " + str(distance_driven_old))
