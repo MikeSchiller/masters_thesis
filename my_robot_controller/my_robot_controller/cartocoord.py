@@ -268,6 +268,8 @@ class CarToCoords(Node):
         
         calclong = calclong + y
         calclat = calclat + x 
+        print (calclong)
+        print (calclat)
         sendCalcLong = String()
         sendCalcLat = String()
         sendgpsLong = String()
@@ -372,7 +374,7 @@ class CarToCoords(Node):
         else:
             pass
         #berechnung der Koordinaten jeden gefahrenen Meter (dadurch Koordinaten zwar ungenauer, aber hoffentlich weniger numerische Effekte)
-        if part_distance_driven_for_coord > 1 or steering_angle == 0 and checkleft != 0 or steering_angle == 0 and checkright != 0: 
+        if part_distance_driven_for_coord > 0.02 or steering_angle == 0 and checkleft != 0 or steering_angle == 0 and checkright != 0: 
             self.calculate_car_coords(part_distance_driven_for_coord, calcHeading) # das hat sachen put gemacht
             part_distance_driven = 0
             part_distance_driven_for_coord = 0

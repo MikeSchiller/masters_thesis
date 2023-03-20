@@ -105,8 +105,8 @@ class gps_autonomous(Node):
         self.sub_steer = self.create_subscription(String, '/steering', self.steer_callback, 10)
         self.sub_drive = self.create_subscription(String, '/driving', self.drive_callback ,10)
         self.sub_switch = self.create_subscription(String, '/switch', self.switch_callback ,10)
-        self.distance_left_subscriber_ = self.create_subscription(String,'/US_distance_links', self.distance_callback_left, 10)
-        self.distance_rechts_subscriber_ = self.create_subscription(String,'/US_distance_rechts', self.distance_callback_right, 10)
+        self.distance_left_subscriber_ = self.create_subscription(String,'/US_distance_links', self.distance_callback_left, 1)
+        self.distance_rechts_subscriber_ = self.create_subscription(String,'/US_distance_rechts', self.distance_callback_right, 1)
         self.sub_Zone1_ = self.create_subscription(String,'/Zone1', self.saveZone1, 10)
         self.trackcount_sub = self.create_subscription(String,'/Radar_trackcount', self.count_callback, 10)
         self.distance_subscriber_y = self.create_subscription(String,'/Radar_distances_y', self.distance_y_callback, 10)
@@ -522,7 +522,11 @@ class gps_autonomous(Node):
             elif target_heading >= 360:
                 target_heading = target_heading - 360
             #target_heading = target_heading + 180 #!!!debug, wert passt hier allggemein noch nicht
-            #target_heading = 40
+            ############################################################
+        
+            target_heading = 40
+        
+            ##############################################################
             print ('target Heading: ' + str(target_heading))
 
 
@@ -560,7 +564,7 @@ class gps_autonomous(Node):
       global debounceleft 
       global debounceright  
       global checkforgo
-      mindist = 60.0 
+      mindist = 100.0 
 
     #Abfrage, ob seehr nah am Ziel
     
@@ -751,7 +755,7 @@ class gps_autonomous(Node):
             self.get_logger().info("Notlauf")
             
 
-            schub = 7.0
+            schub = 6.9
             SetFahrzeugSchub(self, schub)
             SetServoLenkung(self, lenkung)
             

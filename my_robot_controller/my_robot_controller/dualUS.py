@@ -30,8 +30,8 @@ class USPublisher(Node):
 
     def __init__(self):
         super().__init__('dualUS')
-        self.publisher_links = self.create_publisher(String, '/US_distance_links', 10)
-        self.publisher_rechts = self.create_publisher(String, '/US_distance_rechts', 10)
+        self.publisher_links = self.create_publisher(String, '/US_distance_links', 1)
+        self.publisher_rechts = self.create_publisher(String, '/US_distance_rechts', 1)
         self.get_logger().info("EYYYY")
         timer_period = 0.1  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
