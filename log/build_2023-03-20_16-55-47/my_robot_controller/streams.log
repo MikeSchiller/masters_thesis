@@ -1,0 +1,39 @@
+[4.100s] Invoking command in '/home/mike/ros2_ws/src/build/my_robot_controller': PYTHONPATH=/home/mike/ros2_ws/src/build/my_robot_controller/prefix_override:/home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --editable --build-directory /home/mike/ros2_ws/src/build/my_robot_controller/build --no-deps install_data
+[5.774s] running develop
+[6.974s] running egg_info
+[6.975s] writing my_robot_controller.egg-info/PKG-INFO
+[6.977s] writing dependency_links to my_robot_controller.egg-info/dependency_links.txt
+[6.978s] writing entry points to my_robot_controller.egg-info/entry_points.txt
+[6.979s] writing requirements to my_robot_controller.egg-info/requires.txt
+[6.979s] writing top-level names to my_robot_controller.egg-info/top_level.txt
+[6.990s] reading manifest file 'my_robot_controller.egg-info/SOURCES.txt'
+[6.996s] writing manifest file 'my_robot_controller.egg-info/SOURCES.txt'
+[7.002s] running build_ext
+[7.003s] Creating /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my-robot-controller.egg-link (link to .)
+[7.007s] Installing Car_to_coords script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.013s] Installing Radar_simple script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.014s] Installing US_test script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.015s] Installing barrier_pub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.015s] Installing cmps_pub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.016s] Installing code_mayer script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.017s] Installing csvWriter script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.017s] Installing draw_circle script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.018s] Installing dualUS script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.019s] Installing gps_data_stuff script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.019s] Installing gps_drive_controller script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.020s] Installing gps_module script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.020s] Installing gps_translation script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.021s] Installing keyboard_pub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.021s] Installing min_pub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.022s] Installing pose_subsrciber script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.022s] Installing processRadar script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.023s] Installing simple_autonomous script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.023s] Installing simple_servo_sub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.024s] Installing test_node script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.024s] Installing turtle_controller script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.025s] Installing two_Distance_Autonomous script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.025s] Installing vl53l5cx_node_pub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+[7.028s] 
+[7.029s] Installed /home/mike/ros2_ws/src/build/my_robot_controller
+[7.031s] running install_data
+[7.197s] Invoked command in '/home/mike/ros2_ws/src/build/my_robot_controller' returned '0': PYTHONPATH=/home/mike/ros2_ws/src/build/my_robot_controller/prefix_override:/home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --editable --build-directory /home/mike/ros2_ws/src/build/my_robot_controller/build --no-deps install_data

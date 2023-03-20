@@ -42,7 +42,8 @@ setup(
             "gps_drive_controller = my_robot_controller.gps_drive_controller:main",
             "cmps_pub = my_robot_controller.cmps_pub:main",
             "Car_to_coords = my_robot_controller.cartocoord:main",
-            "barrier_pub = my_robot_controller.barrier_pub:main"
+            "barrier_pub = my_robot_controller.barrier_pub:main",
+            "csvWriter = my_robot_controller.csvWriter:main"
         ],
     },
 )

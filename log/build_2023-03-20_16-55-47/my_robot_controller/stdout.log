@@ -1,0 +1,37 @@
+running develop
+running egg_info
+writing my_robot_controller.egg-info/PKG-INFO
+writing dependency_links to my_robot_controller.egg-info/dependency_links.txt
+writing entry points to my_robot_controller.egg-info/entry_points.txt
+writing requirements to my_robot_controller.egg-info/requires.txt
+writing top-level names to my_robot_controller.egg-info/top_level.txt
+reading manifest file 'my_robot_controller.egg-info/SOURCES.txt'
+writing manifest file 'my_robot_controller.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my-robot-controller.egg-link (link to .)
+Installing Car_to_coords script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing Radar_simple script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing US_test script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing barrier_pub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing cmps_pub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing code_mayer script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing csvWriter script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing draw_circle script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing dualUS script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing gps_data_stuff script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing gps_drive_controller script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing gps_module script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing gps_translation script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing keyboard_pub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing min_pub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing pose_subsrciber script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing processRadar script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing simple_autonomous script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing simple_servo_sub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing test_node script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing turtle_controller script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing two_Distance_Autonomous script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+Installing vl53l5cx_node_pub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller
+
+Installed /home/mike/ros2_ws/src/build/my_robot_controller
+running install_data

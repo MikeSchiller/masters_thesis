@@ -1,0 +1,245 @@
+[0.000000] (-) TimerEvent: {}
+[0.004357] (my_robot_controller) JobQueued: {'identifier': 'my_robot_controller', 'dependencies': OrderedDict()}
+[0.004669] (my_robot_bringup) JobQueued: {'identifier': 'my_robot_bringup', 'dependencies': OrderedDict([('my_robot_controller', '/home/mike/ros2_ws/src/install/my_robot_controller')])}
+[0.004865] (my_robot_controller) JobStarted: {'identifier': 'my_robot_controller'}
+[0.100834] (-) TimerEvent: {}
+[0.201649] (-) TimerEvent: {}
+[0.303075] (-) TimerEvent: {}
+[0.405070] (-) TimerEvent: {}
+[0.506455] (-) TimerEvent: {}
+[0.607145] (-) TimerEvent: {}
+[0.707929] (-) TimerEvent: {}
+[0.808599] (-) TimerEvent: {}
+[0.909300] (-) TimerEvent: {}
+[1.010003] (-) TimerEvent: {}
+[1.110672] (-) TimerEvent: {}
+[1.211370] (-) TimerEvent: {}
+[1.312126] (-) TimerEvent: {}
+[1.412810] (-) TimerEvent: {}
+[1.513524] (-) TimerEvent: {}
+[1.614234] (-) TimerEvent: {}
+[1.715072] (-) TimerEvent: {}
+[1.816139] (-) TimerEvent: {}
+[1.916806] (-) TimerEvent: {}
+[2.017513] (-) TimerEvent: {}
+[2.118234] (-) TimerEvent: {}
+[2.218995] (-) TimerEvent: {}
+[2.319735] (-) TimerEvent: {}
+[2.420489] (-) TimerEvent: {}
+[2.521174] (-) TimerEvent: {}
+[2.621914] (-) TimerEvent: {}
+[2.722711] (-) TimerEvent: {}
+[2.823424] (-) TimerEvent: {}
+[2.924139] (-) TimerEvent: {}
+[3.024844] (-) TimerEvent: {}
+[3.125552] (-) TimerEvent: {}
+[3.226246] (-) TimerEvent: {}
+[3.326947] (-) TimerEvent: {}
+[3.427689] (-) TimerEvent: {}
+[3.528553] (-) TimerEvent: {}
+[3.629414] (-) TimerEvent: {}
+[3.730171] (-) TimerEvent: {}
+[3.830962] (-) TimerEvent: {}
+[3.931848] (-) TimerEvent: {}
+[4.033092] (-) TimerEvent: {}
+[4.102919] (my_robot_controller) Command: {'cmd': ['/usr/bin/python3', 'setup.py', 'develop', '--editable', '--build-directory', '/home/mike/ros2_ws/src/build/my_robot_controller/build', '--no-deps', 'install_data'], 'cwd': '/home/mike/ros2_ws/src/build/my_robot_controller', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'MAIL': '/var/mail/mike', 'USER': 'mike', 'SSH_CLIENT': 'fe80::a557:4368:9296:bd9a%wlan0 63281 22', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib', 'HOME': '/home/mike', 'OLDPWD': '/home/mike/ros2_ws/src/my_robot_controller', 'SSH_TTY': '/dev/pts/0', 'ROS_PYTHON_VERSION': '3', 'LC_CTYPE': 'C.UTF-8', 'QUICK2WIRE_API_HOME': '/home/mike/quick2wire-python-api', 'COLCON_PREFIX_PATH': '/home/mike/ros2_ws/install', 'ROS_DISTRO': 'humble', 'LOGNAME': 'mike', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'TERM': 'xterm-256color', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/home/mike/.local/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/snap/bin', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'AMENT_PREFIX_PATH': '/home/mike/ros2_ws/install/my_robot_bringup:/home/mike/ros2_ws/install/my_robot_controller:/opt/ros/humble', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'PWD': '/home/mike/ros2_ws/src/build/my_robot_controller', 'SSH_CONNECTION': 'fe80::a557:4368:9296:bd9a%wlan0 63281 fe80::5716:501:852d:340e%wlan0 22', 'XDG_DATA_DIRS': '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/mike/ros2_ws/src/build/my_robot_controller/prefix_override:/home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages:/home/mike/ros2_ws/build/my_robot_controller:/home/mike/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages::/home/mike/quick2wire-python-api', 'COLCON': '1', 'CMAKE_PREFIX_PATH': '/home/mike/ros2_ws/install/my_robot_bringup'}, 'shell': False}
+[4.133269] (-) TimerEvent: {}
+[4.234411] (-) TimerEvent: {}
+[4.335134] (-) TimerEvent: {}
+[4.435880] (-) TimerEvent: {}
+[4.536652] (-) TimerEvent: {}
+[4.637485] (-) TimerEvent: {}
+[4.738145] (-) TimerEvent: {}
+[4.838853] (-) TimerEvent: {}
+[4.939583] (-) TimerEvent: {}
+[5.040249] (-) TimerEvent: {}
+[5.140932] (-) TimerEvent: {}
+[5.241659] (-) TimerEvent: {}
+[5.342383] (-) TimerEvent: {}
+[5.443094] (-) TimerEvent: {}
+[5.543876] (-) TimerEvent: {}
+[5.644606] (-) TimerEvent: {}
+[5.745517] (-) TimerEvent: {}
+[5.778270] (my_robot_controller) StdoutLine: {'line': b'running develop\n'}
+[5.845721] (-) TimerEvent: {}
+[5.946531] (-) TimerEvent: {}
+[6.047212] (-) TimerEvent: {}
+[6.147932] (-) TimerEvent: {}
+[6.248622] (-) TimerEvent: {}
+[6.349303] (-) TimerEvent: {}
+[6.450052] (-) TimerEvent: {}
+[6.550729] (-) TimerEvent: {}
+[6.651434] (-) TimerEvent: {}
+[6.752127] (-) TimerEvent: {}
+[6.852828] (-) TimerEvent: {}
+[6.953506] (-) TimerEvent: {}
+[6.978898] (my_robot_controller) StdoutLine: {'line': b'running egg_info\n'}
+[6.979833] (my_robot_controller) StdoutLine: {'line': b'writing my_robot_controller.egg-info/PKG-INFO\n'}
+[6.981024] (my_robot_controller) StdoutLine: {'line': b'writing dependency_links to my_robot_controller.egg-info/dependency_links.txt\n'}
+[6.982481] (my_robot_controller) StdoutLine: {'line': b'writing entry points to my_robot_controller.egg-info/entry_points.txt\n'}
+[6.983268] (my_robot_controller) StdoutLine: {'line': b'writing requirements to my_robot_controller.egg-info/requires.txt\n'}
+[6.984030] (my_robot_controller) StdoutLine: {'line': b'writing top-level names to my_robot_controller.egg-info/top_level.txt\n'}
+[6.994606] (my_robot_controller) StdoutLine: {'line': b"reading manifest file 'my_robot_controller.egg-info/SOURCES.txt'\n"}
+[7.000186] (my_robot_controller) StdoutLine: {'line': b"writing manifest file 'my_robot_controller.egg-info/SOURCES.txt'\n"}
+[7.006548] (my_robot_controller) StdoutLine: {'line': b'running build_ext\n'}
+[7.007425] (my_robot_controller) StdoutLine: {'line': b'Creating /home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages/my-robot-controller.egg-link (link to .)\n'}
+[7.011150] (my_robot_controller) StdoutLine: {'line': b'Installing Car_to_coords script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.017899] (my_robot_controller) StdoutLine: {'line': b'Installing Radar_simple script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.018495] (my_robot_controller) StdoutLine: {'line': b'Installing US_test script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.019119] (my_robot_controller) StdoutLine: {'line': b'Installing barrier_pub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.019858] (my_robot_controller) StdoutLine: {'line': b'Installing cmps_pub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.020485] (my_robot_controller) StdoutLine: {'line': b'Installing code_mayer script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.021380] (my_robot_controller) StdoutLine: {'line': b'Installing csvWriter script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.021942] (my_robot_controller) StdoutLine: {'line': b'Installing draw_circle script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.022543] (my_robot_controller) StdoutLine: {'line': b'Installing dualUS script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.023076] (my_robot_controller) StdoutLine: {'line': b'Installing gps_data_stuff script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.023585] (my_robot_controller) StdoutLine: {'line': b'Installing gps_drive_controller script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.024144] (my_robot_controller) StdoutLine: {'line': b'Installing gps_module script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.024652] (my_robot_controller) StdoutLine: {'line': b'Installing gps_translation script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.025112] (my_robot_controller) StdoutLine: {'line': b'Installing keyboard_pub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.025647] (my_robot_controller) StdoutLine: {'line': b'Installing min_pub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.026064] (my_robot_controller) StdoutLine: {'line': b'Installing pose_subsrciber script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.026601] (my_robot_controller) StdoutLine: {'line': b'Installing processRadar script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.027111] (my_robot_controller) StdoutLine: {'line': b'Installing simple_autonomous script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.027669] (my_robot_controller) StdoutLine: {'line': b'Installing simple_servo_sub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.028158] (my_robot_controller) StdoutLine: {'line': b'Installing test_node script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.028675] (my_robot_controller) StdoutLine: {'line': b'Installing turtle_controller script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.029202] (my_robot_controller) StdoutLine: {'line': b'Installing two_Distance_Autonomous script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.029892] (my_robot_controller) StdoutLine: {'line': b'Installing vl53l5cx_node_pub script to /home/mike/ros2_ws/src/install/my_robot_controller/lib/my_robot_controller\n'}
+[7.031483] (my_robot_controller) StdoutLine: {'line': b'\n'}
+[7.033418] (my_robot_controller) StdoutLine: {'line': b'Installed /home/mike/ros2_ws/src/build/my_robot_controller\n'}
+[7.034478] (my_robot_controller) StdoutLine: {'line': b'running install_data\n'}
+[7.053802] (-) TimerEvent: {}
+[7.154856] (-) TimerEvent: {}
+[7.195628] (my_robot_controller) CommandEnded: {'returncode': 0}
+[7.255033] (-) TimerEvent: {}
+[7.355901] (-) TimerEvent: {}
+[7.437095] (my_robot_controller) JobEnded: {'identifier': 'my_robot_controller', 'rc': 0}
+[7.448471] (my_robot_bringup) JobStarted: {'identifier': 'my_robot_bringup'}
+[7.457529] (-) TimerEvent: {}
+[7.484210] (my_robot_bringup) JobProgress: {'identifier': 'my_robot_bringup', 'progress': 'cmake'}
+[7.487281] (my_robot_bringup) Command: {'cmd': ['/usr/bin/cmake', '/home/mike/ros2_ws/src/my_robot_bringup', '-DAMENT_CMAKE_SYMLINK_INSTALL=1', '-DCMAKE_INSTALL_PREFIX=/home/mike/ros2_ws/src/install/my_robot_bringup'], 'cwd': '/home/mike/ros2_ws/src/build/my_robot_bringup', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('MAIL', '/var/mail/mike'), ('USER', 'mike'), ('SSH_CLIENT', 'fe80::a557:4368:9296:bd9a%wlan0 63281 22'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/mike'), ('OLDPWD', '/home/mike/ros2_ws/src/my_robot_controller'), ('SSH_TTY', '/dev/pts/0'), ('ROS_PYTHON_VERSION', '3'), ('LC_CTYPE', 'C.UTF-8'), ('QUICK2WIRE_API_HOME', '/home/mike/quick2wire-python-api'), ('COLCON_PREFIX_PATH', '/home/mike/ros2_ws/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'mike'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/mike/.local/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/snap/bin'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/home/mike/ros2_ws/src/install/my_robot_controller:/home/mike/ros2_ws/install/my_robot_bringup:/home/mike/ros2_ws/install/my_robot_controller:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('PWD', '/home/mike/ros2_ws/src/build/my_robot_bringup'), ('SSH_CONNECTION', 'fe80::a557:4368:9296:bd9a%wlan0 63281 fe80::5716:501:852d:340e%wlan0 22'), ('XDG_DATA_DIRS', '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/mike/ros2_ws/src/build/my_robot_controller:/home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages:/home/mike/ros2_ws/build/my_robot_controller:/home/mike/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages:/home/mike/quick2wire-python-api'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/home/mike/ros2_ws/install/my_robot_bringup:/home/mike/ros2_ws/install/my_robot_controller:/opt/ros/humble')]), 'shell': False}
+[7.557745] (-) TimerEvent: {}
+[7.658513] (-) TimerEvent: {}
+[7.759380] (-) TimerEvent: {}
+[7.872813] (-) TimerEvent: {}
+[7.973539] (-) TimerEvent: {}
+[8.074258] (-) TimerEvent: {}
+[8.174962] (-) TimerEvent: {}
+[8.275738] (-) TimerEvent: {}
+[8.376488] (-) TimerEvent: {}
+[8.477410] (-) TimerEvent: {}
+[8.578546] (-) TimerEvent: {}
+[8.679521] (-) TimerEvent: {}
+[8.780429] (-) TimerEvent: {}
+[8.865597] (my_robot_bringup) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[8.880617] (-) TimerEvent: {}
+[8.981827] (-) TimerEvent: {}
+[9.082739] (-) TimerEvent: {}
+[9.183467] (-) TimerEvent: {}
+[9.284440] (-) TimerEvent: {}
+[9.385828] (-) TimerEvent: {}
+[9.486684] (-) TimerEvent: {}
+[9.548287] (my_robot_bringup) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[9.586857] (-) TimerEvent: {}
+[9.592432] (my_robot_bringup) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[9.687182] (-) TimerEvent: {}
+[9.788451] (-) TimerEvent: {}
+[9.889331] (-) TimerEvent: {}
+[9.951955] (my_robot_bringup) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[9.979028] (my_robot_bringup) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[9.980976] (my_robot_bringup) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[9.984057] (my_robot_bringup) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[9.989482] (-) TimerEvent: {}
+[9.999588] (my_robot_bringup) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[10.089687] (-) TimerEvent: {}
+[10.190462] (-) TimerEvent: {}
+[10.291455] (-) TimerEvent: {}
+[10.368352] (my_robot_bringup) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[10.391617] (-) TimerEvent: {}
+[10.396142] (my_robot_bringup) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[10.397259] (my_robot_bringup) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[10.399049] (my_robot_bringup) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[10.434514] (my_robot_bringup) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.4 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[10.491797] (-) TimerEvent: {}
+[10.592551] (-) TimerEvent: {}
+[10.693283] (-) TimerEvent: {}
+[10.794117] (-) TimerEvent: {}
+[10.894841] (-) TimerEvent: {}
+[10.995592] (-) TimerEvent: {}
+[11.096448] (-) TimerEvent: {}
+[11.197188] (-) TimerEvent: {}
+[11.297899] (-) TimerEvent: {}
+[11.398644] (-) TimerEvent: {}
+[11.492804] (my_robot_bringup) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3.10 (found version "3.10.12") found components: Interpreter \n'}
+[11.498838] (-) TimerEvent: {}
+[11.599588] (-) TimerEvent: {}
+[11.700717] (-) TimerEvent: {}
+[11.801919] (-) TimerEvent: {}
+[11.849673] (my_robot_bringup) StdoutLine: {'line': b'-- Override CMake install command with custom implementation using symlinks instead of copying resources\n'}
+[11.902076] (-) TimerEvent: {}
+[12.002831] (-) TimerEvent: {}
+[12.103610] (-) TimerEvent: {}
+[12.204295] (-) TimerEvent: {}
+[12.305066] (-) TimerEvent: {}
+[12.405814] (-) TimerEvent: {}
+[12.506559] (-) TimerEvent: {}
+[12.531832] (my_robot_bringup) StdoutLine: {'line': b'-- Configuring done\n'}
+[12.552448] (my_robot_bringup) StdoutLine: {'line': b'-- Generating done\n'}
+[12.556972] (my_robot_bringup) StdoutLine: {'line': b'-- Build files have been written to: /home/mike/ros2_ws/src/build/my_robot_bringup\n'}
+[12.571867] (my_robot_bringup) CommandEnded: {'returncode': 0}
+[12.573858] (my_robot_bringup) JobProgress: {'identifier': 'my_robot_bringup', 'progress': 'build'}
+[12.576406] (my_robot_bringup) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/mike/ros2_ws/src/build/my_robot_bringup', '--', '-j4', '-l4'], 'cwd': '/home/mike/ros2_ws/src/build/my_robot_bringup', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('MAIL', '/var/mail/mike'), ('USER', 'mike'), ('SSH_CLIENT', 'fe80::a557:4368:9296:bd9a%wlan0 63281 22'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/mike'), ('OLDPWD', '/home/mike/ros2_ws/src/my_robot_controller'), ('SSH_TTY', '/dev/pts/0'), ('ROS_PYTHON_VERSION', '3'), ('LC_CTYPE', 'C.UTF-8'), ('QUICK2WIRE_API_HOME', '/home/mike/quick2wire-python-api'), ('COLCON_PREFIX_PATH', '/home/mike/ros2_ws/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'mike'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/mike/.local/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/snap/bin'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/home/mike/ros2_ws/src/install/my_robot_controller:/home/mike/ros2_ws/install/my_robot_bringup:/home/mike/ros2_ws/install/my_robot_controller:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('PWD', '/home/mike/ros2_ws/src/build/my_robot_bringup'), ('SSH_CONNECTION', 'fe80::a557:4368:9296:bd9a%wlan0 63281 fe80::5716:501:852d:340e%wlan0 22'), ('XDG_DATA_DIRS', '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/mike/ros2_ws/src/build/my_robot_controller:/home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages:/home/mike/ros2_ws/build/my_robot_controller:/home/mike/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages:/home/mike/quick2wire-python-api'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/home/mike/ros2_ws/install/my_robot_bringup:/home/mike/ros2_ws/install/my_robot_controller:/opt/ros/humble')]), 'shell': False}
+[12.606767] (-) TimerEvent: {}
+[12.669053] (my_robot_bringup) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.4 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[12.706950] (-) TimerEvent: {}
+[12.807824] (-) TimerEvent: {}
+[12.923635] (-) TimerEvent: {}
+[13.024449] (-) TimerEvent: {}
+[13.125450] (-) TimerEvent: {}
+[13.226103] (-) TimerEvent: {}
+[13.326863] (-) TimerEvent: {}
+[13.427760] (-) TimerEvent: {}
+[13.516235] (my_robot_bringup) StdoutLine: {'line': b'-- Override CMake install command with custom implementation using symlinks instead of copying resources\n'}
+[13.527953] (-) TimerEvent: {}
+[13.628842] (-) TimerEvent: {}
+[13.729536] (-) TimerEvent: {}
+[13.831003] (-) TimerEvent: {}
+[13.887122] (my_robot_bringup) StdoutLine: {'line': b'-- Configuring done\n'}
+[13.903556] (my_robot_bringup) StdoutLine: {'line': b'-- Generating done\n'}
+[13.924281] (my_robot_bringup) StdoutLine: {'line': b'-- Build files have been written to: /home/mike/ros2_ws/src/build/my_robot_bringup\n'}
+[13.931163] (-) TimerEvent: {}
+[14.001755] (my_robot_bringup) CommandEnded: {'returncode': 0}
+[14.031401] (-) TimerEvent: {}
+[14.098494] (my_robot_bringup) JobProgress: {'identifier': 'my_robot_bringup', 'progress': 'install'}
+[14.131590] (-) TimerEvent: {}
+[14.139936] (my_robot_bringup) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/mike/ros2_ws/src/build/my_robot_bringup'], 'cwd': '/home/mike/ros2_ws/src/build/my_robot_bringup', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('MAIL', '/var/mail/mike'), ('USER', 'mike'), ('SSH_CLIENT', 'fe80::a557:4368:9296:bd9a%wlan0 63281 22'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/mike'), ('OLDPWD', '/home/mike/ros2_ws/src/my_robot_controller'), ('SSH_TTY', '/dev/pts/0'), ('ROS_PYTHON_VERSION', '3'), ('LC_CTYPE', 'C.UTF-8'), ('QUICK2WIRE_API_HOME', '/home/mike/quick2wire-python-api'), ('COLCON_PREFIX_PATH', '/home/mike/ros2_ws/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'mike'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/mike/.local/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/snap/bin'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/home/mike/ros2_ws/src/install/my_robot_controller:/home/mike/ros2_ws/install/my_robot_bringup:/home/mike/ros2_ws/install/my_robot_controller:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('PWD', '/home/mike/ros2_ws/src/build/my_robot_bringup'), ('SSH_CONNECTION', 'fe80::a557:4368:9296:bd9a%wlan0 63281 fe80::5716:501:852d:340e%wlan0 22'), ('XDG_DATA_DIRS', '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/mike/ros2_ws/src/build/my_robot_controller:/home/mike/ros2_ws/src/install/my_robot_controller/lib/python3.10/site-packages:/home/mike/ros2_ws/build/my_robot_controller:/home/mike/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages:/home/mike/quick2wire-python-api'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/home/mike/ros2_ws/install/my_robot_bringup:/home/mike/ros2_ws/install/my_robot_controller:/opt/ros/humble')]), 'shell': False}
+[14.167667] (my_robot_bringup) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[14.169737] (my_robot_bringup) StdoutLine: {'line': b'-- Execute custom install script\n'}
+[14.172699] (my_robot_bringup) StdoutLine: {'line': b'-- Symlinking: /home/mike/ros2_ws/src/install/my_robot_bringup/share/my_robot_bringup//launch/GPSsensors.launch.xml\n'}
+[14.204493] (my_robot_bringup) StdoutLine: {'line': b'-- Symlinking: /home/mike/ros2_ws/src/install/my_robot_bringup/share/my_robot_bringup//launch/noGPSsensors.launch.xml\n'}
+[14.231757] (-) TimerEvent: {}
+[14.238950] (my_robot_bringup) StdoutLine: {'line': b'-- Symlinking: /home/mike/ros2_ws/src/install/my_robot_bringup/share/ament_index/resource_index/package_run_dependencies/my_robot_bringup\n'}
+[14.271850] (my_robot_bringup) StdoutLine: {'line': b'-- Symlinking: /home/mike/ros2_ws/src/install/my_robot_bringup/share/ament_index/resource_index/parent_prefix_path/my_robot_bringup\n'}
+[14.306155] (my_robot_bringup) StdoutLine: {'line': b'-- Symlinking: /home/mike/ros2_ws/src/install/my_robot_bringup/share/my_robot_bringup/environment/ament_prefix_path.sh\n'}
+[14.332031] (-) TimerEvent: {}
+[14.338622] (my_robot_bringup) StdoutLine: {'line': b'-- Symlinking: /home/mike/ros2_ws/src/install/my_robot_bringup/share/my_robot_bringup/environment/ament_prefix_path.dsv\n'}
+[14.370296] (my_robot_bringup) StdoutLine: {'line': b'-- Symlinking: /home/mike/ros2_ws/src/install/my_robot_bringup/share/my_robot_bringup/environment/path.sh\n'}
+[14.401892] (my_robot_bringup) StdoutLine: {'line': b'-- Symlinking: /home/mike/ros2_ws/src/install/my_robot_bringup/share/my_robot_bringup/environment/path.dsv\n'}
+[14.432238] (-) TimerEvent: {}
+[14.435923] (my_robot_bringup) StdoutLine: {'line': b'-- Symlinking: /home/mike/ros2_ws/src/install/my_robot_bringup/share/my_robot_bringup/local_setup.bash\n'}
+[14.467665] (my_robot_bringup) StdoutLine: {'line': b'-- Symlinking: /home/mike/ros2_ws/src/install/my_robot_bringup/share/my_robot_bringup/local_setup.sh\n'}
+[14.499717] (my_robot_bringup) StdoutLine: {'line': b'-- Symlinking: /home/mike/ros2_ws/src/install/my_robot_bringup/share/my_robot_bringup/local_setup.zsh\n'}
+[14.532049] (my_robot_bringup) StdoutLine: {'line': b'-- Symlinking: /home/mike/ros2_ws/src/install/my_robot_bringup/share/my_robot_bringup/local_setup.dsv\n'}
+[14.532714] (-) TimerEvent: {}
+[14.563907] (my_robot_bringup) StdoutLine: {'line': b'-- Symlinking: /home/mike/ros2_ws/src/install/my_robot_bringup/share/my_robot_bringup/package.dsv\n'}
+[14.596772] (my_robot_bringup) StdoutLine: {'line': b'-- Symlinking: /home/mike/ros2_ws/src/install/my_robot_bringup/share/ament_index/resource_index/packages/my_robot_bringup\n'}
+[14.629898] (my_robot_bringup) StdoutLine: {'line': b'-- Symlinking: /home/mike/ros2_ws/src/install/my_robot_bringup/share/my_robot_bringup/cmake/my_robot_bringupConfig.cmake\n'}
+[14.632937] (-) TimerEvent: {}
+[14.661952] (my_robot_bringup) StdoutLine: {'line': b'-- Symlinking: /home/mike/ros2_ws/src/install/my_robot_bringup/share/my_robot_bringup/cmake/my_robot_bringupConfig-version.cmake\n'}
+[14.693938] (my_robot_bringup) StdoutLine: {'line': b'-- Symlinking: /home/mike/ros2_ws/src/install/my_robot_bringup/share/my_robot_bringup/package.xml\n'}
+[14.733454] (my_robot_bringup) CommandEnded: {'returncode': 0}
+[14.744194] (-) TimerEvent: {}
+[14.844924] (-) TimerEvent: {}
+[14.925905] (my_robot_bringup) JobEnded: {'identifier': 'my_robot_bringup', 'rc': 0}
+[14.928685] (-) EventReactorShutdown: {}

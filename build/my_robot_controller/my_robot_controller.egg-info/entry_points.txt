@@ -1,5 +1,25 @@
 [console_scripts]
+Car_to_coords = my_robot_controller.cartocoord:main
+Radar_simple = my_robot_controller.Radar_simple:main
+US_test = my_robot_controller.US_test:main
+barrier_pub = my_robot_controller.barrier_pub:main
+cmps_pub = my_robot_controller.cmps_pub:main
 code_mayer = my_robot_controller.code_mayer2:main
+csvWriter = my_robot_controller.csvWriter:main
 draw_circle = my_robot_controller.draw_circle:main
+dualUS = my_robot_controller.dualUS:main
+gps_data_stuff = my_robot_controller.gps_data_stuff:main
+gps_drive_controller = my_robot_controller.gps_drive_controller:main
+gps_module = my_robot_controller.gps_module:main
+gps_translation = my_robot_controller.gps_translation:main
+keyboard_pub = my_robot_controller.keyboard_pub:main
 min_pub = my_robot_controller.min_pub2:main
+pose_subsrciber = my_robot_controller.pose_subscriber:main
+processRadar = my_robot_controller.processRadar:main
+simple_autonomous = my_robot_controller.simple_autonomous:main
+simple_servo_sub = my_robot_controller.simple_servo_sub:main
+test_node = my_robot_controller.my_first_node:main
+turtle_controller = my_robot_controller.turtle_controller:main
+two_Distance_Autonomous = my_robot_controller.two_distance_autonomous:main
+vl53l5cx_node_pub = my_robot_controller.vl53l5cx_node:main
 
