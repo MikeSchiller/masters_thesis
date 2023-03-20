@@ -40,30 +40,7 @@ tracked_Heading = 0
 cmps_heading = 0
 radius_earth = 6371000 #6371km
 target_heading = 0
-x11 = 0
-y11 = 0
-x12 = 0
-y12 = 0
-x13 = 0
-y13 = 0
-x14 = 0
-y14 = 0
-x21 = 0
-y21 = 0
-x22 = 0
-y22 = 0
-x23 = 0
-y23 = 0
-x24 = 0
-y24 = 0
-m112 = 0
-m123 = 0
-m134 = 0
-m141 = 0
-b123 = 0
-b112 = 0
-b134 = 0
-b141 = 0
+Zone1 =""
 target_longitude = 9.939772 # Kreuzung E-Radstellplatz
 target_latitude = 48.418074 # Kreuzung E-Radstellplatz
 #target_longitude = 9.937939 # Kreuzung V-Bau
@@ -106,35 +83,22 @@ class gps_autonomous(Node):
         self.sub_drive = self.create_subscription(String, '/driving', self.drive_callback ,10)
         self.sub_switch = self.create_subscription(String, '/switch', self.switch_callback ,10)
         self.distance_left_subscriber_ = self.create_subscription(String,'/distance_links', self.distance_callback_left, 10)
-        self.distance_left_subscriber_ = self.create_subscription(String,'/distance_rechts', self.distance_callback_right, 10)
-        self.distance_left_subscriber_ = self.create_subscription(String,'/Zone1', self.decodeZone1, 10)
-        self.distance_left_subscriber_ = self.create_subscription(String,'/Zone2', self.decodeZone2, 10)        
+        self.distance_rechts_subscriber_ = self.create_subscription(String,'/distance_rechts', self.distance_callback_right, 10)
+        self.sub_Zone1_ = self.create_subscription(String,'/Zone1', self.saveZone1, 10)
+        self.sub_Zone2 = self.create_subscription(String,'/Zone2', self.dsaveZone2, 10)        
         
 
-     
+    def saveZone1(self, inputstr):
+        global Zone1
+        Zone1 = inputstr
      
      
     def decodeZone1(self, inputstring):
-        global x11 
-        global y11 
-        global x12 
-        global y12 
-        global x13 
-        global y13 
-        global x14 
-        global y14 
-        global m112
-        global m123
-        global m134
-        global m141
-        global b112
-        global b123
-        global b134
-        global b141
         global actual_longitude
         global actual_latitude
         global target_latitude
         global target_longitude
+        bufferdist = 1 #[Einheit noch unklar]
 
         sd = inputstring.split(",")
         x11 = sd[0]
@@ -146,41 +110,50 @@ class gps_autonomous(Node):
         x14 = sd[6]
         y14 = sd[7]
         #https://de.serlo.org/mathe/1785/geradensteigung
+        #!!!!Code wird Probleme machen, wenn Punkte genau auf einer Latitude oder Longitude liegen
         #Nördliche Kante
         if y12 - y11 == 0:
-            winkel12 = 90
+            Heading112 = 90
         else:
             #Variablen für Geradengleichung    
             m112 = (x12 - x11) / (y12 - y11)  
             b112 = (m112 * x11) / y11
+            #Berechnung des Headings der Gerade
+            Heading112 = math.atan(m112)
             #Variable für Orthogonalengleichung
             mo112 = -1/m112
             bo112 = actual_latitude/ (m112 * actual_longitude)
             
         #Östliche Kante
         if x13 - x12 == 0:
-            winkel23 = 180
+            Heading123 = 180
         else:       
             m123 = (y13 - y12) / (x13 - x12)
             b123 = (m123 * x12) / y12
+            #Berechnung des Headings der Gerade
+            Heading123 = math.atan(m123)
             #Variable für Orthogonalengleichung
             mo123 = -1/m123
             bo123 = actual_latitude/ (m123 * actual_longitude)
         #Südliche Kante
         if y14 - y13 == 0:
-            winkel34 = 270
+            Heading134 = 270
         else:        
             m134 = (x14 - x13) / (y14 - y13) 
             b134 = (m134 * x13) / y13
+            #Berechnung des Headings der Gerade
+            Heading134 = math.atan(m134)
             #Variable für Orthogonalengleichung
             mo134 = -1/m134
             bo134 = actual_latitude/ (m134 * actual_longitude)
         #Westliche Kante
         if x11 - x14 == 0:
-            winkel41 = 0
+            Heading141 = 0
         else:
             m141 = (y11 - y14) / (x11 - x14)
             b141 = (m141 * x14) / y14
+            #Berechnung des Headings der Gerade
+            Heading141 = math.atan(m141)
             #Variable für Orthogonalengleichung
             mo141 = -1/m141
             bo141 = actual_latitude/ (m141 * actual_longitude)
@@ -206,37 +179,89 @@ class gps_autonomous(Node):
         if actual_latitude > x11 and actual_latitude < x12:
             xo112 = (b112 - bo112) / (mo112 - m112) #(mo112 /m112) * (bo112 - b112)
             yo112 = mo112 * xo112  + bo112
-            distTo112 = math.sqrt((xo112 - actual_latitude)^2 + (yo112 - actual_longitude)^2)      
+            #Das funktioniert so nicht, weil in degree gerechnet, umrechnung in Meter nötig
+            #distTo112 = math.sqrt((xo112 - actual_latitude)^2 + (yo112 - actual_longitude)^2)  
+            distTo112 = math.sqrt((2*radius_earth*math.sin((xo112 - actual_latitude/2)))^2 + (2*radius_earth*math.sin((yo112 - actual_longitude/2)))^2) 
+        else:
+            distTo112 = 1000    
         #Distance to line 123
         if actual_latitude > y13 and actual_latitude < y12:
             xo123 = (b123 - bo123) / (mo123 - m123) 
             yo123 = mo123 * xo123  + bo123
-            distTo123 = math.sqrt((xo123 - actual_latitude)^2 + (yo123 - actual_longitude)^2)  
+            distTo123 = math.sqrt((2*radius_earth*math.sin((xo123 - actual_latitude/2)))^2 + (2*radius_earth*math.sin((yo123 - actual_longitude/2)))^2)   
+        else:
+            distTo123 = 1000
         #Distance to line 134
         if actual_latitude > x14 and actual_latitude < x13:
             xo134 = (b134 - bo134) / (mo134 - m134) 
             yo134 = mo134 * xo134  + bo134
-            distTo134 = math.sqrt((xo134 - actual_latitude)^2 + (yo134 - actual_longitude)^2)  
+            distTo134 = math.sqrt((2*radius_earth*math.sin((xo134 - actual_latitude/2)))^2 + (2*radius_earth*math.sin((yo134 - actual_longitude/2)))^2)   
+        else:
+            distTo134 = 1000
         #Distance to line 141
         if actual_latitude > y14 and actual_latitude < y11:
             xo141 = (b141 - bo141) / (mo141 - m141) 
             yo141 = mo141 * xo141  + bo141
-            distTo141 = math.sqrt((xo141 - actual_latitude)^2 + (yo141 - actual_longitude)^2)  
-        
+            distTo141 = math.sqrt((2*radius_earth*math.sin((xo141 - actual_latitude/2)))^2 + (2*radius_earth*math.sin((yo141 - actual_longitude/2)))^2)   
+        else:
+            distTo141 = 1000
+        #mindist Einheit????
         #Nächster SChritt hier, schauen welche distanz am niedrigsten ist und aus steigung m neues Heading bestimmen.
+        distarray = [distTo112, distTo123, distTo134, distTo141]
+        mindist= min(distarray)
+        pos_min = distarray.index(mindist)
+
+        directionset = 0 #Variable, damit zu beginn einmal die Richtung festgelegt wird und sich erst wieder resettet, wenn Plattform aud Risikozone raus ist
+
+        if pos_min == 0: #Line 112
+            if mindist < bufferdist :
+                if actual_latitude > target_latitude and directionset == 0:
+                    Zoneheading = Heading112 + 180
+                    directionset = 1
+                else: 
+                    Zoneheading = Heading112
+                    directionset = 1
+                
+        elif pos_min == 0: #Line 123
+            if mindist < bufferdist :
+                if actual_longitude < target_longitude and directionset == 0:
+                    Zoneheading = Heading123 + 180
+                    directionset = 1
+                else: 
+                    Zoneheading = Heading123
+
+        elif pos_min == 0: #Line 134
+            if mindist < bufferdist:
+                if actual_latitude > target_latitude and directionset == 0:
+                    Zoneheading = Heading134 + 180
+                    directionset = 1
+                else: 
+                    Zoneheading = Heading134
+                    directionset = 1
+
+        elif pos_min == 0: #Line 141
+            if mindist < bufferdist :
+                if actual_longitude > target_longitude and tempset == 0:
+                    Zoneheading = Heading141 + 180
+                    tempset = 1
+                else: 
+                    Zoneheading = Heading141
+
+
+        else:
+            Zoneheading = 1360 # Wert der ausgegeben wird, wenn Plattform nicht in der Nähe von NO GO Zone ist.
+            directionset = 0
+
+        if Zoneheading >= 360:
+            Zoneheading = Zoneheading - 360
         
+        return Zoneheading
+                
+
         
         
 
     def decodeZone2(self, inputstring):
-        global x21 
-        global y21 
-        global x22 
-        global y22 
-        global x23 
-        global y23 
-        global x24 
-        global y24 
         sd = inputstring.split(",")
         x21 = sd[0]
         y21 = sd[1]
@@ -315,6 +340,7 @@ class gps_autonomous(Node):
         global target_heading 
         global target_longitude
         global target_latitude 
+        target_heading = 0 # zu beginn der Methode null setzen, damit frisch ausgerechnet wird und Wert anschließend für andere Methoden verfügbar
 
 
         #Distanz zwischen beiden Punkten berechnen. Dafür Erde = Kugel annahme, für kurze Distanzen ausreichend
@@ -347,7 +373,7 @@ class gps_autonomous(Node):
         if target_heading < 0:
             target_heading = target_heading + 360
         print ('target Heading: ' + str(target_heading))
-        target_heading = 0 #Warum wird hier NuLL gesetzt ????
+        
 
 
 

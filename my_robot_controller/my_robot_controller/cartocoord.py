@@ -71,7 +71,7 @@ class CarToCoords(Node):
         elif nogoset == "N" :
             print("okay, moving on")
         elif nogoset == "help" :
-            print("NO GO Zones are areas defined by coordinates, where the platform isn´t allowed to drive trough. A zone is defined by 4 points starting in the upper left corner and continuing clockwise. PLease use the degreeformat and seperate using `,`. Do not use spaces in the input. You can have a total of two zones active at a time")
+            print("NO GO Zones are areas defined by coordinates, where the platform isn´t allowed to drive trough. A zone is defined by 4 points starting in the upper left corner and continuing clockwise. PLease use the degreeformat and seperate using `,` and put into parentheses. Do not use spaces in the input. Currently, One Zone can be active.") #You can have a total of two zones active at a time")
         else :
             self.get_logger().warning("Input not supported!")
 
