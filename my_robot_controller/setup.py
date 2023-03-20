@@ -40,8 +40,9 @@ setup(
             "gps_data_stuff= my_robot_controller.gps_data_stuff:main",
             "gps_translation= my_robot_controller.gps_translation:main",
             "gps_drive_controller = my_robot_controller.gps_drive_controller:main",
-            "cmps_pub = my_robot_controller.cmps_pub:main"
-            "Car_to_coords = my_robot_controller.cartocoord:main"
+            "cmps_pub = my_robot_controller.cmps_pub:main",
+            "Car_to_coords = my_robot_controller.cartocoord:main",
+            "barrier_pub = my_robot_controller.barrier_pub:main"
         ],
     },
 )
