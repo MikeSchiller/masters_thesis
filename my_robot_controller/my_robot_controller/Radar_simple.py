@@ -91,8 +91,8 @@ class RadarPublisher(Node):
 
     def __init__(self):
         super().__init__('Radar_test')
-        self.publisher_x = self.create_publisher(String, '/distance_x', 10)
-        self.publisher_y = self.create_publisher(String, '/distance_y', 10)
+        self.publisher_x = self.create_publisher(String, '/distances_x', 10)
+        self.publisher_y = self.create_publisher(String, '/distances_y', 10)
         self.trackcount_publisher= self.create_publisher(String, '/trackcount', 10)
         self.get_logger().info("Radar macht piep")
         timer_period = 0.5  # seconds
@@ -185,54 +185,28 @@ class RadarPublisher(Node):
                 distance_x = distance_pdat[target] * math.sin(azimuth_pdat[target]) / 100
                 distance_y = distance_pdat[target] * math.cos(azimuth_pdat[target]) / 100
                 #self.get_logger().info(str(distance_y))
-                """
-                if speed_pdat[target] > 0.5:
-                    linecolor = 'g'
-                elif speed_pdat[target] < -0.5:
-                    linecolor = 'r'
-                else:
-                    linecolor = 'b'
-                lines = sub1.plot(distance_x, distance_y, marker='o', markersize=10, color=linecolor, linestyle='None')
-            sub1.grid(True)
-            sub1.axis([-10, 10, 0, 10])
-            plt.title(
-                'Raw targets range/range (Nb. of targets: ' + str(numberoftargets) + ') \n (Green: Receding, Red: Approaching)')
-            plt.xlabel('Distance [m]')
-            plt.ylabel('Distance [m]')
-            """
 
 
-            # calculate x and y coordinates and plot the tracked targets
+            # calculate x and y coordinates and store in arrays for sending
+
             #sub2 = fig.add_subplot(122)
+            distances_x = []
+            distances_y = []
             for target in range(0, numberoftrackedtargets):
-                distance_x = distance_tdat[target] * math.sin(azimuth_tdat[target]) / 100
-                distance_y = distance_tdat[target] * math.cos(azimuth_tdat[target]) / 100
-                msgx.data = str(distance_x)
-                msgy.data = str(distance_y)
-                msgc.data = str(numberoftrackedtargets)
-                self.publisher_x.publish(msgx)
-                self.publisher_y.publish(msgy)
-                self.trackcount_publisher.publish(msgc)
-                #self.get_logger().info(str(distance_y))
-            """
-                if speed_tdat[target] > 0.5:
-                    linecolor = 'g'
-                elif speed_tdat[target] < -0.5:
-                    linecolor = 'r'
-                else:
-                    linecolor = 'b'
-                lines = sub2.plot(distance_x, distance_y, marker='o', markersize=10, color=linecolor, linestyle='None')
-            sub2.grid(True)
-            sub2.axis([-10, 10, 0, 10])
-            plt.title('Tracked targets range/range (Nb. of targets: ' + str(
-                numberoftrackedtargets) + ') \n (Green: Receding, Red: Approaching)')
-            plt.xlabel('Distance [m]')
-            plt.ylabel('Distance [m]')
+                distances_x.append(float(f'{(distance_tdat[target] * math.sin(azimuth_tdat[target]) / 100):.4f}'))
+                distances_y.append(float(f'{(distance_tdat[target] * math.cos(azimuth_tdat[target]) / 100):.4f}'))
+                #distance gets truncated to only inlcude the first 4 digits after . 
 
-            # draw plots
-            fig.canvas.draw()
-            fig.canvas.flush_events()
-            """
+
+            #send the acummulated data
+            msgx.data = str(distances_x)
+            msgy.data = str(distances_y)
+            msgc.data = str(numberoftrackedtargets)
+            self.publisher_x.publish(msgx)
+            self.publisher_y.publish(msgy)
+            self.trackcount_publisher.publish(msgc)
+
+
 
 
 
