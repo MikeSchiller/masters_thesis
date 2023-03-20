@@ -100,36 +100,23 @@ class RadarPublisher(Node):
  
 
     def timer_callback(self):
-        print("timer")
         # readout and plot time and frequency adc_data continuously
         for ctr in range(100):
-            print(ctr)
             
             # GET PDAT DATA ---------------------------------
             pdat_data = []
-            print("a1")
             packageData, adr = sockUDP.recvfrom(packageLength)
-            print("a2")
             while packageData[0:4] != b'PDAT':  # do while header isn't expected header
-                print("a3")
                 packageData, adr = sockUDP.recvfrom(packageLength)
-            print("a4")
             respLength = int.from_bytes(packageData[4:8], byteorder='little')  # get response length
-            print("a5")
             numberoftargets = round(respLength / 10)  # calculate number of detected targets
-            print("a6")
             packageData = packageData[8:len(packageData)]  # exclude header from data
-            print("a7")
             pdat_data = packageData  # store data
-            print("a8")
             packageData, adr = sockUDP.recvfrom(packageLength)  # get data
-            print("a9")
             while packageData.find(b'TDAT') == -1:
-                print("a10")
                 pdat_data += packageData  # store data
                 packageData, adr = sockUDP.recvfrom(packageLength)  # get data
             
-            print("pdat1")
 
             # GET TDAT DATA -------------------------------
             respLength = int.from_bytes(packageData[4:8], byteorder='little')  # get response length
@@ -140,7 +127,7 @@ class RadarPublisher(Node):
             while packageData.find(b'PDAT') == -1:
                 tdat_data += packageData  # store data
                 packageData, adr = sockUDP.recvfrom(packageLength)  # get data
-            print("tdat1")
+
 
             # init arrays
             distance_pdat = []
@@ -153,13 +140,11 @@ class RadarPublisher(Node):
             azimuth_tdat = []
             elevation_tdat = []
             magnitude_tdat = []
-            print("init1")
 
             #initialize variables for sending
             msgx =  String()
             msgy = String()
             msgc = String()
-            print("init2")
 
             # get distance [cm], speed [km/h*100] and azimuth angle [degree*100] of the detected raw targets by converting pdat into uint16/int16
             for target in range(0, numberoftargets):
@@ -174,7 +159,6 @@ class RadarPublisher(Node):
                         int.from_bytes(pdat_data[10 * target + 6:10 * target + 8], byteorder='little', signed=True) / 100))
                 magnitude_pdat.append(
                     int.from_bytes(pdat_data[10 * target + 8:10 * target + 10], byteorder='little', signed=False))
-            print("afterraw1")
 
             # get distance [cm], speed [km/h*100] and azimuth angle [degree*100] of the tracked targets by convert tdat data into uint16/int16
             for target in range(0, numberoftrackedtargets):
@@ -189,7 +173,6 @@ class RadarPublisher(Node):
                         int.from_bytes(tdat_data[10 * target + 6:10 * target + 8], byteorder='little', signed=True) / 100))
                 magnitude_tdat.append(
                     int.from_bytes(tdat_data[10 * target + 8:10 * target + 10], byteorder='little', signed=False))
-            print("aftertrack1")
             # clear figure
             #plt.clf()
 
@@ -217,7 +200,7 @@ class RadarPublisher(Node):
             plt.xlabel('Distance [m]')
             plt.ylabel('Distance [m]')
             """
-            print("aftercalcraw")
+
 
             # calculate x and y coordinates and plot the tracked targets
             #sub2 = fig.add_subplot(122)
@@ -250,7 +233,7 @@ class RadarPublisher(Node):
             fig.canvas.draw()
             fig.canvas.flush_events()
             """
-            print("aftercalctracked")
+
 
 
 
