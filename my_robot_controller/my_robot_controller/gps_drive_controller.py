@@ -45,6 +45,7 @@ Rechtslenken = 0
 state = 99
 distance_left = 10
 distance_right =20 
+checkforgo = 0
 #stopwatsch = 1
 #start = 0
 #Radar
@@ -470,9 +471,6 @@ class gps_autonomous(Node):
                 #Abfrage, in welchem Quadranten sich das Target vom aktuellen Punkt befindet
                 #quadrantlat = 34 # Quadrant 3 oder 4
                 quadrantlat = 23
-                #target_heading = target_heading +90 Dar macht math keinen Sinn
-                #target_heading = target_heading +90 #alte werte
-                print("23!!!!!!!!!!!!!")
             else: 
                 pass
             
@@ -480,11 +478,6 @@ class gps_autonomous(Node):
             if difference_long < 0:
                 difference_long = difference_long * -1
                 quadrantlong = 34
-                #quadrantlong = 23 #Quadrant 2 oder 3
-                #target_heading = target_heading + 180
-
-                print("34!!!!!!!!!!!!!")
-                #target_heading = target_heading + 180#alte werte
             else: 
                 pass
             # Genauigkeit https://www.sunearthtools.com/dp/tools/pos_earth.php?lang=de#txtEarth_6
@@ -566,6 +559,7 @@ class gps_autonomous(Node):
       global debounceall 
       global debounceleft 
       global debounceright  
+      global checkforgo
       mindist = 40.0 
 
     #Abfrage, ob seehr nah am Ziel
@@ -588,8 +582,9 @@ class gps_autonomous(Node):
     # Abfrage, ob koordianten ungleich 0N, 0E
       elif actual_latitude == 0 and actual_longitude == 0 and state != 99:
           state = 98 
-      else:
+      elif actual_latitude != 0 and actual_longitude != 0 and state == 98 and checkforgo == 0:
             state = 0
+            checkforgo = 1
         
       
 
@@ -671,7 +666,7 @@ class gps_autonomous(Node):
 
             SetServoLenkung(self , lenkung)
             SetFahrzeugSchub(self , schub)
-
+            '''
             # Implementierung einer einfachen Auswertung der Radar Daten
             minddist_radar_x = 0.5 #[m]
             minddist_radar_y = 0.4 #[m]
@@ -695,27 +690,22 @@ class gps_autonomous(Node):
                     elif abs(radararrayY[radvar]) < minddist_radar_y :
                         state = 40
                 
-                    
+            '''        
 
 
             #Am ende der auswertung müssen die Radar arrays geleert werden
             radararrayX = []
             radararrayY = []
             
-            
-            #check distances from US sensors and act accordingly 
+            '''            #check distances from US sensors and act accordingly 
             if distance_left < mindist and distance_right > mindist and notlauf == 0  :
                     state = 10
             elif distance_right < mindist and distance_left > mindist and notlauf == 0 :
                     state = 20
             elif distance_left < mindist and distance_right < mindist and notlauf == 0 :
                     state =1
-                    
-                    
+            '''
             # including debouncing 
-
-
-
             #print(distance_left)
             #print(distance_right)
 
@@ -735,9 +725,7 @@ class gps_autonomous(Node):
                     debounceall = 0
                     state =1
 
- 
 
-            
            # print(debounceall)
             #print(debounceleft)
            # print(debounceright)
@@ -763,7 +751,7 @@ class gps_autonomous(Node):
             self.get_logger().info("Notlauf")
             
 
-            
+            schub = 7.0
             SetFahrzeugSchub(self, schub)
             SetServoLenkung(self, lenkung)
             

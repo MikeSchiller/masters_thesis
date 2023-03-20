@@ -7,7 +7,7 @@ from std_msgs.msg import String
 
 # Servo-GPIO (PWM-GPIO 18, Pin 12)
 LenkServoPin = 18
-SchubServoPin = 13
+SchubServoPin = 19
 # GPIO initialisieren
 gpio.setmode(gpio.BCM)
 gpio.setup(LenkServoPin, gpio.OUT)

@@ -24,6 +24,7 @@ calcHeading = 10.0
 radstand = 0.315 #(Radstand des Fahrzeugs in Meter)
 part_distance_driven = 0
 distance_driven_old = 0
+part_distance_driven_for_coord = 0
 #
 checkcheck = 0
 checkleft = 0
@@ -277,12 +278,15 @@ class CarToCoords(Node):
         sendgpsLat.data = str(gpsLat)
 
             #wenn GPS aktiviert ist, senden von gps koordinaten, sonst verwenden von berechneten Koordinaten
+        print("Usegps in coords: " + str(Usegps))
         if Usegps == 1:
             self.car_long.publish(sendgpsLong)
+            print(sendgpsLat.data)
         else:
             self.car_long.publish(sendCalcLong)       
         if Usegps == 1:
             self.car_lat.publish(sendgpsLat)
+            print(gpsLat)
         else:
             self.car_lat.publish(sendCalcLat)
 
@@ -341,6 +345,7 @@ class CarToCoords(Node):
         global checkcheck
         global part_distance_driven
         global distance_driven_old
+        global part_distance_driven_for_coord
      
         #input tut
         if car_dist.data == "":
@@ -356,12 +361,21 @@ class CarToCoords(Node):
         #partdistance 
         part_distance_driven_this_iteration = distance_driven_new - distance_driven_old
         part_distance_driven = part_distance_driven + part_distance_driven_this_iteration
+        part_distance_driven_for_coord = part_distance_driven_for_coord + part_distance_driven_this_iteration
 
-        if part_distance_driven > 0.04 or steering_angle == 0 and checkleft != 0 or steering_angle == 0 and checkright != 0: #Heading berechnung alle 5cm // hier jetzt noch rein, dass auch abfrage, wenn winkel auf null gesetzt wird
+
+        if part_distance_driven > 0.02 or steering_angle == 0 and checkleft != 0 or steering_angle == 0 and checkright != 0: #Heading berechnung alle 2cm // hier jetzt noch rein, dass auch abfrage, wenn winkel auf null gesetzt wird
             
             self.calculate_heading(steering_angle,part_distance_driven)
-            self.calculate_car_coords(part_distance_driven, calcHeading) # das hat sachen put gemacht
+            #self.calculate_car_coords(part_distance_driven, calcHeading) # das hat sachen put gemacht
             part_distance_driven = 0
+        else:
+            pass
+        #berechnung der Koordinaten jeden gefahrenen Meter (dadurch Koordinaten zwar ungenauer, aber hoffentlich weniger numerische Effekte)
+        if part_distance_driven_for_coord > 1 or steering_angle == 0 and checkleft != 0 or steering_angle == 0 and checkright != 0: 
+            self.calculate_car_coords(part_distance_driven_for_coord, calcHeading) # das hat sachen put gemacht
+            part_distance_driven = 0
+            part_distance_driven_for_coord = 0
         else:
             pass
         
@@ -440,6 +454,7 @@ class CarToCoords(Node):
             onlyfirstlat = 2
         if Usegps == 1:
             self.car_lat.publish(gps_lat)
+            print(gps_lat.data)
         else:
             self.car_lat.publish(calclat)
 

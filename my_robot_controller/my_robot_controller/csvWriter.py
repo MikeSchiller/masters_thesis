@@ -70,7 +70,7 @@ class csvWriter(Node):
     
         
         
-        with open('simfahrt_targetHeading_40_improved.csv', 'w+', newline='') as file:
+        with open('simfahrt_GPS_1_0711.csv', 'w+', newline='') as file:
             print ("meh")
             writer = csv.writer(file, lineterminator='\n')
             for k in range(h):
