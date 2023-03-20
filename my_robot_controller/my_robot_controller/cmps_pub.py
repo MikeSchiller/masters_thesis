@@ -22,6 +22,7 @@ class Cmps_pub(Node):
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
     def heading_strtofloat_converter(self,heading):
+
         #"270° 29'" format
         index1 = heading.find("°")
         index2 = index1 + 1
@@ -30,6 +31,13 @@ class Cmps_pub(Node):
         head_deg = float(heading[0:index1])
         head_min = float(heading[index2:index3])
         heading_float = head_deg + (1/60*head_min)
+
+        #Kalibrierung von schief verbautem Sensor
+       # heading_float = heading_float + 90
+
+        if heading_float >= 360:
+            heading_float = heading_float - 360
+
         heading_string = str(heading_float)
         heading_string = heading_string[0:6]
         return heading_string   

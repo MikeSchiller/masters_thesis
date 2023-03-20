@@ -85,7 +85,7 @@ class gps_autonomous(Node):
         self.distance_left_subscriber_ = self.create_subscription(String,'/distance_links', self.distance_callback_left, 10)
         self.distance_rechts_subscriber_ = self.create_subscription(String,'/distance_rechts', self.distance_callback_right, 10)
         self.sub_Zone1_ = self.create_subscription(String,'/Zone1', self.saveZone1, 10)
-        self.sub_Zone2 = self.create_subscription(String,'/Zone2', self.saveZone2, 10)        
+        #self.sub_Zone2 = self.create_subscription(String,'/Zone2', self.saveZone2, 10)        
         
 
     def saveZone1(self, inputstr):
@@ -403,7 +403,7 @@ class gps_autonomous(Node):
             #normale vorausfahrt
             self.get_logger().info("all is good")
             self.get_logger().info(str(state))
-            schub = 8.8
+            schub = 7.8
             
             #Auswertung Heading Kompass
             max_all_dev = 2 # maximum allowed deviation from target heading
@@ -423,15 +423,16 @@ class gps_autonomous(Node):
                 lenkung = 90
             '''
 
-            SetServoLenkung(lenkung)
-            SetFahrzeugSchub(schub)
+            SetServoLenkung(self , lenkung)
+            SetFahrzeugSchub(self , schub)
             
-            #check distances from US sensors and act accordingly    
-            if distance_left < 25.0 and distance_right > 25.0 and notlauf == 0  :
+            #check distances from US sensors and act accordingly  
+            mindist = 40.0  
+            if distance_left < mindist and distance_right > mindist and notlauf == 0  :
                 state = 10
-            elif distance_right < 25.0 and distance_left > 25.0 and notlauf == 0 :
+            elif distance_right < mindist and distance_left > mindist and notlauf == 0 :
                 state = 20
-            elif distance_left < 25.0 and distance_right < 25.0 and notlauf == 0 :
+            elif distance_left < mindist and distance_right < mindist and notlauf == 0 :
                 state =1
                 
 
@@ -441,7 +442,7 @@ class gps_autonomous(Node):
             #geradeaus gegen Wand
             self.get_logger().info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
             schub = 7.3
-            SetFahrzeugSchub(schub)
+            SetFahrzeugSchub(self, schub)
             notlauf = 1
             if distance_left < 50.0 or distance_right < 50.0 and notlauf == 1:
                 state =2
@@ -456,8 +457,8 @@ class gps_autonomous(Node):
                 lenkung = 130
                 schub = 6.6
 
-            SetFahrzeugSchub(schub)
-            SetServoLenkung(lenkung)
+            SetFahrzeugSchub(self, schub)
+            SetServoLenkung(self, lenkung)
             
             if  distance_left > 50.0 and distance_right > 50.0 and notlauf == 1:
                 state =3
@@ -467,7 +468,7 @@ class gps_autonomous(Node):
       
             self.get_logger().info("Notlauf beednet")
             schub = 7.3
-            SetFahrzeugSchub(schub)
+            SetFahrzeugSchub(self, schub)
             notlauf = 0
             state = 0
 
@@ -479,11 +480,11 @@ class gps_autonomous(Node):
         # Wand von links
             self.get_logger().info("OBACHT LINKS!")
             schub = 7.65
-            lenkung = 130
-            SetFahrzeugSchub(schub)
+            lenkung = 50
+            SetFahrzeugSchub(self, schub)
             SetServoLenkung(self, lenkung)
 
-            if distance_left < 7.0:
+            if distance_left < 15.0:
                 state = 1
                 Rechtslenken = 1
 
@@ -495,11 +496,11 @@ class gps_autonomous(Node):
         #Wand von Rechts
             self.get_logger().info("OBACHT RECHTS!")
             schub = 7.65
-            lenkung = 40
-            SetFahrzeugSchub(schub)
-            SetServoLenkung(lenkung)
+            lenkung = 120
+            SetFahrzeugSchub(self, schub)
+            SetServoLenkung(self, lenkung)
 
-            if distance_right < 7.0:
+            if distance_right < 15.0:
                 state = 1
                 Rechtslenken = 0
 
@@ -510,8 +511,8 @@ class gps_autonomous(Node):
             self.get_logger().info(str(state))
         #Keyboard input
             self.get_logger().info("manual drive")
-            SetServoLenkung(klenkung)
-            SetFahrzeugSchub(kschub)
+            SetServoLenkung(self, klenkung)
+            SetFahrzeugSchub(self, kschub)
 
         
 
@@ -530,7 +531,7 @@ def SetServoLenkung(self, winkel):
     winkel = 130
   pwmL = winkel/18 + 2.5
   LenkServo.ChangeDutyCycle(pwmL)
-  Winkelstring.data = winkel
+  Winkelstring.data = str(winkel)
   self.pub_car_steer.publish(Winkelstring) #WARUM WIRST DU NICHT FARBIG ?????
 
 #Methode fürs einstellen des Schubs
@@ -560,8 +561,10 @@ def SetFahrzeugSchub(self,schub):
 
     else: 
         sendschub = schub
-       
-    self.pub_car_speed.publish(str(schub))
+
+    pubschub = String()
+    pubschub.data = str(schub)   
+    self.pub_car_schub.publish(pubschub)
     SchubServo.ChangeDutyCycle(sendschub)
     pwmold = schub
 
