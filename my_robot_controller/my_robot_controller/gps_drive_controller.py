@@ -42,8 +42,10 @@ cmps_heading = 0
 radius_earth = 6371000 #6371km
 target_heading = 0
 Zone1 =""
-target_longitude = 9.939772 # Kreuzung E-Radstellplatz
-target_latitude = 48.418074 # Kreuzung E-Radstellplatz
+target_longitude = 0
+target_latitude = 0
+#target_longitude = 9.939772 # Kreuzung E-Radstellplatz
+#target_latitude = 48.418074 # Kreuzung E-Radstellplatz
 #target_longitude = 9.937939 # Kreuzung V-Bau
 #target_latitude = 48.418091 # Kreuzung V-Bau   
 #target_longitude = 9.937964 # Ecke gemähte Wiese Osten
@@ -79,6 +81,8 @@ class gps_autonomous(Node):
         #self.sub_actlat = self.create_subscription(String, '/act_latitude', self.act_lat_callback, 10)
         self.sub_actlong = self.create_subscription(String, '/car_long', self.act_long_callback, 10)
         self.sub_actlat = self.create_subscription(String, '/car_lat', self.act_lat_callback, 10)
+        self.sub_target_lat = self.create_subscription(String,'target_lat',self.target_lat_callback, 10)
+        self.sub_target_long = self.create_subscription(String,'target_long',self.target_long_callback, 10)
         self.sub_hdop = self.create_subscription(String, '/HDOP', self.HDOP_callback, 10)  
         self.sub_head = self.create_subscription(String, '/tracked_heading', self.Heading_callback, 10) 
         self.sub_cmps = self.create_subscription(String,'/cmps_heading',self.cmps_callback,10)       
@@ -295,6 +299,8 @@ class gps_autonomous(Node):
         global distance_left
         distance_left= float(dist_left.data)
 
+
+    #Hier Aufruf der Fahrmethode
     def distance_callback_right(self,dist_right):
         global distance_left
         global distance_right
@@ -320,9 +326,17 @@ class gps_autonomous(Node):
             state = 0
         self.fahrmethode(distance_left,distance_right)
 
+    def target_lat_callback(self, tlat):
+        global target_latitude
+        target_latitude = tlat.data
+
+    def target_long_callback(self,tlong):
+        global target_longitude
+        target_longitude = tlong.data
+
 
     ##################################################################
-        
+    #Aufgerufen von HEading callback    
     def calculate_heading(self):
         global actual_latitude
         global actual_longitude
@@ -423,10 +437,10 @@ class gps_autonomous(Node):
             # including debouncing 
             
             if distance_left < mindist and distance_right > mindist and notlauf == 0  :
-                debounceright += 1
-                if debounceright >= 3:
+                debounceleft += 1
+                if debounceleft >= 3:
                     state = 10
-                    debounceright = 0
+                    debounceleft = 0
             elif distance_right < mindist and distance_left > mindist and notlauf == 0 :
                 debounceright += 1
                 if debounceright >= 3:

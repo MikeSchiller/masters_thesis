@@ -10,6 +10,7 @@ startLong = 0.0
 startLat = 0.0
 gpsLong = 0.0
 gpsLat = 0.0
+Usegps = 0
 onlyfirstlong = 1
 onlyfirstlat = 1
 Fahrtrichtung = 0
@@ -19,23 +20,33 @@ heading = 0
 radius_earth = 6371000 #6371km
 calclat = 0
 calclong = 0
-radstand = 0.3 #(Radstand des Fahrzeugs in Meter)
-
+radstand = 0.315 #(Radstand des Fahrzeugs in Meter)
+#
+checkcheck = 0
+checkleft = 0
+checkright = 0
+firstrun = 0
 
 class CarToCoords(Node):
 
     def __init__(self):
+        global firstrun
         super().__init__('carToCoords')
         self.car_long = self.create_publisher(String, 'car_long', 10)
         self.car_lat = self.create_publisher(String, 'car_lat', 10)
         self.pub_Zone1 = self.create_publisher(String, '/Zone1', 10)
-        self.pub_Zone2 = self.create_publisher(String, '/Zone2', 10)
+        self.pub_target_long = self.create_publisher(String, '/target_long', 10)
+        self.pub_target_lat = self.create_publisher(String, 'target_lat', 10)
         
         self.sub_steer = self.create_subscription(String,'/car_steer', self.Steer_callback, 10)
         self.sub_schubPWM = self.create_subscription(String, '/car_setschubPWM', self.Schub_callback, 10)
         self.sub_gpslong = self.create_subscription(String, '/act_longitude', self.act_long_callback, 10)
         self.sub_gpslat = self.create_subscription(String, '/act_latitude', self.act_lat_callback, 10)
         self.sub_odo = self.create_subscription(String,'/distance_driven', self.Odo_callback, 10)
+        #einmalige Abfrage der Aufgabenparameter
+        if firstrun == 0:
+            self.coordsInput()
+            firstrun = 1
 
        
     def coordsInput(self):
@@ -45,18 +56,20 @@ class CarToCoords(Node):
         global gpsLat
         global calclat
         global calclong
+        global Usegps
         msgZone1 = String()
-        msgZone2 = String()
+
         
         print("Use the Onboard GPS (g) or set it Yourself (y) ?: ")
         setvar = input()
         if setvar == "g" :
             print ("Using onboard GPS, please wait...")
+            Usegps = 1
             startLong = gpsLong
             startLat = gpsLat
             
         elif setvar == "y" :
-            print ("Please enter your start coordinates in degrees. First the  Longitude: ")
+            print ("Please enter your start coordinates in degrees (e.g. 48.4187985). First the  Longitude: ")
             startLong = input()
             print("Now the Latitude: ")
             startLat = input()
@@ -66,7 +79,64 @@ class CarToCoords(Node):
         
         calclong = startLong
         calclat = startLat
-        
+
+        print("Please define a target (T) or choose from the list (L):")
+        targetvar = input()
+        if targetvar == "T":
+            print("Please enter your target longitude in degrees (e.g. 48.4187985): ")
+            target_longitude = String()
+            target_longitude.data = input()
+            print ("Now enter the target latitude: ")
+            target_latitude = String()
+            target_latitude.data = input()
+            self.pub_target_lat.publish(target_latitude)
+            self.pub_target_long.publish(target_longitude)
+        elif targetvar == "L":
+            print("Here is the list with currently available targets: ")
+            print(" (1) Kreuzung E-Radstellplatz")
+            print(" (2) Kreuzung V-Bau")
+            print(" (3) Ecke gemähte Wiese Osten")
+            print(" (4) Kreuzung Zufahrt THU Höhenweg Osten")
+            print(" (5) Kreuzung Zufahrt THU Höhenweg Westen")
+            print(" (6) Bad Blau")
+            print(" (7) Kreuzng T/Q Bau (indoor)")
+            print(" (8) Kreuzng s/Q Bau (indoor)")
+
+            tarstate = input()
+
+            match tarstate:
+                case 1:
+                    target_longitude = 9.939772 # Kreuzung E-Radstellplatz
+                    target_latitude = 48.418074 # Kreuzung E-Radstellplatz
+                
+                case 2:
+                    target_longitude = 9.937939 # Kreuzung V-Bau
+                    target_latitude = 48.418091 # Kreuzung V-Bau 
+
+                case 3:
+                    target_longitude = 9.937964 # Ecke gemähte Wiese Osten
+                    target_latitude = 48.417796 # Ecke gemähte Wiese Osten  
+
+                case 4: 
+                    target_longitude = 9.940302 # Kreuzung Zufahrt THU Höhenweg osten
+                    target_latitude = 48.417305 # Kreuzung Zufahrt THU Höhenweg osten 
+
+                case 5:                                      
+                    target_longitude = 9.937879 # Kreuzung Zufahrt THU Höhenweg westen
+                    target_latitude = 48.417411 # Kreuzung Zufahrt THU Höhenweg westen
+
+                case 6:
+                    target_longitude = 9.917946 # bad blau
+                    target_latitude = 48.417771 # bad blau
+
+                case 7:
+                    target_longitude = 9.93847061 # Kreuzung T/Q Bau (indoor)
+                    target_latitude = 48.41821953
+                
+                case 8: 
+                    target_longitude = 9.93894926 # Kreuzung S/Q Bau (indoor)
+                    target_latitude = 48.41823366
+
         print("Do you want to enable NO GO Zones? (Y/N/help): ")
         nogoset = input()
         if nogoset == "Y":
@@ -77,13 +147,6 @@ class CarToCoords(Node):
             else:
                 msgZone1.data = Zone1
                 self.pub_Zone1.publish(msgZone1)
-           # print ("do you want another one? (Y/N)")
-           # secondset = input()
-            #if secondset == "Y":
-             #   print("Please input your NO GO Zone")
-              #  Zone2 = input()
-               # msgZone2.data = Zone2
-                #self.pub_Zone2.publish(msgZone2)
 
         elif nogoset == "N" :
             print("okay, moving on")
@@ -116,7 +179,6 @@ class CarToCoords(Node):
         
         calclong = calclong + y
         calclat = calclat +x 
-        
                  
     def calculate_heading(self,steering_angle, heading, part_distance_driven):
        # global steering_angle
@@ -134,11 +196,13 @@ class CarToCoords(Node):
             
         else: 
             return current_heading
-        
 
     def Odo_callback(self, car_dist):
         global distance_driven
         global heading
+        global checkleft
+        global checkright
+        global checkcheck
         distance_driven = car_dist
         distance_driven_new = car_dist
         self.calculate_car_coords(distance_driven, heading)
@@ -149,13 +213,14 @@ class CarToCoords(Node):
             part_distance_driven = distance_driven_new - distance_driven_old
         
         distance_driven_old = distance_driven_new
-        
-        
 
     def Steer_callback(self, car_steer):
         # receives steering angle in range from 40 ( full right), 90 (straight ahead) to 130 (full left)
         global heading
         global steering_angle
+        global checkleft
+        global checkright
+        global checkcheck
         steering_angle = car_steer - 90
         if steering_angle > 0 :
             checkleft = 1
@@ -171,11 +236,7 @@ class CarToCoords(Node):
         else:
             checkleft = 0
             checkright = 0
-        
-
-      #hier muss jetzt eine Methode rein, die aus dem Lenkwinkel das heading bestimmt  
-      
-    
+         
     def Schub_callback(self, car_schub):
         global Fahrtrichtung
         stoppschub = 7.3
@@ -187,16 +248,29 @@ class CarToCoords(Node):
         pass
     
     def act_long_callback(self, gps_long):
+        global Usegps
+        global calclong
         if onlyfirstlong == 1:
             global gpsLong
             gpsLong = gps_long
             onlyfirstlong = 2
+            #wenn GPS aktiviert ist, senden von gps koordinaten, sonst verwenden von berechneten Koordinaten
+        if Usegps == 1:
+            self.car_long.publish(gps_long)
+        else:
+            self.car_long.publish(calclong)
         
     def act_lat_callback(self, gps_lat):
+        global Usegps
+        global calclat
         if onlyfirstlat == 1:
             global gpsLat
             gpsLat = gps_lat
             onlyfirstlat = 2
+        if Usegps == 1:
+            self.car_lat.publish(gps_lat)
+        else:
+            self.car_lat.publish(calclat)
 
 
 
@@ -204,6 +278,7 @@ def main(args=None):
     rclpy.init(args=args)
 
     Car_to_coords = CarToCoords()
+    #CarToCoords.coordsInput()
 
     rclpy.spin(Car_to_coords)
 

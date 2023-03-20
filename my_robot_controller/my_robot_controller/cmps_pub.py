@@ -11,6 +11,16 @@ head1 = 0
 head2 = 0
 head3 = 0
 message = String()
+
+'''
+		#offsetx = -56.120 #indoormessung
+		#offsety = -391.919 #indoormessung
+		#offsetx = 22.6504 #outdoormessung1 schmutz
+		#offsety = -88.8545
+		#messung 3
+ 		22.13369999999999
+		-109.3016
+'''
  
 hmc5883l.setContinuousMode()
 # Set Declination according to this website: https://www.magnetic-declination.com/
