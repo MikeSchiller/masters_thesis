@@ -60,13 +60,13 @@ class CarToCoords(Node):
             else:
                 msgZone1.data = Zone1
                 self.pub_Zone1.publish(msgZone1)
-            print ("do you want another one? (Y/N)")
-            secondset = input()
-            if secondset == "Y":
-                print("Please input your NO GO Zone")
-                Zone2 = input()
-                msgZone2.data = Zone2
-                self.pub_Zone2.publish(msgZone2)
+           # print ("do you want another one? (Y/N)")
+           # secondset = input()
+            #if secondset == "Y":
+             #   print("Please input your NO GO Zone")
+              #  Zone2 = input()
+               # msgZone2.data = Zone2
+                #self.pub_Zone2.publish(msgZone2)
 
         elif nogoset == "N" :
             print("okay, moving on")

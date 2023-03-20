@@ -98,6 +98,7 @@ class gps_autonomous(Node):
         global actual_latitude
         global target_latitude
         global target_longitude
+        global target_heading
         bufferdist = 1 #[Einheit noch unklar]
 
         sd = inputstring.split(",")
@@ -529,7 +530,7 @@ def SetServoLenkung(self, winkel):
   self.pub_car_steer.publish(Winkelstring) #WARUM WIRST DU NICHT FARBIG ?????
 
 #Methode fürs einstellen des Schubs
-def SetFahrzeugSchub(schub):
+def SetFahrzeugSchub(self,schub):
   pwmS = schub
   self.pub_car_speed.publish(str(schub))
   SchubServo.ChangeDutyCycle(pwmS)
