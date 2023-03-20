@@ -111,7 +111,7 @@ class gps_autonomous(Node):
         global target_heading
         global Zoneheading
         global Zone1
-        bufferdist = 1 #[Einheit noch unklar]
+        bufferdist = 1 #[Einheit noch unklar], warscheinlich Meter
 
         sd = inputstring.split(",")
         x11 = sd[0]
@@ -192,7 +192,7 @@ class gps_autonomous(Node):
         if actual_latitude > x11 and actual_latitude < x12:
             xo112 = (b112 - bo112) / (mo112 - m112) #(mo112 /m112) * (bo112 - b112)
             yo112 = mo112 * xo112  + bo112
-            #Das funktioniert so nicht, weil in degree gerechnet, umrechnung in Meter nötig
+            # umrechnung in Meter 
             #distTo112 = math.sqrt((xo112 - actual_latitude)^2 + (yo112 - actual_longitude)^2)  
             distTo112 = math.sqrt((2*radius_earth*math.sin((xo112 - actual_latitude/2)))^2 + (2*radius_earth*math.sin((yo112 - actual_longitude/2)))^2) 
         else:
