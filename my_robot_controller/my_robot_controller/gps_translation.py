@@ -1,3 +1,5 @@
+#This node takes the outputstring of gps_module and extracts all avalable information for further processing
+
 #!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node

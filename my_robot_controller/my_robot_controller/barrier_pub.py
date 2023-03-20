@@ -1,5 +1,5 @@
-'''Auslesen von der Gabellichtschranke und umrechnen in gefahrene Meter '''
-
+''#'Auslesen von der Gabellichtschranke und umrechnen in gefahrene Meter '''
+#Basierend auf folgendem Tutorial https://tutorials-raspberrypi.de/raspberry-pi-laser-lichtschranke-fuer-weite-distanzen/
 import rclpy
 import RPi.GPIO as GPIO
 import time

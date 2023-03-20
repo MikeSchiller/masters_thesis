@@ -1,3 +1,6 @@
+'Reads the Data of the GSM/GPRS/GNSS HAT and preapares for further refinenment'
+'Code based on tutorial by manufacturer waveshare https://www.waveshare.com/wiki/GSM/GPRS/GNSS_HAT'
+
 #!/usr/bin/python
 import rclpy
 import RPi.GPIO as GPIO

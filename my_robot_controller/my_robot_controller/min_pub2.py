@@ -1,3 +1,5 @@
+#simple node for testing ROS according to ROS docs
+
 import rclpy
 from rclpy.node import Node
 import time

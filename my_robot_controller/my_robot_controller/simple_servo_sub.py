@@ -1,3 +1,5 @@
+# node for steering robot platform via keayboard_pub
+
 #!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node

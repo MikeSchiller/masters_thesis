@@ -1,3 +1,6 @@
+#Simple read out node for V-MD3 radar senor by RFBeam
+# Code base on demoscript by RFBeam
+
 import rclpy
 import time
 from rclpy.node import Node

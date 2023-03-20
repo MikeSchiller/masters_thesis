@@ -1,3 +1,5 @@
+#test node for using 2 US sensors
+
 import rclpy
 import RPi.GPIO as GPIO
 import time

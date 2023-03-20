@@ -85,6 +85,7 @@ class gps_data_stuff(Node):
                     dezlatitude = self.coord_lat_converter(Latitude)
                     #convert variables to publishable data
                     msg_latitude.data = str(dezlatitude)
+                    self.pub_long.publish(msg_latitude)
 
                 
                 if Longitude == "":
@@ -92,6 +93,7 @@ class gps_data_stuff(Node):
                 else:
                     dezlongitude = self.coord_long_converter(Longitude)
                     msg_longitude.data = str(dezlongitude)
+                    self.pub_long.publish(msg_longitude)
                 
                 if Track_Angle == "":
                     Track_Angle = "Kein Signal"

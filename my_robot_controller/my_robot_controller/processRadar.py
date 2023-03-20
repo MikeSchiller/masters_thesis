@@ -1,3 +1,5 @@
+#Node for receiving and "visualising" data send by Radar sensor
+
 #!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node

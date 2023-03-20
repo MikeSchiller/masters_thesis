@@ -1,3 +1,5 @@
+#Simple node for publishing keyboard inputs for processing in simple_servo_sub
+
 import rclpy
 from rclpy.node import Node
 import time

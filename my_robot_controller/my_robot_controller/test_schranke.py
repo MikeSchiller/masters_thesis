@@ -1,3 +1,6 @@
+#simple python script for testing the light barrier
+
+
 # Benoetigte Module werden importiert und eingerichtet
 import RPi.GPIO as GPIO
 import time

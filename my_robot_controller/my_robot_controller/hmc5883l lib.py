@@ -1,3 +1,6 @@
+#back up of modified hmc-5883L library by i2c_libraries by ameer1234567890
+#https://github.com/ameer1234567890/i2clibraries/blob/master/README.md
+
 import math
 from i2clibraries import i2c
 from time import *

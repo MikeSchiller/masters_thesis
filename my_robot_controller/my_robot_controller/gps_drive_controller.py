@@ -39,6 +39,7 @@ timer_period = 0.1  # seconds
 lenkung = 7.5
 schub= 7.2
 stopschub =7.2
+stoplenk = 97.5
 klenkung = 7.5
 kschub = 7.3
 notlauf = 0
@@ -335,12 +336,18 @@ class gps_autonomous(Node):
     #get the actual gps data in degrees
     def act_long_callback(self, act_long):
         global actual_longitude
-        actual_longitude = float(act_long.data)
+        try:
+            actual_longitude = float(act_long.data)
+        except:
+            pass
 
      #get the actual gps data in degrees   
     def act_lat_callback(self, act_lat):
         global actual_latitude
-        actual_latitude = float(act_lat.data)
+        try:
+            actual_latitude = float(act_lat.data)
+        except:
+            pass
 
 
     def HDOP_callback(self, hdop):
@@ -553,6 +560,7 @@ class gps_autonomous(Node):
       global tracked_Heading
       global cmps_heading
       global stopschub
+      global stoplenk
       global Zoneheading
       global actual_latitude
       global actual_longitude
@@ -647,18 +655,18 @@ class gps_autonomous(Node):
             #V3, looks a lot better now
             if cmps_heading < target_heading - max_all_dev :
                 #große Abweichung links
-                lenkung = 80
+                lenkung = stoplenk - 10
             elif cmps_heading > target_heading - max_all_dev and cmps_heading < target_heading - smallsteerdev:
                 #kleine Abweichung links
-                lenkung = 85 
+                lenkung = stoplenk - 5 
             elif cmps_heading < target_heading + max_all_dev and cmps_heading > target_heading + smallsteerdev:
                 #kleine Abweichung rechts
-                lenkung = 95     
+                lenkung = stoplenk + 5    
             elif cmps_heading > target_heading + max_all_dev :
                 #große Abweichung re
-                lenkung = 100
+                lenkung = stoplenk + 10
             else: 
-                lenkung = 90
+                lenkung = stoplenk
 
             
             cmps_heading = cmps_heading -500

@@ -1,4 +1,5 @@
 '''Auslesen von 2 US Sensoren '''
+#Basieredn aof folgendem Tutorial: https://tutorials-raspberrypi.de/entfernung-messen-mit-ultraschallsensor-hc-sr04/
 
 import rclpy
 import RPi.GPIO as GPIO

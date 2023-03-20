@@ -1,3 +1,5 @@
+#testscript for testing hmc5883L
+
 from i2clibraries import i2c_hmc5883l
 from std_msgs.msg import String
 import time

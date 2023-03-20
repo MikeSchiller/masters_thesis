@@ -15,6 +15,7 @@ onlyfirstlong = 1
 onlyfirstlat = 1
 Fahrtrichtung = 0
 distance_driven = 0
+stoplenk = 97.5
 steering_angle = 0
 #heading = 0
 radius_earth = 6371000 #6371km
@@ -270,6 +271,7 @@ class CarToCoords(Node):
         calclat = calclat + x 
         print (calclong)
         print (calclat)
+        print("GPSLONG" + str(gpsLong))
         sendCalcLong = String()
         sendCalcLat = String()
         sendgpsLong = String()
@@ -283,7 +285,7 @@ class CarToCoords(Node):
         print("Usegps in coords: " + str(Usegps))
         if Usegps == 1:
             self.car_long.publish(sendgpsLong)
-            print(sendgpsLong.data)
+            print("data" + str(sendgpsLong.data))
         else:
             self.car_long.publish(sendCalcLong)       
         if Usegps == 1:
@@ -393,7 +395,7 @@ class CarToCoords(Node):
             
         else:
             #hier geht er rein
-            steering_angle = float(car_steer.data) - 90
+            steering_angle = float(car_steer.data) - stoplenk
         print(steering_angle)
         if steering_angle > 0 :
             checkleft = 1
@@ -432,6 +434,7 @@ class CarToCoords(Node):
         
             
         gpsLong = gps_long
+        print(gps_long.data)
             #wenn GPS aktiviert ist, senden von gps koordinaten, sonst verwenden von berechneten Koordinaten
             #der Part ist redundant, wenn GPS aktiv (macht das was aud????!!!)
         if Usegps == 1:
