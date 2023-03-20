@@ -308,7 +308,7 @@ class CarToCoords(Node):
         #Wenn Heading genau 0, Fehler weil div durch 0, daher bei 0 minimale Abweichung zugerechnet
         if  steering_angle != 0 and current_heading != 0:
 
-            beta = part_distance_driven/ (math.pi * ((2* radstand)/ math.sin(math.radians(steering_angle) ))) * 360
+            beta = part_distance_driven/ (math.pi * ((2* radstand)/ math.sin((steering_angle) ))) * 360 #math.radians(steering_angle) 
             print("beta: " + str(beta))
             #keine Ahnung warum genau, aber beta wird selten seehr seehr groß, daher abfangen davon
             if beta < -360:
@@ -322,7 +322,7 @@ class CarToCoords(Node):
                 current_heading = current_heading + 360 
             calcHeading = current_heading 
         elif steering_angle != 0 and current_heading == 0:
-            beta = part_distance_driven/ (math.pi * (2* radstand/ math.sin(((math.radians(steering_angle+0.1) )))) * 360)
+            beta = part_distance_driven/ (math.pi * (2* radstand/ math.sin((((steering_angle+0.1) )))) * 360) #math.radians(steering_angle+0.1)
             if beta < -360:
                 pass
             else: 

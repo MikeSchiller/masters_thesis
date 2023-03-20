@@ -1,3 +1,5 @@
+#This is the brain of the operation
+
 #!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
@@ -911,6 +913,7 @@ def SetFahrzeugSchub(self,schub):
     #Methode für langsames anfahren und verhindern von wheelie, wobei bremsung aber erhalten
     if pwmS > pwmold and pwmS != stopfahr:
         i= 1
+        #WARUM GEHT DER HIER JEDE ITERATION REIN????????????????????????
         while i <= 5 :
             sendschub = float(i)* ((pwmS - pwmold) / 5) + pwmold
             #time.sleep(0.1)
