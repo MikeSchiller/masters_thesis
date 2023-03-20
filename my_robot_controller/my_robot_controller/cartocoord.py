@@ -271,7 +271,7 @@ class CarToCoords(Node):
         calclat = calclat + x 
         print (calclong)
         print (calclat)
-        print("GPSLONG" + str(gpsLong))
+        print("GPSLAT" + str(gpsLat))
         sendCalcLong = String()
         sendCalcLat = String()
         sendgpsLong = String()
@@ -284,15 +284,21 @@ class CarToCoords(Node):
             #wenn GPS aktiviert ist, senden von gps koordinaten, sonst verwenden von berechneten Koordinaten
         print("Usegps in coords: " + str(Usegps))
         if Usegps == 1:
-            self.car_long.publish(sendgpsLong)
-            print("data" + str(sendgpsLong.data))
-        else:
-            self.car_long.publish(sendCalcLong)       
-        if Usegps == 1:
             self.car_lat.publish(sendgpsLat)
+            self.car_long.publish(sendgpsLong)
+        
+            print("data" + str(sendgpsLat.data))
+        else:
+            self.car_long.publish(sendCalcLong)  
+            self.car_lat.publish(sendCalcLat)
+        '''     
+        if Usegps == 1:
+            print("data" + str(sendgpsLong.data))
+            
         else:
             self.car_lat.publish(sendCalcLat)
             print(sendCalcLat.data)
+        ''' 
 
         #print("long: " + str(calclong))
         #print("lat: " + str(calclat))
@@ -439,20 +445,21 @@ class CarToCoords(Node):
             #der Part ist redundant, wenn GPS aktiv (macht das was aud????!!!)
         if Usegps == 1:
             self.car_long.publish(gps_long)
-        else:
-            self.car_long.publish(calclong)
+        #else:
+            #self.car_long.publish(calclong)
 
     def act_lat_callback(self, gps_lat):
         global Usegps
         global calclat
         global gpsLat
-
-        gpsLat = gps_lat
+       
+        gpsLat = float(gps_lat)
         if Usegps == 1:
             self.car_lat.publish(gps_lat)
             print(gps_lat.data)
-        else:
-            self.car_lat.publish(calclat)
+            print("pipsefuck")
+        #else:
+            #self.car_lat.publish(calclat)
 
           
 
