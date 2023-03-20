@@ -528,7 +528,8 @@ class gps_autonomous(Node):
       elif actual_latitude == 0 and actual_longitude == 0 and state != 99:
           state = 98 
       else:
-          pass
+            state = 0
+        
       
 
       #self.get_logger().info(dist.data)
