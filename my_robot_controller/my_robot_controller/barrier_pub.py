@@ -21,7 +21,8 @@ elapsed_time = 0
 turn_kurbelwelle= 0.0
 turn_rad = 0.0
 distance_travelled_odo = 0.0
-rad_durchmesser = 0.0643 #[Meter]
+#rad_durchmesser = 0.0643 #[Meter] alte Räder
+rad_durchmesser = 0.090 #[Meter]
 rad_umfang = math.pi * rad_durchmesser # Umfang des Rades in [Meter]
 distance = String()
 

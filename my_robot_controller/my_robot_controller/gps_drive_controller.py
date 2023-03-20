@@ -10,7 +10,7 @@ from rpi_hardware_pwm import HardwarePWM
 
 # Servo-GPIO (PWM-GPIO 18, Pin 12)
 LenkServoPin = 18
-SchubServoPin = 13
+SchubServoPin = 19
 # GPIO initialisieren
 gpio.setmode(gpio.BCM)
 gpio.setup(LenkServoPin, gpio.OUT)
@@ -20,7 +20,7 @@ LenkServo = gpio.PWM(LenkServoPin, 50)
 SchubServo = gpio.PWM(SchubServoPin, 50)
 # PWM starten, LenkServo auf 90 Grad
 LenkServo.start(7.5)
-SchubServo.start(7.3)
+SchubServo.start(7.2)
 time.sleep(3)
 '''
 
@@ -35,8 +35,8 @@ Winkelstring = String()
 pubschub = String()
 timer_period = 0.1  # seconds
 lenkung = 7.5
-schub= 7.3
-stopschub =7.3
+schub= 7.2
+stopschub =7.2
 klenkung = 7.5
 kschub = 7.3
 notlauf = 0
@@ -448,6 +448,8 @@ class gps_autonomous(Node):
         global target_latitude 
         global targetdistance
         target_heading = 0 # zu beginn der Methode null setzen, damit frisch ausgerechnet wird und Wert anschließend für andere Methoden verfügbar
+        quadrantlat = 1
+        quadrantlong = 1
 
         #!!!!! Hier ist Fehler drin
         #Distanz zwischen beiden Punkten berechnen. Dafür Erde = Kugel annahme, für kurze Distanzen ausreichend
@@ -465,29 +467,35 @@ class gps_autonomous(Node):
             
             if difference_lat < 0:
                 difference_lat = difference_lat * -1
-                target_heading = target_heading +90
+                #Abfrage, in welchem Quadranten sich das Target vom aktuellen Punkt befindet
+                #quadrantlat = 34 # Quadrant 3 oder 4
+                quadrantlat = 23
+                #target_heading = target_heading +90 Dar macht math keinen Sinn
                 #target_heading = target_heading +90 #alte werte
-                print(target_heading)
+                print("23!!!!!!!!!!!!!")
             else: 
                 pass
             
             
             if difference_long < 0:
                 difference_long = difference_long * -1
-                target_heading = target_heading + 180
-                print(target_heading)
+                quadrantlong = 34
+                #quadrantlong = 23 #Quadrant 2 oder 3
+                #target_heading = target_heading + 180
+
+                print("34!!!!!!!!!!!!!")
                 #target_heading = target_heading + 180#alte werte
             else: 
                 pass
             # Genauigkeit https://www.sunearthtools.com/dp/tools/pos_earth.php?lang=de#txtEarth_6
             # Aproxximierung der Strecke über Dreieck (Dürfte bei den Distanzen keinen Nennenswerten unterschied machen)
             if difference_long !=0:
-                distance_long = 2 * radius_earth * math.sin(math.radians(difference_long) / 2)
+                distance_long = 2 * radius_earth * math.sin(math.radians(difference_long/ 2)) 
             else:
                 distance_long =  0
 
             if difference_lat != 0:
-                distance_lat = 2 * radius_earth * math.sin(math.radians(difference_lat) / 2) #sin
+                distance_lat = 2 * radius_earth * math.sin(math.radians(difference_lat / 2)) #sin
             else:
                 distance_lat = 0
             print("dist_long: " + str(distance_long)) #[m]
@@ -497,7 +505,23 @@ class gps_autonomous(Node):
 
             #berechnung des Winkels
             if distance_long != 0 and distance_lat != 0:
-                target_heading = target_heading + math.degrees(math.atan(distance_long / distance_lat))
+                
+                if quadrantlong == 1 and quadrantlat== 1:
+                    #Quadrant 1
+                    target_heading = 90 - math.degrees(math.atan(distance_lat / distance_long))
+                elif quadrantlong == 1 and quadrantlat== 23:
+                    #Quadrant 2
+                    target_heading = 180 - math.degrees(math.atan(distance_long / distance_lat))                    
+                elif quadrantlong == 34 and quadrantlat== 23:
+                    #Quadrant 3
+                    target_heading = 270 - math.degrees(math.atan(distance_lat / distance_long))
+                elif quadrantlong == 34 and quadrantlat== 1:
+                    #Quadrant 4
+                    target_heading = 360 - math.degrees(math.atan(distance_long / distance_lat))
+
+
+
+
             else:
                 print("gleich mein Problem")
             if target_heading < 0:
@@ -505,7 +529,7 @@ class gps_autonomous(Node):
             elif target_heading >= 360:
                 target_heading = target_heading - 360
             #target_heading = target_heading + 180 #!!!debug, wert passt hier allggemein noch nicht
-            target_heading = 40
+            #target_heading = 40
             print ('target Heading: ' + str(target_heading))
 
 
@@ -586,7 +610,7 @@ class gps_autonomous(Node):
 
 
             #Auswertung Heading Kompass
-            max_all_dev = 15 # maximum allowed deviation from target heading
+            max_all_dev = 10 # maximum allowed deviation from target heading
             smallsteerdev = 30 #deviation for smaller steering angle to counter oversteer
             #!!!!Das tut nicht wies soll
             print("cmps_head: " + str(cmps_heading))
@@ -603,7 +627,7 @@ class gps_autonomous(Node):
             else:
                 Lenkung = 90
 
-            '''
+            ''#'
             if cmps_heading < target_heading + max_all_dev or cmps_heading < target_heading - max_all_dev :
                 lenkung = 85
             elif cmps_heading < target_heading + smallsteerdev or cmps_heading < target_heading - smallsteerdev:
@@ -614,7 +638,23 @@ class gps_autonomous(Node):
                 lenkung = 100
             else:
                 lenkung = 90   
-            
+            '''
+
+            #V3, looks a lot better now
+            if cmps_heading < target_heading - max_all_dev :
+                #große Abweichung links
+                lenkung = 80
+            elif cmps_heading > target_heading - max_all_dev and cmps_heading < target_heading - smallsteerdev:
+                #kleine Abweichung links
+                lenkung = 85 
+            elif cmps_heading < target_heading + max_all_dev and cmps_heading > target_heading + smallsteerdev:
+                #kleine Abweichung rechts
+                lenkung = 95     
+            elif cmps_heading > target_heading + max_all_dev :
+                #große Abweichung re
+                lenkung = 100
+            else: 
+                lenkung = 90
 
             print("lenkung: " + str(lenkung))
                             

@@ -108,10 +108,13 @@ class CarToCoords(Node):
                 print ("Please enter (e) your start coordinates in degrees (e.g. 48.4187985) or choose (c) a standart point : ")
                 chooseorenter = input()
                 if chooseorenter == 'e':
-                    print("First the  Longitude: ")  
-                    startLong = input()
-                    print("Now the Latitude: ")
+                    print("First the  Latitude: ")  
                     startLat = input()
+                    startLat = float(startLat)
+                
+                    print("Now the Longitude: ")
+                    startLong = input()
+                    startLong = float(startLong)
                     print ("Your Startcoordinates are: " + str(startLong) + str(startLat) )
                 elif chooseorenter == "c":
                     print("please select: ")
@@ -144,10 +147,10 @@ class CarToCoords(Node):
             print("Please define a target (T) or choose from the list (L):")
             targetvar = input()
             if targetvar == "T":
-                print("Please enter your target longitude in degrees (e.g. 48.4187985): ")
-                target_longitude.data = input()
-                print ("Now enter the target latitude: ")
+                print("Please enter your target latitude in degrees (e.g. 48.4187985): ")
                 target_latitude.data = input()
+                print ("Now enter the target longitude: ")
+                target_longitude.data = input()
 
             elif targetvar == "L":
                 print("Here is the list with currently available targets: ")
@@ -354,10 +357,10 @@ class CarToCoords(Node):
         part_distance_driven_this_iteration = distance_driven_new - distance_driven_old
         part_distance_driven = part_distance_driven + part_distance_driven_this_iteration
 
-        if part_distance_driven > 0.02 or steering_angle == 0 and checkleft != 0 or steering_angle == 0 and checkright != 0: #Heading berechnung alle 5cm // hier jetzt noch rein, dass auch abfrage, wenn winkel auf null gesetzt wird
-            self.calculate_car_coords(part_distance_driven, calcHeading)
-            self.calculate_heading(steering_angle,part_distance_driven)
+        if part_distance_driven > 0.04 or steering_angle == 0 and checkleft != 0 or steering_angle == 0 and checkright != 0: #Heading berechnung alle 5cm // hier jetzt noch rein, dass auch abfrage, wenn winkel auf null gesetzt wird
             
+            self.calculate_heading(steering_angle,part_distance_driven)
+            self.calculate_car_coords(part_distance_driven, calcHeading) # das hat sachen put gemacht
             part_distance_driven = 0
         else:
             pass
