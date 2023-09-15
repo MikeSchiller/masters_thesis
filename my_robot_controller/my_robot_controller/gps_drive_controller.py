@@ -59,7 +59,7 @@ class gps_autonomous(Node):
         self.get_logger().info('gps_module')
         self.get_logger().info('gps_data_stuff')
         self.get_logger().info('cmps_pub')
-        self.pub_car_odo = self.create_publisher(String, '/car_odo',10) 
+        self.pub_car_schub = self.create_publisher(String, '/car_setschubPWM',10) 
         self.pub_car_steer = self.create_publisher(String, '/car_steer',10) 
         self.sub_actlong = self.create_subscription(String, '/act_longitude', self.act_long_callback, 10)
         self.sub_actlat = self.create_subscription(String, '/act_latitude', self.act_lat_callback, 10)
@@ -340,6 +340,7 @@ def SetServoLenkung(self, winkel):
 #Methode fürs einstellen des Schubs
 def SetFahrzeugSchub(schub):
   pwmS = schub
+  self.pub_car_speed.publish(str(schub))
   SchubServo.ChangeDutyCycle(pwmS)
 
 
