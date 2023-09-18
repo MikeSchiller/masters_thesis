@@ -64,6 +64,17 @@ b123 = 0
 b112 = 0
 b134 = 0
 b141 = 0
+target_longitude = 9.939772 # Kreuzung E-Radstellplatz
+target_latitude = 48.418074 # Kreuzung E-Radstellplatz
+#target_longitude = 9.937939 # Kreuzung V-Bau
+#target_latitude = 48.418091 # Kreuzung V-Bau   
+#target_longitude = 9.937964 # Ecke gemähte Wiese Osten
+#target_latitude = 48.417796 # Ecke gemähte Wiese Osten     
+#target_longitude = 9.940302 # Kreuzung Zufahrt THU Höhenweg westen
+#target_latitude = 48.417305 # Kreuzung Zufahrt THU Höhenweg westen
+#target_longitude = 9.917946 # bad blau
+#target_latitude = 48.417771 # bad blau
+#home_adress = "(48.411954, 10.002206)"
 
 #########################################################################
 #Winkel 0 == 2.5 Dutycycle
@@ -120,6 +131,10 @@ class gps_autonomous(Node):
         global b123
         global b134
         global b141
+        global actual_longitude
+        global actual_latitude
+        global target_latitude
+        global target_longitude
 
         sd = inputstring.split(",")
         x11 = sd[0]
@@ -131,27 +146,82 @@ class gps_autonomous(Node):
         x14 = sd[6]
         y14 = sd[7]
         #https://de.serlo.org/mathe/1785/geradensteigung
-        if x12 - x11 == 0:
-            winkel12 = 180
-        else:    
-            m112 = (y12 - y11) / (x12 - x11)
+        #Nördliche Kante
+        if y12 - y11 == 0:
+            winkel12 = 90
+        else:
+            #Variablen für Geradengleichung    
+            m112 = (x12 - x11) / (y12 - y11)  
             b112 = (m112 * x11) / y11
+            #Variable für Orthogonalengleichung
+            mo112 = -1/m112
+            bo112 = actual_latitude/ (m112 * actual_longitude)
+            
+        #Östliche Kante
         if x13 - x12 == 0:
             winkel23 = 180
         else:       
             m123 = (y13 - y12) / (x13 - x12)
             b123 = (m123 * x12) / y12
-        if x14 - x13 == 0:
-            winkel34 = 180
+            #Variable für Orthogonalengleichung
+            mo123 = -1/m123
+            bo123 = actual_latitude/ (m123 * actual_longitude)
+        #Südliche Kante
+        if y14 - y13 == 0:
+            winkel34 = 270
         else:        
-            m134 = (y14 - y13) / (x14 - x13)
+            m134 = (x14 - x13) / (y14 - y13) 
             b134 = (m134 * x13) / y13
+            #Variable für Orthogonalengleichung
+            mo134 = -1/m134
+            bo134 = actual_latitude/ (m134 * actual_longitude)
+        #Westliche Kante
         if x11 - x14 == 0:
-            winkel41 = 180
+            winkel41 = 0
         else:
             m141 = (y11 - y14) / (x11 - x14)
             b141 = (m141 * x14) / y14
+            #Variable für Orthogonalengleichung
+            mo141 = -1/m141
+            bo141 = actual_latitude/ (m141 * actual_longitude)
         
+        #Check whether target is inside NO GO Zone
+        #y = mx+b
+        if target_longitude < (m112 * target_latitude + b112) and target_longitude > (m112 * target_latitude + b112):
+            # x= (y-b)/m IS das so richtig????
+            if target_latitude < (target_longitude-b123)/m123 and target_latitude > (target_longitude - b141)/m141:
+                TARGETINNOGO = 1
+                self.get_logger().error("Target is in NO GO Zone! Please enter new Target Coordinates or adjust NO GO Zone.")
+    
+        
+        #Check whether platform is inside NO GO Zone
+        #y = mx+b
+        if actual_longitude < (m112 * actual_latitude + b112) and actual_longitude > (m112 * actual_latitude + b112):
+            # x= (y-b)/m IS das so richtig????
+            if actual_latitude < (actual_longitude-b123)/m123 and actual_latitude > (actual_longitude - b141)/m141:
+                ISINNOGO1 = 1               
+        
+        #Check distances between line an PLatform coords
+        #Distance to line 112
+        if actual_latitude > x11 and actual_latitude < x12:
+            xo112 = (mo112 /m112) * (bo112 - b112)
+            yo112 = mo112 * xo112  + bo112
+            distTo112 = math.sqrt((xo112 - actual_latitude)^2 + (yo112 - actual_longitude)^2)      
+        #Distance to line 123
+        if actual_latitude > y13 and actual_latitude < y12:
+            xo123 = (mo123 /m123) * (bo123 - b123)
+            yo123 = mo123 * xo123  + bo123
+            distTo123 = math.sqrt((xo123 - actual_latitude)^2 + (yo123 - actual_longitude)^2)  
+        #Distance to line 134
+        if actual_latitude > x14 and actual_latitude < x13:
+            xo134 = (mo134 /m134) * (bo134 - b134)
+            yo134 = mo134 * xo134  + bo134
+            distTo134 = math.sqrt((xo134 - actual_latitude)^2 + (yo134 - actual_longitude)^2)  
+        #Distance to line 141
+        if actual_latitude > y14 and actual_latitude < y11:
+            xo141 = (mo141 /m141) * (bo141 - b141)
+            yo141 = mo141 * xo141  + bo141
+            distTo141 = math.sqrt((xo141 - actual_latitude)^2 + (yo141 - actual_longitude)^2)  
         
         
         
@@ -241,17 +311,9 @@ class gps_autonomous(Node):
         global tracked_Heading
         global radius_earth
         global target_heading 
-        target_longitude = 9.939772 # Kreuzung E-Radstellplatz
-        target_latitude = 48.418074 # Kreuzung E-Radstellplatz
-        #target_longitude = 9.937939 # Kreuzung V-Bau
-        #target_latitude = 48.418091 # Kreuzung V-Bau   
-        #target_longitude = 9.937964 # Ecke gemähte Wiese Osten
-        #target_latitude = 48.417796 # Ecke gemähte Wiese Osten     
-        #target_longitude = 9.940302 # Kreuzung Zufahrt THU Höhenweg westen
-        #target_latitude = 48.417305 # Kreuzung Zufahrt THU Höhenweg westen
-        #target_longitude = 9.917946 # bad blau
-        #target_latitude = 48.417771 # bad blau
-        #home_adress = "(48.411954, 10.002206)"
+        global target_longitude
+        global target_latitude 
+
 
         #Distanz zwischen beiden Punkten berechnen. Dafür Erde = Kugel annahme, für kurze Distanzen ausreichend
         # CAVE: Code aktuell Für Nord östliche Bereiche der Welt ausgelegt.
