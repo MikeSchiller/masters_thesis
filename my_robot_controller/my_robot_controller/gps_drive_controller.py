@@ -40,6 +40,23 @@ tracked_Heading = 0
 cmps_heading = 0
 radius_earth = 6371000 #6371km
 target_heading = 0
+x11 = 0
+y11 = 0
+x12 = 0
+y12 = 0
+x13 = 0
+y13 = 0
+x14 = 0
+y14 = 0
+x21 = 0
+y21 = 0
+x22 = 0
+y22 = 0
+x23 = 0
+y23 = 0
+x24 = 0
+y24 = 0
+
 #########################################################################
 #Winkel 0 == 2.5 Dutycycle
 #Winkel 90 == 7.5 Dutycycle
@@ -71,9 +88,53 @@ class gps_autonomous(Node):
         self.sub_switch = self.create_subscription(String, '/switch', self.switch_callback ,10)
         self.distance_left_subscriber_ = self.create_subscription(String,'/distance_links', self.distance_callback_left, 10)
         self.distance_left_subscriber_ = self.create_subscription(String,'/distance_rechts', self.distance_callback_right, 10)
+        self.distance_left_subscriber_ = self.create_subscription(String,'/Zone1', self.decodeZone1, 10)
+        self.distance_left_subscriber_ = self.create_subscription(String,'/Zone2', self.decodeZone2, 10)        
+        
+
+     
+     
+     
+    def decodeZone1(self, inputstring):
+        global x11 
+        global y11 
+        global x12 
+        global y12 
+        global x13 
+        global y13 
+        global x14 
+        global y14 
+        sd = inputstring.split(",")
+        x11 = sd[0]
+        y11 = sd[1]
+        x12 = sd[2]
+        y12 = sd[3]
+        x13 = sd[4]
+        y13 = sd[5]
+        x14 = sd[6]
+        y14 = sd[7]
         
         
 
+    def decodeZone2(self, inputstring):
+        global x21 
+        global y21 
+        global x22 
+        global y22 
+        global x23 
+        global y23 
+        global x24 
+        global y24 
+        sd = inputstring.split(",")
+        x21 = sd[0]
+        y21 = sd[1]
+        x22 = sd[2]
+        y22 = sd[3]
+        x23 = sd[4]
+        y23 = sd[5]
+        x24 = sd[6]
+        y24 = sd[7]   
+        
         
         #self.subscription  # prevent unused variable warning
     #get the actual gps data in degrees
@@ -182,7 +243,7 @@ class gps_autonomous(Node):
         if target_heading < 0:
             target_heading = target_heading + 360
         print ('target Heading: ' + str(target_heading))
-        target_heading = 0
+        target_heading = 0 #Warum wird hier NuLL gesetzt ????
 
 
 

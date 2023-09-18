@@ -18,17 +18,22 @@ class CarToCoords(Node):
         super().__init__('carToCoords')
         self.car_long = self.create_publisher(String, 'car_long', 10)
         self.car_lat = self.create_publisher(String, 'car_lat', 10)
+        self.pub_Zone1 = self.create_publisher(String, '/Zone1', 10)
+        self.pub_Zone2 = self.create_publisher(String, '/Zone2', 10)
         self.sub_odo = self.create_subscription(String,'/distance_driven', self.Odo_callback, 10)
         self.sub_steer = self.create_subscription(String,'/car_steer', self.Steer_callback, 10)
         self.sub_schubPWM = self.create_subscription(String, '/car_setschubPWM', self.Schub_callback 10)
         self.sub_gpslong = self.create_subscription(String, '/act_longitude', self.act_long_callback, 10)
         self.sub_gpslat = self.create_subscription(String, '/act_latitude', self.act_lat_callback, 10)
-        
+
+       
     def coordsInput(self):
         global startLat
         global startLong
         global gpsLong
         global gpsLat
+        msgZone1 = String()
+        msgZone2 = String()
         
         print("Use the Onboard GPS (g) or set it Yourself (y) ?: ")
         setvar = input()
@@ -42,6 +47,28 @@ class CarToCoords(Node):
             print("Now the Latitude: ")
             startLat = input()
             print ("Your Startcoordinates are: " + str(startLong) + str(startLat) )
+        else :
+            self.get_logger().warning("Input not supported!")
+        
+        print("Do you want to enable NO GO Zones? (Y/N/help): ")
+        nogoset = input()
+        if nogoset == "Y":
+            print("Please input your NO GO Zone")
+            Zone1 = input()
+            msgZone1.data = Zone1
+            self.pub_Zone1.publish(msgZone1)
+            print ("do you want another one? (Y/N)")
+            secondset = input()
+            if secondset == "Y":
+                print("Please input your NO GO Zone")
+                Zone2 = input()
+                msgZone2.data = Zone2
+                self.pub_Zone2.publish(msgZone2)
+
+        elif nogoset == "N" :
+            print("okay, moving on")
+        elif nogoset == "help" :
+            print("NO GO Zones are areas defined by coordinates, where the platform isn´t allowed to drive trough. A zone is defined by 4 points starting in the upper left corner and continuing clockwise. PLease use the degreeformat and seperate using `,`. Do not use spaces in the input. You can have a total of two zones active at a time")
         else :
             self.get_logger().warning("Input not supported!")
 
