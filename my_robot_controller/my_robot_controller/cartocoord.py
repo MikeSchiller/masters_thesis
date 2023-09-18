@@ -53,10 +53,13 @@ class CarToCoords(Node):
         print("Do you want to enable NO GO Zones? (Y/N/help): ")
         nogoset = input()
         if nogoset == "Y":
-            print("Please input your NO GO Zone")
+            print("Please input your NO GO Zone (Input `1` for default Zone):")
             Zone1 = input()
-            msgZone1.data = Zone1
-            self.pub_Zone1.publish(msgZone1)
+            if Zone1 == "1":
+                Zone1 = "(48.417985,9.938193,48.417956,9.940275,48.417710,9.940271,48.417805,9.938137)"
+            else:
+                msgZone1.data = Zone1
+                self.pub_Zone1.publish(msgZone1)
             print ("do you want another one? (Y/N)")
             secondset = input()
             if secondset == "Y":

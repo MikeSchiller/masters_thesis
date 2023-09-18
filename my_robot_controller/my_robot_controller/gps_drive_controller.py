@@ -56,6 +56,14 @@ x23 = 0
 y23 = 0
 x24 = 0
 y24 = 0
+m112 = 0
+m123 = 0
+m134 = 0
+m141 = 0
+b123 = 0
+b112 = 0
+b134 = 0
+b141 = 0
 
 #########################################################################
 #Winkel 0 == 2.5 Dutycycle
@@ -104,6 +112,15 @@ class gps_autonomous(Node):
         global y13 
         global x14 
         global y14 
+        global m112
+        global m123
+        global m134
+        global m141
+        global b112
+        global b123
+        global b134
+        global b141
+
         sd = inputstring.split(",")
         x11 = sd[0]
         y11 = sd[1]
@@ -113,6 +130,29 @@ class gps_autonomous(Node):
         y13 = sd[5]
         x14 = sd[6]
         y14 = sd[7]
+        #https://de.serlo.org/mathe/1785/geradensteigung
+        if x12 - x11 == 0:
+            winkel12 = 180
+        else:    
+            m112 = (y12 - y11) / (x12 - x11)
+            b112 = (m112 * x11) / y11
+        if x13 - x12 == 0:
+            winkel23 = 180
+        else:       
+            m123 = (y13 - y12) / (x13 - x12)
+            b123 = (m123 * x12) / y12
+        if x14 - x13 == 0:
+            winkel34 = 180
+        else:        
+            m134 = (y14 - y13) / (x14 - x13)
+            b134 = (m134 * x13) / y13
+        if x11 - x14 == 0:
+            winkel41 = 180
+        else:
+            m141 = (y11 - y14) / (x11 - x14)
+            b141 = (m141 * x14) / y14
+        
+        
         
         
 
