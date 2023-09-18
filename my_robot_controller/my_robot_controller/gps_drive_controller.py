@@ -223,6 +223,8 @@ class gps_autonomous(Node):
             yo141 = mo141 * xo141  + bo141
             distTo141 = math.sqrt((xo141 - actual_latitude)^2 + (yo141 - actual_longitude)^2)  
         
+        #Nächster SChritt hier, schauen welche distanz am niedrigsten ist und aus steigung m neues Heading bestimmen.
+        
         
         
 
