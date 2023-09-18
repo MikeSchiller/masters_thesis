@@ -204,22 +204,22 @@ class gps_autonomous(Node):
         #Check distances between line an PLatform coords
         #Distance to line 112
         if actual_latitude > x11 and actual_latitude < x12:
-            xo112 = (mo112 /m112) * (bo112 - b112)
+            xo112 = (b112 - bo112) / (mo112 - m112) #(mo112 /m112) * (bo112 - b112)
             yo112 = mo112 * xo112  + bo112
             distTo112 = math.sqrt((xo112 - actual_latitude)^2 + (yo112 - actual_longitude)^2)      
         #Distance to line 123
         if actual_latitude > y13 and actual_latitude < y12:
-            xo123 = (mo123 /m123) * (bo123 - b123)
+            xo123 = (b123 - bo123) / (mo123 - m123) 
             yo123 = mo123 * xo123  + bo123
             distTo123 = math.sqrt((xo123 - actual_latitude)^2 + (yo123 - actual_longitude)^2)  
         #Distance to line 134
         if actual_latitude > x14 and actual_latitude < x13:
-            xo134 = (mo134 /m134) * (bo134 - b134)
+            xo134 = (b134 - bo134) / (mo134 - m134) 
             yo134 = mo134 * xo134  + bo134
             distTo134 = math.sqrt((xo134 - actual_latitude)^2 + (yo134 - actual_longitude)^2)  
         #Distance to line 141
         if actual_latitude > y14 and actual_latitude < y11:
-            xo141 = (mo141 /m141) * (bo141 - b141)
+            xo141 = (b141 - bo141) / (mo141 - m141) 
             yo141 = mo141 * xo141  + bo141
             distTo141 = math.sqrt((xo141 - actual_latitude)^2 + (yo141 - actual_longitude)^2)  
         
