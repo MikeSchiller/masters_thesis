@@ -2,8 +2,8 @@ import rclpy
 from rclpy.node import Node
 import time
 import math
-
 from std_msgs.msg import String
+
 startLong = 0.0
 startLat = 0.0
 gpsLong = 0.0
@@ -125,8 +125,12 @@ class CarToCoords(Node):
         
 
     def Steer_callback(self, car_steer):
+        # receives steering angle in range from 40 ( full right), 90 (straight ahead) to 130 (full left)
+        global heading
+        steering_angle = car_steer - 90
         
-        pass
+      #hier muss jetzt eine Methode rein, die aus dem Lenkwinkel das heading bestimmt  
+      
     
     def Schub_callback(self, car_schub):
         global Fahrtrichtung
