@@ -1,6 +1,7 @@
 import rclpy
 from rclpy.node import Node
 import time
+import math
 
 from std_msgs.msg import String
 startLong = 0.0
@@ -10,6 +11,11 @@ gpsLat = 0.0
 onlyfirstlong = 1
 onlyfirstlat = 1
 Fahrtrichtung = 0
+distance_driven = 0
+heading = 0
+radius_earth = 6371000 #6371km
+calclat = 0
+calclong = 0
 
 
 class CarToCoords(Node):
@@ -20,11 +26,12 @@ class CarToCoords(Node):
         self.car_lat = self.create_publisher(String, 'car_lat', 10)
         self.pub_Zone1 = self.create_publisher(String, '/Zone1', 10)
         self.pub_Zone2 = self.create_publisher(String, '/Zone2', 10)
-        self.sub_odo = self.create_subscription(String,'/distance_driven', self.Odo_callback, 10)
+        
         self.sub_steer = self.create_subscription(String,'/car_steer', self.Steer_callback, 10)
         self.sub_schubPWM = self.create_subscription(String, '/car_setschubPWM', self.Schub_callback 10)
         self.sub_gpslong = self.create_subscription(String, '/act_longitude', self.act_long_callback, 10)
         self.sub_gpslat = self.create_subscription(String, '/act_latitude', self.act_lat_callback, 10)
+        self.sub_odo = self.create_subscription(String,'/distance_driven', self.Odo_callback, 10)
 
        
     def coordsInput(self):
@@ -32,6 +39,8 @@ class CarToCoords(Node):
         global startLong
         global gpsLong
         global gpsLat
+        global calclat
+        global calclong
         msgZone1 = String()
         msgZone2 = String()
         
@@ -41,6 +50,7 @@ class CarToCoords(Node):
             print ("Using onboard GPS, please wait...")
             startLong = gpsLong
             startLat = gpsLat
+            
         elif setvar == "y" :
             print ("Please enter your start coordinates in degrees. First the  Longitude: ")
             startLong = input()
@@ -49,6 +59,9 @@ class CarToCoords(Node):
             print ("Your Startcoordinates are: " + str(startLong) + str(startLat) )
         else :
             self.get_logger().warning("Input not supported!")
+        
+        calclong = startLong
+        calclat = startLat
         
         print("Do you want to enable NO GO Zones? (Y/N/help): ")
         nogoset = input()
@@ -77,8 +90,39 @@ class CarToCoords(Node):
 
 
 
+    def calculate_car_coords(self, car_dist, heading):
+        #this method takes the distance driven, as well as the heading (which can be given by the sensor or calculated seperatly) and calculates the position in the glpbal coordinate space.
+        global radius_earth
+        global calclat
+        global calclong
+        diffgrad = 2 * math.asin(car_dist / 2 * radius_earth)
+        
+        if heading > 90 and heading <= 180:
+            x = diffgrad * math.cos(heading)
+            y = diffgrad * math.sin(heading) * (-1) 
+        elif heading > 180 and heading <= 270:
+            x = diffgrad * math.cos(heading) * (-1) 
+            y = diffgrad * math.sin(heading) * (-1)        
+        elif heading > 180 and heading <= 270:
+            x = diffgrad * math.cos(heading) * (-1) 
+            y = diffgrad * math.sin(heading)        
+        elif heading > 0 and heading <= 90:
+            x = diffgrad * math.cos(heading)
+            y = diffgrad * math.sin(heading) 
+        
+        calclong = calclong + y
+        calclat = calclat +x 
+        
+                 
+            
+        
+
     def Odo_callback(self, car_dist):
-        car_odo1 = car_odo
+        global distance_driven
+        global heading
+        distance_driven = car_dist
+        calculate_car_coords(distance_driven, heading)
+        
 
     def Steer_callback(self, car_steer):
         

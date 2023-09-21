@@ -223,7 +223,7 @@ class gps_autonomous(Node):
                     Zoneheading = Heading112
                     directionset = 1
                 
-        elif pos_min == 0: #Line 123
+        elif pos_min == 1: #Line 123
             if mindist < bufferdist :
                 if actual_longitude < target_longitude and directionset == 0:
                     Zoneheading = Heading123 + 180
@@ -231,7 +231,7 @@ class gps_autonomous(Node):
                 else: 
                     Zoneheading = Heading123
 
-        elif pos_min == 0: #Line 134
+        elif pos_min == 2: #Line 134
             if mindist < bufferdist:
                 if actual_latitude > target_latitude and directionset == 0:
                     Zoneheading = Heading134 + 180
@@ -240,7 +240,7 @@ class gps_autonomous(Node):
                     Zoneheading = Heading134
                     directionset = 1
 
-        elif pos_min == 0: #Line 141
+        elif pos_min == 3: #Line 141
             if mindist < bufferdist :
                 if actual_longitude > target_longitude and tempset == 0:
                     Zoneheading = Heading141 + 180
