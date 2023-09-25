@@ -12,10 +12,12 @@ onlyfirstlong = 1
 onlyfirstlat = 1
 Fahrtrichtung = 0
 distance_driven = 0
+steering_angle = 0
 heading = 0
 radius_earth = 6371000 #6371km
 calclat = 0
 calclong = 0
+radstand = 0.3 #(Radstand des Fahrzeugs in Meter)
 
 
 class CarToCoords(Node):
@@ -114,21 +116,38 @@ class CarToCoords(Node):
         calclat = calclat +x 
         
                  
+    def calculate_heading(self,steering_angle, heading):
+       # global steering_angle
+        global distance_driven
+        global radstand
+        current_heading = heading
+        
+        if  steering_angle != 0:
+            beta = distance_driven/ (math.pi * (2* radstand/ math.sin(current_heading)) * 360)
+            current_heading = current_heading + beta
             
+            if current_heading >= 360:
+                current_heading = current_heading - 360
+                
+            
+        else: 
+            return current_heading
         
 
     def Odo_callback(self, car_dist):
         global distance_driven
         global heading
         distance_driven = car_dist
-        calculate_car_coords(distance_driven, heading)
+        self.calculate_car_coords(distance_driven, heading)
+        
         
 
     def Steer_callback(self, car_steer):
         # receives steering angle in range from 40 ( full right), 90 (straight ahead) to 130 (full left)
         global heading
+        global steering_angle
         steering_angle = car_steer - 90
-        
+        self.calculate_heading(steering_angle,heading)
       #hier muss jetzt eine Methode rein, die aus dem Lenkwinkel das heading bestimmt  
       
     
