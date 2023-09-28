@@ -140,11 +140,11 @@ class CarToCoords(Node):
         distance_driven = car_dist
         distance_driven_new = car_dist
         self.calculate_car_coords(distance_driven, heading)
-        if part_distance_driven > 0.05 or steering_angle = 0 and checkleft != 0 or steering_angle = 0 and checkright != 0: #Heading berechnung alle 5cm // hier jetzt noch rein, dass auch abfrage, wenn winkel auf null gesetzt wird
+        if part_distance_driven > 0.05 or steering_angle == 0 and checkleft != 0 or steering_angle == 0 and checkright != 0: #Heading berechnung alle 5cm // hier jetzt noch rein, dass auch abfrage, wenn winkel auf null gesetzt wird
             self.calculate_heading(steering_angle,heading, part_distance_driven)
             part_distance_driven = 0
         else:
-            part_distance_driven = distance_driven_new - distance_driven old
+            part_distance_driven = distance_driven_new - distance_driven_old
         
         distance_driven_old = distance_driven_new
         
@@ -155,7 +155,7 @@ class CarToCoords(Node):
         global heading
         global steering_angle
         steering_angle = car_steer - 90
-        if steering angle > 0 :
+        if steering_angle > 0 :
             checkleft = 1
             checkcheck = 2
 
@@ -163,7 +163,7 @@ class CarToCoords(Node):
             checkright = 1
             checkcheck = 2
 
-        elif steeringangle = 0 and checkcheck >0 : # kurze überbrückung damit ende der lenkung abgefangen werden kann.
+        elif steering_angle == 0 and checkcheck >0 : # kurze überbrückung damit ende der lenkung abgefangen werden kann.
             checkcheck = -1
 
         else:

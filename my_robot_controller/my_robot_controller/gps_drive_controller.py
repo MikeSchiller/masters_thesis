@@ -351,7 +351,7 @@ class gps_autonomous(Node):
         #Distanz zwischen beiden Punkten berechnen. Dafür Erde = Kugel annahme, für kurze Distanzen ausreichend
         # CAVE: Code aktuell Für Nord östliche Bereiche der Welt ausgelegt.
         #https://www.sunearthtools.com/de/tools/distance.php#:~:text=Berechnung%20der%20Entfernung%20zwischen%20zwei%20geografischen%20Punkten,-Die%20Formel%20verwendet&text=Das%20Winkeln%20eingesetzt%20werden%20in,pi%20dividiert%20durch%20180%20erhalten.
-        difference_lat =target_latitude -  actual_latitude 
+        difference_lat = target_latitude -  actual_latitude 
         difference_long = target_longitude - actual_longitude
         
         if difference_lat < 0:
@@ -522,7 +522,7 @@ class gps_autonomous(Node):
 
 #Methode fürs einstellen der Lenkung
 def SetServoLenkung(self, winkel):
-  Winkelstring =String()
+  Winkelstring = String()
   # Umrechnung Grad in Tastverhaeltnis
   if winkel < 40:
     winkel = 40
