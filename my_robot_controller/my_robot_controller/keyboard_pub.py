@@ -74,12 +74,12 @@ class KeyboardPublisher(Node):
             rechts = 50
             
         if input1 == '-':
-            vor = 8
-            zurück = 6.4
+            vor = 7.6
+            zurück = 6.9
         
         if input1 == '+':
-            vor = 9
-            zurück = 5
+            vor = 8
+            zurück = 6.3
 
         if input1 == 'v':
             vor = 10.5
