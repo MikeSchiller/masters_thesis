@@ -406,7 +406,7 @@ class gps_autonomous(Node):
             schub = 8.8
             
             #Auswertung Heading Kompass
-            max_all_dev = 3 # maximum allowed deviation from target heading
+            max_all_dev = 2 # maximum allowed deviation from target heading
             if cmps_heading < target_heading + max_all_dev or cmps_heading < target_heading - max_all_dev :
                 lenkung = 70
             elif cmps_heading > target_heading + max_all_dev or cmps_heading > target_heading - max_all_dev:
