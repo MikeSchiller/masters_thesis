@@ -127,15 +127,21 @@ class KeyboardPublisher(Node):
                 checkswitch = 0
         
         if input1 == "l":
-            stoplenk = stoplenk + 1
+            stoplenk = stoplenk + 0.5
+            msg1.data = str(stoplenk)
 
         if input1 == "r":
-            stoplenk = stoplenk - 1            
+            stoplenk = stoplenk - 0.5 
+            msg1.data = str(stoplenk)           
 
 
        
 
         if  input1 == "a" or input1 == "d": 
+            self.pub_steer.publish(msg1)
+            self.get_logger().info('Publishing1: "%s"' % msg1.data)
+  
+        if  input1 == "l" or input1 == "r": 
             self.pub_steer.publish(msg1)
             self.get_logger().info('Publishing1: "%s"' % msg1.data)
             

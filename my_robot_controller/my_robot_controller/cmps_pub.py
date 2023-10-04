@@ -22,7 +22,7 @@ class Cmps_pub(Node):
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
     def heading_strtofloat_converter(self,heading):
-        #"270° 29'"
+        #"270° 29'" format
         index1 = heading.find("°")
         index2 = index1 + 1
         index3 = heading.find("'")

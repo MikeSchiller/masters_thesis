@@ -30,7 +30,7 @@ class CarToCoords(Node):
         self.pub_Zone2 = self.create_publisher(String, '/Zone2', 10)
         
         self.sub_steer = self.create_subscription(String,'/car_steer', self.Steer_callback, 10)
-        self.sub_schubPWM = self.create_subscription(String, '/car_setschubPWM', self.Schub_callback 10)
+        self.sub_schubPWM = self.create_subscription(String, '/car_setschubPWM', self.Schub_callback, 10)
         self.sub_gpslong = self.create_subscription(String, '/act_longitude', self.act_long_callback, 10)
         self.sub_gpslat = self.create_subscription(String, '/act_latitude', self.act_lat_callback, 10)
         self.sub_odo = self.create_subscription(String,'/distance_driven', self.Odo_callback, 10)
