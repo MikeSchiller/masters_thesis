@@ -7,6 +7,9 @@ from std_msgs.msg import String
 
 hmc5883l = i2c_hmc5883l.i2c_hmc5883l(1)
 heading = 0
+head1 = 0
+head2 = 0
+head3 = 0
 message = String()
  
 hmc5883l.setContinuousMode()
@@ -46,6 +49,9 @@ class Cmps_pub(Node):
         global hmc5883l
         global heading
         global message
+        global head1
+        global head2
+        global head3
 
         # To get degrees and minutes into variables
         #(degrees, minutes) = hmc5883l.getDeclination()
@@ -54,6 +60,15 @@ class Cmps_pub(Node):
         # To get string of degrees and minutes
         #declination = hmc5883l.getDeclinationString()
         heading = hmc5883l.getHeadingString()
+
+        #1 hässliges moving average
+        head1 = heading
+        head2 = head1
+        head3 = head2
+
+        avheading = (head1 + head2 + head3) /3
+
+
 
         message.data = self.heading_strtofloat_converter(heading)
 
