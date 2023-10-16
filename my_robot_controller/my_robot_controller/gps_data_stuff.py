@@ -1,3 +1,6 @@
+#sends the processed data from the gps module to the carToCoords node instead of gps drive controller
+
+
 #!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node

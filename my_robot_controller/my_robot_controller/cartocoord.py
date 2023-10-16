@@ -1,3 +1,5 @@
+#takes the gps coordinates and either sends it toward gpsdrivecontroller or changes themto user defined coordinates
+
 import rclpy
 from rclpy.node import Node
 import time
@@ -93,7 +95,7 @@ class CarToCoords(Node):
 
 
     def calculate_car_coords(self, car_dist, heading):
-        #this method takes the distance driven, as well as the heading (which can be given by the sensor or calculated seperatly) and calculates the position in the glpbal coordinate space.
+        #this method takes the distance driven, as well as the heading (which can be given by the sensor or calculated seperatly) and calculates the position in the global coordinate space.
         global radius_earth
         global calclat
         global calclong

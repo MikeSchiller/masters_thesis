@@ -75,8 +75,10 @@ class gps_autonomous(Node):
         self.get_logger().info('cmps_pub')
         self.pub_car_schub = self.create_publisher(String, '/car_setschubPWM',10) 
         self.pub_car_steer = self.create_publisher(String, '/car_steer',10) 
-        self.sub_actlong = self.create_subscription(String, '/act_longitude', self.act_long_callback, 10)
-        self.sub_actlat = self.create_subscription(String, '/act_latitude', self.act_lat_callback, 10)
+        #self.sub_actlong = self.create_subscription(String, '/act_longitude', self.act_long_callback, 10)
+        #self.sub_actlat = self.create_subscription(String, '/act_latitude', self.act_lat_callback, 10)
+        self.sub_actlong = self.create_subscription(String, '/car_long', self.act_long_callback, 10)
+        self.sub_actlat = self.create_subscription(String, '/car_lat', self.act_lat_callback, 10)
         self.sub_hdop = self.create_subscription(String, '/HDOP', self.HDOP_callback, 10)  
         self.sub_head = self.create_subscription(String, '/tracked_heading', self.Heading_callback, 10) 
         self.sub_cmps = self.create_subscription(String,'/cmps_heading',self.cmps_callback,10)       
@@ -264,22 +266,6 @@ class gps_autonomous(Node):
         return Zoneheading
                 
 
-        
-        
-
-    '''def saveZone2(self, inputstring):
-        sd = inputstring.split(",")
-        x21 = sd[0]
-        y21 = sd[1]
-        x22 = sd[2]
-        y22 = sd[3]
-        x23 = sd[4]
-        y23 = sd[5]
-        x24 = sd[6]
-        y24 = sd[7] '''  
-        
-        
-
     #get the actual gps data in degrees
     def act_long_callback(self, act_long):
         global actual_longitude
@@ -406,6 +392,7 @@ class gps_autonomous(Node):
       match state:
          
         case 0:
+            #während case 0 fährt das Fahrzeug in Richtung Ziel
             #normale vorausfahrt
             self.get_logger().info("all is good")
             self.get_logger().info(str(state))
@@ -456,6 +443,7 @@ class gps_autonomous(Node):
         case 1:
             self.get_logger().info(str(state))
             #geradeaus gegen Wand
+            #Fahrzeug stoppt
             self.get_logger().info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
             schub = stopschub
             SetFahrzeugSchub(self, schub)
@@ -464,6 +452,8 @@ class gps_autonomous(Node):
                 state =2
 
         case 2:
+            #Aktuell: gelenkt zurück 
+            #Wunsch:geradeaus rückwärts, dann gelenkt vorwärts
             self.get_logger().info(str(state))
             self.get_logger().info("Notlauf")
             if Rechtslenken == 1:
