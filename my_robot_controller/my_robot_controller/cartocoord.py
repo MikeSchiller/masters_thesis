@@ -22,6 +22,8 @@ calclat = 0
 calclong = 0
 calcHeading = 0
 radstand = 0.315 #(Radstand des Fahrzeugs in Meter)
+part_distance_driven = 0
+distance_driven_old = 0
 #
 checkcheck = 0
 checkleft = 0
@@ -77,11 +79,28 @@ class CarToCoords(Node):
             startLat = gpsLat
             
         elif setvar == "y" :
-            print ("Please enter your start coordinates in degrees (e.g. 48.4187985). First the  Longitude: ")
-            startLong = input()
-            print("Now the Latitude: ")
-            startLat = input()
-            print ("Your Startcoordinates are: " + str(startLong) + str(startLat) )
+            print ("Please enter (e) your start coordinates in degrees (e.g. 48.4187985) or choose (c) a standart point : ")
+            chooseorenter = input()
+            if chooseorenter == 'e':
+                print("First the  Longitude: ")  
+                startLong = input()
+                print("Now the Latitude: ")
+                startLat = input()
+                print ("Your Startcoordinates are: " + str(startLong) + str(startLat) )
+            elif chooseorenter == "c":
+                print("please select: ")
+                print ("(1) T Bau Gang norden")
+                print(" (2) Kreuzng T/Q Bau (indoor)")
+                startvar = input()
+                
+                match startvar:
+                    case 1:
+                        startLong = 9.9384605 # T Bau Gang Norden
+                        startLat= 48.4185308
+                    case 2:
+                        startLong = 9.93847061 # Kreuzung T/Q Bau (indoor)
+                        startLat= 48.41821953
+
             print("Now enter the start heading: ")
             calcHeading = input()
         else :
@@ -165,12 +184,12 @@ class CarToCoords(Node):
 
 
 
-    def calculate_car_coords(self, car_dist, heading):
+    def calculate_car_coords(self, car_distance, heading):
         #this method takes the distance driven, as well as the heading (which can be given by the sensor or calculated seperatly) and calculates the position in the global coordinate space.
         global radius_earth
         global calclat
         global calclong
-        diffgrad = 2 * math.asin(car_dist / 2 * radius_earth)
+        diffgrad = 2 * math.asin(car_distance / (2 * radius_earth))
         
         if heading > 90 and heading <= 180:
             x = diffgrad * math.cos(heading)
@@ -184,6 +203,10 @@ class CarToCoords(Node):
         elif heading > 0 and heading <= 90:
             x = diffgrad * math.cos(heading)
             y = diffgrad * math.sin(heading) 
+        else:
+            #i guess abfangen, wenn er zu beginn den wert noch nicht kennt
+            y = 0
+            x = 0
         
         calclong = calclong + y
         calclat = calclat +x 
@@ -203,7 +226,9 @@ class CarToCoords(Node):
                 current_heading = current_heading - 360 
         else: 
             calcHeading= current_heading
-            return current_heading
+        
+        calcHeading = current_heading 
+        return calcHeading
 
     def Odo_callback(self, car_dist):
         global distance_driven
@@ -211,8 +236,10 @@ class CarToCoords(Node):
         global checkleft
         global checkright
         global checkcheck
-        distance_driven = car_dist
-        distance_driven_new = car_dist
+        global part_distance_driven
+        global distance_driven_old
+        distance_driven = float(car_dist.data)
+        distance_driven_new = float(car_dist.data) 
         self.calculate_car_coords(distance_driven, heading)
         if part_distance_driven > 0.05 or steering_angle == 0 and checkleft != 0 or steering_angle == 0 and checkright != 0: #Heading berechnung alle 5cm // hier jetzt noch rein, dass auch abfrage, wenn winkel auf null gesetzt wird
             self.calculate_heading(steering_angle,heading, part_distance_driven)
@@ -229,7 +256,7 @@ class CarToCoords(Node):
         global checkleft
         global checkright
         global checkcheck
-        steering_angle = car_steer - 90
+        steering_angle = float(car_steer) - 90
         if steering_angle > 0 :
             checkleft = 1
             checkcheck = 2
@@ -281,8 +308,9 @@ class CarToCoords(Node):
             self.car_lat.publish(calclat)
 
     def cmps_callback(self,cmps_head):
-        global indoor 
+ 
         global cmps_heading
+        global Usegps
         global calcHeading
         msg = String()
         if Usegps != 1:

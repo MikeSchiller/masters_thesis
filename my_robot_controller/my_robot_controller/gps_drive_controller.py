@@ -491,17 +491,18 @@ class gps_autonomous(Node):
             minddist_radar_x = 0.5 #[m]
             minddist_radar_y = 0.4 #[m]
             for radvar in range(0, counttargets):
-                #Schauen, ob sich ein Hindernis links/rechts von Fahrzeugmitte aus befindet und maximal 4Meter weit weg ist
+                #Schauen, ob sich ein Hindernis links/rechts von Fahrzeugmitte aus befindet und maximal 1 Meter weit weg ist
 
-                if radararrayX(radvar) < minddist_radar_x and radararrayY(radvar) < 4 :
+                if radararrayX[radvar] < minddist_radar_x and radararrayY[radvar] < 1 :
                     #check ob links vom Fahrzeug
-                    if radararrayY(radvar) < 0:
+                    #links
+                    if radararrayY[radvar] < 0:
                         state = 50
-                    elif radararrayY(radvar) > 0:
+                    elif radararrayY[radvar] > 0:
                         state = 60
                 #schauen, ob ein Hindernis direkt vor dem Sensor ist
                 # Distanz von Fahrzeug
-                elif abs(radararrayY(radvar)) < minddist_radar_y :
+                elif abs(radararrayY[radvar]) < minddist_radar_y :
                     state = 40
                     
 
@@ -610,6 +611,41 @@ class gps_autonomous(Node):
             self.get_logger().info("manual drive")
             SetServoLenkung(self, klenkung)
             SetFahrzeugSchub(self, kschub)
+
+        case 40:
+              #Radar front nah Hindernis
+              schub = 7.3
+
+        case 50:
+              #Radar links Hindernis
+            self.get_logger().info("RADAR LINKS!")
+            schub = 7.65
+            lenkung = 50
+            SetFahrzeugSchub(self, schub)
+            SetServoLenkung(self, lenkung)
+
+            if abs(min(radararrayX)) < 0.4:
+                state = 40
+                Rechtslenken = 1
+
+            elif abs(min(radararrayX)) >  0.4:
+                state = 0
+
+        case 60:
+              #Radar rechts Hindernis
+            self.get_logger().info("RADAR RECHTS!")
+            schub = 7.65
+            lenkung = 50
+            SetFahrzeugSchub(self, schub)
+            SetServoLenkung(self, lenkung)
+
+            if min(radararrayX) < 0.4:
+                state = 40
+                Rechtslenken = 1
+
+            elif min(radararrayX) >  0.4:
+                state = 0
+              
 
         
 
