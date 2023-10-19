@@ -70,7 +70,7 @@ class CarToCoords(Node):
 
 
         
-        print("Use the Onboard GPS for outdoor use (g) or set it Yourself (y) ?: ")
+        print("Use the Onboard GPS for outdoor use (g) or set it Yourself (y)(or set debug(d))?: ")
         setvar = input()
         if setvar == "g" :
             print ("Using onboard GPS, please wait...")
@@ -163,6 +163,16 @@ class CarToCoords(Node):
                 case 8: 
                     target_longitude = 9.93894926 # Kreuzung S/Q Bau (indoor)
                     target_latitude = 48.41823366
+        '''
+        elif(setvar == d):
+            print("debug parameters set")
+            startLong = 9.9384605 # T Bau Gang Norden
+            startLat= 48.4185308
+            target_longitude = 9.93847061 # Kreuzung T/Q Bau (indoor)
+            target_latitude = 48.41821953
+            calcHeading = 170
+        '''
+
 
         print("Do you want to enable NO GO Zones? (Y/N/help): ")
         nogoset = input()
@@ -256,7 +266,7 @@ class CarToCoords(Node):
         global checkleft
         global checkright
         global checkcheck
-        steering_angle = float(car_steer) - 90
+        steering_angle = float(car_steer.data) - 90
         if steering_angle > 0 :
             checkleft = 1
             checkcheck = 2
@@ -275,9 +285,9 @@ class CarToCoords(Node):
     def Schub_callback(self, car_schub):
         global Fahrtrichtung
         stoppschub = 7.3
-        if car_schub > stoppschub :
+        if float(car_schub.data) > stoppschub :
             Fahrtrichtung = 1
-        elif car_schub < stoppschub :
+        elif float(car_schub) < stoppschub :
             Fahrtrichtung = -1 
         
         pass
@@ -287,7 +297,7 @@ class CarToCoords(Node):
         global calclong
         if onlyfirstlong == 1:
             global gpsLong
-            gpsLong = gps_long
+            gpsLong = float(gps_long.data)
             onlyfirstlong = 2
             #wenn GPS aktiviert ist, senden von gps koordinaten, sonst verwenden von berechneten Koordinaten
         if Usegps == 1:
@@ -300,7 +310,7 @@ class CarToCoords(Node):
         global calclat
         if onlyfirstlat == 1:
             global gpsLat
-            gpsLat = gps_lat
+            gpsLat = float(gps_lat.data)
             onlyfirstlat = 2
         if Usegps == 1:
             self.car_lat.publish(gps_lat)
@@ -317,7 +327,7 @@ class CarToCoords(Node):
             msg.data = str(calcHeading)
             self.pub_heading.publish(msg)
         else:
-            msg.data = str(cmps_head)
+            msg.data = str(cmps_head.data)
             self.pub_heading.publish(msg)
         print(msg.data)
 
