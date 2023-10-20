@@ -510,10 +510,19 @@ class gps_autonomous(Node):
             #Am ende der auswertung müssen die Radar arrays geleert werden
             radararrayX = []
             radararrayY = []
-
+            
             
             #check distances from US sensors and act accordingly 
+            if distance_left < mindist and distance_right > mindist and notlauf == 0  :
+                    state = 10
+            elif distance_right < mindist and distance_left > mindist and notlauf == 0 :
+                    state = 20
+            elif distance_left < mindist and distance_right < mindist and notlauf == 0 :
+                    state =1
+                    
+                    
             # including debouncing 
+            '''
             if distance_left < mindist and distance_right > mindist and notlauf == 0  :
                 debounceleft += 1
                 if debounceleft >= 3:
@@ -529,7 +538,7 @@ class gps_autonomous(Node):
                 if debounceall >= 3:
                     debounceall = 0
                     state =1
-                
+            '''    
 
 
         case 1:
@@ -544,24 +553,33 @@ class gps_autonomous(Node):
                 state =2
 
         case 2:
-            #Aktuell: gelenkt zurück 
-            #Wunsch:geradeaus rückwärts, dann gelenkt vorwärts
+            #ehemals gelenkt zurück 
+            #aktuell:geradeaus rückwärts, dann gelenkt vorwärts
             self.get_logger().info(str(state))
             self.get_logger().info("Notlauf")
-            if Rechtslenken == 1:
-                lenkung = 40
-                schub = 6.6
-            else :
-                lenkung = 130
-                schub = 6.6
+            
 
+            
             SetFahrzeugSchub(self, schub)
             SetServoLenkung(self, lenkung)
             
             if  distance_left > mindist and distance_right > mindist and notlauf == 1:
                 state =3
-
+                
         case 3:
+            self.get_logger().info(str(state))
+            self.get_logger().info("post Notlauf ")
+            if Rechtslenken == 1:
+                lenkung = 50
+                schub = 7.6
+            else:
+                lenkung = 120
+                schub = 7.6
+            SetFahrzeugSchub(self, schub)
+            notlauf = 0
+            state = 0
+
+        case 4:
             self.get_logger().info(str(state))
       
             self.get_logger().info("Notlauf beednet")
