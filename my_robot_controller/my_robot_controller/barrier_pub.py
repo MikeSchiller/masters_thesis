@@ -48,7 +48,7 @@ class BarrierPublisher(Node):
             global rad_umfang
             global distance 
 
-
+            #technically könnte das irgendwann überlaufen
             i = i+1
             turn_kurbelwelle = i/6
             turn_rad = turn_kurbelwelle/4.80808
