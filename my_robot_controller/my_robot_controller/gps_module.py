@@ -9,6 +9,7 @@ import serial
 
 '''
 #startup gps module
+# Not used for debug purposes.
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(7, GPIO.OUT)
 GPIO.output(7, GPIO.LOW)
