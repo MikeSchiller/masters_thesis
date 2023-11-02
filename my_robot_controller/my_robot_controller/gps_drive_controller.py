@@ -106,7 +106,8 @@ class gps_autonomous(Node):
 
     def timer_callback(self):
         global Winkelstring
-        self.calculate_heading()
+        #DAs kann hier so nicht aufgerufen werden
+        #self.calculate_heading()
         self.fahrmethode()
         self.pub_car_steer.publish(Winkelstring)
         self.pub_car_schub.publish(pubschub) 
