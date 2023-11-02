@@ -8,8 +8,9 @@ from std_msgs.msg import String
 import array
 actual_latitude = 0
 actual_longitude = 0
+lenkung = 0
 i = 0
-w= 3
+w= 4
 h = 500
 T = [[0 for x in range(w)] for y in range(h)]
 #print(T)
@@ -23,6 +24,7 @@ class csvWriter(Node):
 
         self.sub_actlong = self.create_subscription(String, '/car_long', self.act_long_callback, 10)
         self.sub_actlat = self.create_subscription(String, '/car_lat', self.act_lat_callback, 10)
+        self.sub_steer = self.create_subscription(String,'/car_steer', self.Steer_callback, 10)
         self.timer = self.create_timer(0.5, self.timer_callback)
     
     
@@ -38,12 +40,13 @@ class csvWriter(Node):
         T[i][0] = i
         T[i][1] = actual_latitude
         T[i][2] = actual_longitude
+        T[i][3] =  lenkung
         i = i+1
         print (T)
     
         if i == h:
         
-            with open('coordinates_testdrive4.csv', 'w+', newline='') as file:
+            with open('coordinates_gps_testdrive1.csv', 'w+', newline='') as file:
                 print ("meh")
                 writer = csv.writer(file, lineterminator='\n')
                 for k in range(h):
@@ -70,6 +73,10 @@ class csvWriter(Node):
         global actual_latitude
         global T
         actual_latitude = float(act_lat.data)
+        
+    def Steer_callback(self, lenk):
+        global lenkung
+        lenkung = float(lenk.data)
 
 
 

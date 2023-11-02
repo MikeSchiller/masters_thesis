@@ -10,6 +10,6 @@
         "/opt/ros/humble/local/lib/python3.10/dist-packages"
     ],
     "ros.distro": "humble",
-    "python.languageServer": "Pylance",
-    "cmake.configureOnOpen": true
+    "python.languageServer": "Jedi",
+    //"cmake.configureOnOpen": true
 }
