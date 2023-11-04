@@ -331,7 +331,8 @@ class CarToCoords(Node):
             distance_driven_new = float(car_dist.data) 
             #print ("new: " + str(distance_driven_new))
             #ist hier vllt der Fehler mit falschem Faktor, weil falsche Variable übergeben?
-        self.calculate_car_coords(distance_driven_new, calcHeading)
+        #!!!!Das macht an dier stelle keinen Sinn
+        #self.calculate_car_coords(distance_driven_new, calcHeading)
 
         #print("Piepsepiep " + str(part_distance_driven))
         #partdistance 
@@ -339,12 +340,14 @@ class CarToCoords(Node):
         part_distance_driven = part_distance_driven + part_distance_driven_this_iteration
 
         if part_distance_driven > 0.02 or steering_angle == 0 and checkleft != 0 or steering_angle == 0 and checkright != 0: #Heading berechnung alle 5cm // hier jetzt noch rein, dass auch abfrage, wenn winkel auf null gesetzt wird
-            
+            self.calculate_car_coords(part_distance_driven, calcHeading)
             self.calculate_heading(steering_angle,part_distance_driven)
+            
             part_distance_driven = 0
         else:
             pass
-
+        
+        
         #print ("old: " + str(distance_driven_old))
         distance_driven_old = distance_driven_new
         
