@@ -102,8 +102,9 @@ class CarToCoords(Node):
             if setvar == "g" :
                 print ("Using onboard GPS, please wait...")
                 Usegps = 1
-                startLong = gpsLong
-                startLat = gpsLat
+                #Das funkt hier nicht, weil der abonnent noch nicht aufg
+                #startLong = gpsLong
+                #startLat = gpsLat
                 
             elif setvar == "y" :
                 print ("Please enter (e) your start coordinates in degrees (e.g. 48.4187985) or choose (c) a standart point : ")
@@ -245,21 +246,21 @@ class CarToCoords(Node):
         global calclat
         global calclong
         global Usegps
-        diffgrad = 2 * math.asin(car_distance / (2 * radius_earth))
+        diffgrad = 2 * math.degrees(math.asin(car_distance / (2 * radius_earth)))
         heading = float(heading)
         
         if heading >= 90.0 and heading < 180:
-            x = diffgrad * math.cos(heading)
-            y = diffgrad * math.sin(heading) * (-1) 
+            x = diffgrad * math.degrees(math.cos(heading))
+            y = diffgrad * math.degrees(math.sin(heading)) * (-1) 
         elif heading >= 180.0 and heading < 270:
-            x = diffgrad * math.cos(heading) * (-1) 
-            y = diffgrad * math.sin(heading) * (-1)        
+            x = diffgrad * math.degrees(math.cos(heading)) * (-1) 
+            y = diffgrad * math.degrees(math.sin(heading)) * (-1)        
         elif heading >= 270.0 and heading < 360:
-            x = diffgrad * math.cos(heading) * (-1) 
-            y = diffgrad * math.sin(heading)        
+            x = diffgrad * math.degrees(math.cos(heading)) * (-1) 
+            y = diffgrad * math.degrees(math.sin(heading))       
         elif heading >= 0.0 and heading < 90:
-            x = diffgrad * math.cos(heading)
-            y = diffgrad * math.sin(heading) 
+            x = diffgrad * math.degrees(math.cos(heading))
+            y = diffgrad * math.degrees(math.sin(heading))
         else:
             #i guess abfangen, wenn er zu beginn den wert noch nicht kennt/ oder irgendwann mal spinnt
             y = 0

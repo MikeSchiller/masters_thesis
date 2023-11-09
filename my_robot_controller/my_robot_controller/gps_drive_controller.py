@@ -701,18 +701,18 @@ class gps_autonomous(Node):
             radararrayX = []
             radararrayY = []
             
-            '''            #check distances from US sensors and act accordingly 
+                        #check distances from US sensors and act accordingly 
             if distance_left < mindist and distance_right > mindist and notlauf == 0  :
                     state = 10
             elif distance_right < mindist and distance_left > mindist and notlauf == 0 :
                     state = 20
             elif distance_left < mindist and distance_right < mindist and notlauf == 0 :
                     state =1
-            '''
+            
             # including debouncing 
             #print(distance_left)
             #print(distance_right)
-
+            '''
             if distance_left < mindist and distance_right > mindist and notlauf == 0  :
                 debounceleft = debounceleft +1
                 if debounceleft >= 2:
@@ -728,6 +728,7 @@ class gps_autonomous(Node):
                 if debounceall >= 2:
                     debounceall = 0
                     state =1
+            '''
 
 
            # print(debounceall)
