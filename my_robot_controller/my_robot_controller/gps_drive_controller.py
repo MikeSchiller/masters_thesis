@@ -793,7 +793,7 @@ class gps_autonomous(Node):
         # Wand von links
             self.get_logger().info("OBACHT LINKS!")
             schub = 7.65
-            lenkung = 50
+            lenkung = 60
             SetFahrzeugSchub(self, schub)
             SetServoLenkung(self, lenkung)
 
